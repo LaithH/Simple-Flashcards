@@ -3,6 +3,7 @@
     <string name="share_with_nearby_settings">Share flashcards with nearby users</string>
     <string name="backup_and_restore_data">Backup and restore data</string>
     <string name="dark_mode">Dark mode</string>
+    <string name="import_flashcards_from_csv">Import flashcards from .csv</string>
     <string name="set_nearby_name">Set nearby name</string>
     <string name="send_feedback">Send feedback</string>
     <string name="share_this_app">Share this app</string>
@@ -13,6 +14,7 @@
         <item>@string/share_with_nearby_settings</item>
         <item>@string/backup_and_restore_data</item>
         <item>@string/dark_mode</item>
+        <item>@string/import_flashcards_from_csv</item>
         <item>@string/set_nearby_name</item>
         <item>@string/send_feedback</item>
         <item>@string/share_this_app</item>
@@ -27,6 +29,7 @@
 
     <string name="backup_icon">{ion-android-upload}</string>
     <string name="moon_icon">{fa-moon-o}</string>
+    <string name="document_icon">{ion-document-text}</string>
     <string name="email_icon">{ion-email}</string>
     <string name="share_icon">{ion-android-share-alt}</string>
     <string name="android_icon">{ion-social-android}</string>
@@ -36,6 +39,7 @@
         <item>@string/share_nearby_icon</item>
         <item>@string/backup_icon</item>
         <item>@string/moon_icon</item>
+        <item>@string/document_icon</item>
         <item>@string/person_icon</item>
         <item>@string/email_icon</item>
         <item>@string/share_icon</item>

@@ -2,6 +2,7 @@ package com.randomappsinc.simpleflashcards.home.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -91,15 +92,34 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                 themeManager.setDarkModeEnabled(getContext(), !darkThemeEnabled);
                 return;
             case 3:
-                nearbyNameManager.showNameSetter();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+                    String[] mimeTypes =
+                            {"text/comma-separated-values",
+                                    "text/csv",
+                                    "application/csv",
+                                    "application/excel",
+                                    "application/vnd.ms-excel",
+                                    "application/vnd.msexcel",
+                                    "text/anytext"};
+
+                    csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                    csvIntent.setType("image/*");
+                    csvIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                    startActivityForResult(csvIntent, 1);
+                }
                 return;
             case 4:
+                nearbyNameManager.showNameSetter();
+                return;
+            case 5:
                 String uriText = "mailto:" + SUPPORT_EMAIL + "?subject=" + Uri.encode(feedbackSubject);
                 Uri mailUri = Uri.parse(uriText);
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO, mailUri);
                 startActivity(Intent.createChooser(sendIntent, sendEmail));
                 return;
-            case 5:
+            case 6:
                 Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
                         .setText(getString(R.string.share_app_message))
@@ -108,10 +128,10 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     startActivity(shareIntent);
                 }
                 return;
-            case 6:
+            case 7:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OTHER_APPS_URL));
                 break;
-            case 7:
+            case 8:
                 Uri uri =  Uri.parse("market://details?id=" + getContext().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getContext().getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
@@ -119,7 +139,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     return;
                 }
                 break;
-            case 8:
+            case 9:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL));
                 break;
         }

@@ -13,7 +13,6 @@ import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -159,10 +158,7 @@ public class EditFlashcardsActivity extends StandardActivity
             startActivityForResult(intent, requestCode);
             overridePendingTransition(R.anim.stay, R.anim.slide_in_bottom);
         } catch (ActivityNotFoundException exception) {
-            Toast.makeText(
-                    this,
-                    R.string.speech_not_supported,
-                    Toast.LENGTH_SHORT).show();
+            UIUtils.showShortToast(R.string.speech_not_supported, this);
         }
     }
 
