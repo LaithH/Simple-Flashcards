@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 
 public class QuizletFlashcard {
 
@@ -18,18 +17,7 @@ public class QuizletFlashcard {
 
     @SerializedName("image")
     @Expose
-    private Image image;
-
-    private class Image {
-
-        @SerializedName("url")
-        @Expose
-        private String url;
-
-        String getUrl() {
-            return url;
-        }
-    }
+    private QuizletImage image;
 
     public String getTerm() {
         return term;
@@ -42,13 +30,5 @@ public class QuizletFlashcard {
     @Nullable
     public String getImageUrl() {
         return image == null ? null : image.getUrl();
-    }
-
-    public FlashcardDO toFlashcard() {
-        FlashcardDO flashcard = new FlashcardDO();
-        flashcard.setTerm(term);
-        flashcard.setDefinition(definition);
-        flashcard.setTermImageUrl(getImageUrl());
-        return flashcard;
     }
 }
