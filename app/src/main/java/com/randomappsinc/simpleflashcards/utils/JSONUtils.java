@@ -104,7 +104,9 @@ public class JSONUtils {
                     flashcard.setTermImageUrl(flashcardJson.getString(TERM_IMAGE_URL_KEY));
                 }
                 flashcard.setDefinition(flashcardJson.getString(DEFINITION_KEY));
-                flashcard.setPosition(flashcardJson.getInt(POSITION_KEY));
+                if (flashcardJson.has(POSITION_KEY)) {
+                    flashcard.setPosition(flashcardJson.getInt(POSITION_KEY));
+                }
                 flashcards.add(flashcard);
             }
             flashcardSet.setFlashcards(flashcards);

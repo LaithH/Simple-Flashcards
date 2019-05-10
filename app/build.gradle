@@ -2,14 +2,22 @@ apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/alexanderchiou/AndroidStudioProjects/keys/randomappsinc.jks')
+            storePassword 'paypaldurdles'
+            keyPassword 'paypaldurdles'
+            keyAlias = 'randomappsinc'
+        }
+    }
     compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.randomappsinc.simpleflashcards"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 290
-        versionName "3.1.3"
+        versionCode 291
+        versionName "3.1.4"
     }
     buildTypes {
         release {
@@ -19,14 +27,15 @@ android {
 
             // Enables resource shrinking, which is performed by the
             // Android Gradle plugin
-            shrinkResources true
+            shrinkResources false
 
             // Includes the default ProGuard rules files that are packaged with
             // the Android Gradle plugin
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
-
+            debuggable = true
+            signingConfig signingConfigs.release
         }
     }
     repositories {
