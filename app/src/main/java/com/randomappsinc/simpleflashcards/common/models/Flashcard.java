@@ -14,6 +14,11 @@ public class Flashcard implements Parcelable {
     private String definitionImageUrl;
     private boolean learned;
 
+    public Flashcard(String term, String definition) {
+        this.term = term;
+        this.definition = definition;
+    }
+
     public Flashcard(FlashcardDO flashcardDO) {
         this.id = flashcardDO.getId();
         this.term = flashcardDO.getTerm();

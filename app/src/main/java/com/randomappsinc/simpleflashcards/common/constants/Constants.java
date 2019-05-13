@@ -17,6 +17,7 @@ public class Constants {
     public static final String IMPORT_MODE_KEY = "importMode";
     public static final String RECEIVING_SET_ID = "receivingSetId";
     public static final String SENDING_SET_ID = "sendingSetId";
+    public static final String URI_KEY = "uri";
 
     public static final String BACKUP_KEY = "backup";
     public static final String RESTORE_KEY = "restore";
@@ -29,4 +30,14 @@ public class Constants {
     public static final String QUIZLET_URL = "quizlet.com";
 
     public static final int UNSET_COLOR = -1;
+
+    public static final String[] CSV_MIME_TYPES =
+            {"text/comma-separated-values",
+                    "text/csv",
+                    "application/csv",
+                    "application/excel",
+                    "application/vnd.ms-excel",
+                    "application/vnd.msexcel",
+                    "text/anytext"};
+
 }

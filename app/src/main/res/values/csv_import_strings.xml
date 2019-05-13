@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="csv_format_instructions">Make sure terms are in the first column and definitions in the second.</string>
+    <string name="import_from_csv">Import From .csv</string>
+    <string name="csv_read_failed">We failed to parse your .csv file.</string>
+</resources>

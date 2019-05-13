@@ -151,5 +151,11 @@
             android:name=".editflashcards.activities.FlashcardOrderingActivity"
             android:configChanges="orientation|screenSize"
             />
+
+        <activity
+            android:name=".csvimport.CsvImportActivity"
+            android:label="@string/import_from_csv"
+            android:configChanges="orientation|screenSize"
+            />
     </application>
 </manifest>

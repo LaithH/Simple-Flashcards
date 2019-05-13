@@ -1,15 +1,10 @@
 package com.randomappsinc.simpleflashcards.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.core.app.ShareCompat;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -108,29 +103,5 @@ public class DialogUtil {
                     })
                     .show();
         }
-    }
-
-    public static MaterialDialog createDialogWithIconTextBody(
-            Context context,
-            @StringRes int bodyText,
-            @StringRes int titleText,
-            @StringRes int positiveText,
-            @Nullable MaterialDialog.SingleButtonCallback positiveCallback) {
-        TextView dialogView = (TextView) LayoutInflater.from(context).inflate(
-                R.layout.dialog_body_text,
-                null,
-                false);
-        dialogView.setText(bodyText);
-        ThemeManager themeManager = ThemeManager.get();
-        MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(context)
-                .theme(themeManager.getDarkModeEnabled(context) ? Theme.DARK : Theme.LIGHT)
-                .title(titleText)
-                .positiveText(positiveText)
-                .customView(dialogView, true)
-                .cancelable(false);
-        if (positiveCallback != null) {
-            dialogBuilder.onPositive(positiveCallback);
-        }
-        return dialogBuilder.build();
     }
 }

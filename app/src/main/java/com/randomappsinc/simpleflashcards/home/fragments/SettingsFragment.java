@@ -1,7 +1,9 @@
 package com.randomappsinc.simpleflashcards.home.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndRestoreActivity;
+import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
+import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
 import com.randomappsinc.simpleflashcards.home.adapters.SettingsAdapter;
 import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.nearbysharing.managers.NearbyNameManager;
@@ -91,15 +95,25 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                 themeManager.setDarkModeEnabled(getContext(), !darkThemeEnabled);
                 return;
             case 3:
-                nearbyNameManager.showNameSetter();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    UIUtils.showLongToast(R.string.csv_format_instructions, getContext());
+                    Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                    csvIntent.setType("*/*");
+                    csvIntent.putExtra(Intent.EXTRA_MIME_TYPES, Constants.CSV_MIME_TYPES);
+                    startActivityForResult(csvIntent, 1);
+                }
                 return;
             case 4:
+                nearbyNameManager.showNameSetter();
+                return;
+            case 5:
                 String uriText = "mailto:" + SUPPORT_EMAIL + "?subject=" + Uri.encode(feedbackSubject);
                 Uri mailUri = Uri.parse(uriText);
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO, mailUri);
                 startActivity(Intent.createChooser(sendIntent, sendEmail));
                 return;
-            case 5:
+            case 6:
                 Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
                         .setText(getString(R.string.share_app_message))
@@ -108,10 +122,10 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     startActivity(shareIntent);
                 }
                 return;
-            case 6:
+            case 7:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OTHER_APPS_URL));
                 break;
-            case 7:
+            case 8:
                 Uri uri =  Uri.parse("market://details?id=" + getContext().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getContext().getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
@@ -119,12 +133,32 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     return;
                 }
                 break;
-            case 8:
+            case 9:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL));
                 break;
         }
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && resultCode == Activity.RESULT_OK
+                && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+
+            // Persist ability to read from this file
+            int takeFlags = data.getFlags()
+                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            getContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+            String uriString = uri.toString();
+            Intent intent = new Intent(getActivity(), CsvImportActivity.class);
+            intent.putExtra(Constants.URI_KEY, uriString);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -135,7 +169,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.filter).setVisible(false);
     }
