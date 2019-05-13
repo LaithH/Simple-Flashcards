@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.widget.EditText;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
@@ -19,20 +22,32 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class CsvImportActivity extends StandardActivity {
+
+    @BindView(R.id.set_name_input) EditText setNameInput;
+    @BindView(R.id.flashcards) RecyclerView flashcardsList;
+
+    private CsvFlashcardsAdapter flashcardsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.csv_import);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
 
         extractFileIntoFlashcardSet();
     }
 
     private void onFlashcardSetExtracted(String setName, List<Flashcard> flashcards) {
         runOnUiThread(() -> {
-
+            setNameInput.setText(setName);
+            flashcardsAdapter = new CsvFlashcardsAdapter(flashcards);
+            flashcardsList.setAdapter(flashcardsAdapter);
         });
     }
 
@@ -84,5 +99,10 @@ public class CsvImportActivity extends StandardActivity {
 
             onFlashcardSetExtracted(setName, flashcards);
         });
+    }
+
+    @OnClick(R.id.save)
+    public void save() {
+
     }
 }

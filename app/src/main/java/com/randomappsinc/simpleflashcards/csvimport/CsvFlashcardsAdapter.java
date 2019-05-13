@@ -1,8 +1,11 @@
 package com.randomappsinc.simpleflashcards.csvimport;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,12 +30,16 @@ public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdap
     @NonNull
     @Override
     public FlashcardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.csv_import_flashcard_cell,
+                parent,
+                false);
+        return new FlashcardViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FlashcardViewHolder holder, int position) {
-
+        holder.loadFlashcard(position);
     }
 
     @Override
@@ -42,6 +49,7 @@ public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdap
 
     public class FlashcardViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.flashcard_position) TextView positionText;
         @BindView(R.id.term_text) ThemedTextView termText;
         @BindView(R.id.definition_text) ThemedTextView definitionText;
 
@@ -52,6 +60,12 @@ public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdap
 
         void loadFlashcard(int position) {
             Flashcard flashcard = flashcardList.get(position);
+            Context context = positionText.getContext();
+            positionText.setText(context.getString(
+                    R.string.x_of_y,
+                    getAdapterPosition() + 1,
+                    flashcardList.size()));
+
             String term = flashcard.getTerm();
             if (TextUtils.isEmpty(term)) {
                 termText.setTextAsHint(R.string.no_term_hint);
