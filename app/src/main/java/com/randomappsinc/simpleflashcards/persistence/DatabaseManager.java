@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.randomappsinc.simpleflashcards.common.constants.Language;
+import com.randomappsinc.simpleflashcards.common.models.Flashcard;
 import com.randomappsinc.simpleflashcards.common.models.FlashcardSetPreview;
 import com.randomappsinc.simpleflashcards.folders.models.Folder;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
@@ -810,6 +811,13 @@ public class DatabaseManager {
             realm.commitTransaction();
         } catch (Exception e) {
             realm.cancelTransaction();
+        }
+    }
+
+    public void addFlashcardSet(String setName, List<Flashcard> flashcards) {
+        int setId = createFlashcardSet(setName);
+        for (Flashcard flashcard : flashcards) {
+            addFlashcard(setId, flashcard.getTerm(), flashcard.getDefinition());
         }
     }
 }

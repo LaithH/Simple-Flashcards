@@ -4,4 +4,5 @@
     <string name="import_from_csv">Import From .csv</string>
     <string name="csv_read_failed">We failed to parse your .csv file.</string>
     <string name="x_of_y">%1$d of %2$d</string>
+    <string name="flashcard_set_saved">Flashcard set saved.</string>
 </resources>

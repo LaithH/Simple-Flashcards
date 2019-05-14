@@ -16,6 +16,7 @@ import com.randomappsinc.simpleflashcards.common.models.Flashcard;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcardDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
+import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.io.BufferedReader;
@@ -145,7 +146,11 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
 
     @OnClick(R.id.save)
     public void save() {
-
+        DatabaseManager databaseManager = DatabaseManager.get();
+        String setName = setNameInput.getText().toString().trim();
+        databaseManager.addFlashcardSet(setName, flashcardsAdapter.getFlashcards());
+        UIUtils.showShortToast(R.string.flashcard_set_saved, this);
+        finish();
     }
 
     @Override

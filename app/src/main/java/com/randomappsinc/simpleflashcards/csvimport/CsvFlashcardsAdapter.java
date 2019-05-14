@@ -39,6 +39,10 @@ public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdap
         this.listener = listener;
     }
 
+    public List<Flashcard> getFlashcards() {
+        return flashcardList;
+    }
+
     public void onTermEdited(String newTerm) {
         flashcardList.get(currentlySelectedPosition).setTerm(newTerm);
         notifyItemChanged(currentlySelectedPosition);
