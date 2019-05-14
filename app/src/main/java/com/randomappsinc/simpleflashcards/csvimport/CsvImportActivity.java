@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
-import android.util.Pair;
 import android.widget.EditText;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +17,6 @@ import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcard
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
-import com.randomappsinc.simpleflashcards.utils.StringUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.io.BufferedReader;
@@ -31,6 +29,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.siegmar.fastcsv.reader.CsvParser;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRow;
 
 public class CsvImportActivity extends StandardActivity implements EditFlashcardTermDialog.Listener,
         EditFlashcardDefinitionDialog.Listener, CsvFlashcardsAdapter.Listener,
@@ -94,10 +95,12 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
                     throw new IOException("Unable to find .csv file!");
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    Pair<String, String> pieces = StringUtils.splitUpCsvLine(line);
-                    Flashcard flashcard = new Flashcard(pieces.first, pieces.second);
+                CsvReader csvReader = new CsvReader();
+                CsvParser csvParser = csvReader.parse(reader);
+
+                CsvRow row;
+                while ((row = csvParser.nextRow()) != null) {
+                    Flashcard flashcard = new Flashcard(row.getField(0), row.getField(1));
                     flashcards.add(flashcard);
                 }
             } catch (IOException exception) {

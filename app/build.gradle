@@ -76,4 +76,5 @@ dependencies {
         exclude group: 'com.android.support'
     }
     implementation 'com.squareup:seismic:1.0.2'
+    implementation 'de.siegmar:fastcsv:1.0.3'
 }
