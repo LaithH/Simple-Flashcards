@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.util.Pair;
 import android.widget.EditText;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcard
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
+import com.randomappsinc.simpleflashcards.utils.StringUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.io.BufferedReader;
@@ -94,8 +96,8 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
                 reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] termAndDefinition = line.split(",");
-                    Flashcard flashcard = new Flashcard(termAndDefinition[0], termAndDefinition[1]);
+                    Pair<String, String> pieces = StringUtils.splitUpCsvLine(line);
+                    Flashcard flashcard = new Flashcard(pieces.first, pieces.second);
                     flashcards.add(flashcard);
                 }
             } catch (IOException exception) {

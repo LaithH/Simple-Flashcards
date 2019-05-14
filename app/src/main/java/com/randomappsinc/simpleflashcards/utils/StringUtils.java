@@ -1,5 +1,7 @@
 package com.randomappsinc.simpleflashcards.utils;
 
+import android.util.Pair;
+
 import java.util.HashMap;
 
 public class StringUtils {
@@ -56,5 +58,43 @@ public class StringUtils {
                     .append(" ");
         }
         return capitalizedWords.toString().trim();
+    }
+
+    /**
+     *  Given a string that represents a line of a .csv file, break it up into
+     *  the 2 strings that line represents (we're assuming the user formatted
+     *  the flashcard set within their .csv file properly).
+     */
+    public static Pair<String, String> splitUpCsvLine(String line) {
+        int commaIndex = -1;
+        boolean startsWithQuote = line.startsWith("\"");
+        boolean foundEndQuote = false;
+        for (int i = (startsWithQuote ? 1 : 0); i < line.length(); i++) {
+            char currentChar = line.charAt(i);
+            if (startsWithQuote && currentChar == '\"') {
+                foundEndQuote = true;
+                continue;
+            }
+            if (currentChar == ',') {
+                // If the line starts with a quote, we need to find the end quote
+                // before registering the comma position (if the string has a comma
+                // within it, the .csv wraps the entire value in quotes to identify that
+                if (!startsWithQuote || foundEndQuote) {
+                    commaIndex = i;
+                    break;
+                }
+            }
+        }
+        String term;
+        String definition = "";
+        if (commaIndex == -1) {
+            term = line;
+        } else {
+            int termStart = startsWithQuote ? 1 : 0;
+            int termEnd = foundEndQuote ? commaIndex - 1 : commaIndex;
+            term = line.substring(termStart, termEnd);
+            definition = line.substring(commaIndex + 1);
+        }
+        return new Pair<>(term, definition);
     }
 }
