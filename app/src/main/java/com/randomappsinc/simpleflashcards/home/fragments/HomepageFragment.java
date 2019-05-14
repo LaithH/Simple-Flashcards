@@ -3,6 +3,8 @@ package com.randomappsinc.simpleflashcards.home.fragments;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
@@ -24,6 +26,7 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndRestoreActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
+import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
 import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
 import com.randomappsinc.simpleflashcards.home.activities.FlashcardSetActivity;
 import com.randomappsinc.simpleflashcards.home.activities.MainActivity;
@@ -52,6 +55,7 @@ public class HomepageFragment extends Fragment
     }
 
     private static final int SPEECH_REQUEST_CODE = 1;
+    private static final int CSV_IMPORT_REQUEST_CODE = 2;
 
     @BindView(R.id.parent) View parent;
     @BindView(R.id.focus_sink) View focusSink;
@@ -150,6 +154,18 @@ public class HomepageFragment extends Fragment
         activity.loadQuizletSetSearch();
     }
 
+    @OnClick(R.id.import_from_csv_button)
+    public void importFromCsv() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            UIUtils.showLongToast(R.string.csv_format_instructions, getContext());
+            Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            csvIntent.setType("*/*");
+            csvIntent.putExtra(Intent.EXTRA_MIME_TYPES, Constants.CSV_MIME_TYPES);
+            startActivityForResult(csvIntent, CSV_IMPORT_REQUEST_CODE);
+        }
+    }
+
     @OnClick(R.id.create_set_button)
     public void createSet() {
         createFlashcardSetDialog.show();
@@ -239,6 +255,22 @@ public class HomepageFragment extends Fragment
             }
             String searchInput = StringUtils.capitalizeFirstWord(result.get(0));
             setSearch.setText(searchInput);
+        } else if (requestCode == CSV_IMPORT_REQUEST_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && resultCode == Activity.RESULT_OK
+                    && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+
+                // Persist ability to read from this file
+                int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+                String uriString = uri.toString();
+                Intent intent = new Intent(getActivity(), CsvImportActivity.class);
+                intent.putExtra(Constants.URI_KEY, uriString);
+                startActivity(intent);
+            }
         }
     }
 

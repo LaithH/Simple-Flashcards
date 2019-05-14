@@ -15,6 +15,7 @@
         Welcome to your library!
         To add flashcard sets, you can:
     </string>
+    <string name="home_settings_info_text">You can find most of these options in the settings menu as well.</string>
 
     <string name="backup_your_data">Back Up Your Data!</string>
     <string name="backup_your_data_explanation">
@@ -75,6 +76,7 @@
     <string name="home_folder_icon">{ion-android-folder}</string>
 
     <string name="download_sets_button_text">Download them from the Internet</string>
+    <string name="import_from_csv_home_text">Import one from a .csv file</string>
     <string name="get_from_nearby">Get them from nearby study buddies</string>
     <string name="create_your_own">Create your own</string>
     <string name="restore_them_from_backup">Restore them from a backup</string>
