@@ -228,19 +228,17 @@ public class HomepageFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SPEECH_REQUEST_CODE:
-                if (resultCode != Activity.RESULT_OK || data == null) {
-                    return;
-                }
-                List<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                if (result == null || result.isEmpty()) {
-                    UIUtils.showLongToast(R.string.speech_unrecognized, getContext());
-                    return;
-                }
-                String searchInput = StringUtils.capitalizeFirstWord(result.get(0));
-                setSearch.setText(searchInput);
-                break;
+        if (requestCode == SPEECH_REQUEST_CODE) {
+            if (resultCode != Activity.RESULT_OK || data == null) {
+                return;
+            }
+            List<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result == null || result.isEmpty()) {
+                UIUtils.showLongToast(R.string.speech_unrecognized, getContext());
+                return;
+            }
+            String searchInput = StringUtils.capitalizeFirstWord(result.get(0));
+            setSearch.setText(searchInput);
         }
     }
 

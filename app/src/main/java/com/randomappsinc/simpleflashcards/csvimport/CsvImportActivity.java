@@ -13,6 +13,9 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.models.Flashcard;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcardDialog;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.io.BufferedReader;
@@ -26,12 +29,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CsvImportActivity extends StandardActivity {
+public class CsvImportActivity extends StandardActivity implements EditFlashcardTermDialog.Listener,
+        EditFlashcardDefinitionDialog.Listener, CsvFlashcardsAdapter.Listener,
+        DeleteFlashcardDialog.Listener {
 
     @BindView(R.id.set_name_input) EditText setNameInput;
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
 
     private CsvFlashcardsAdapter flashcardsAdapter;
+    private EditFlashcardTermDialog termDialog;
+    private EditFlashcardDefinitionDialog definitionDialog;
+    private DeleteFlashcardDialog deleteFlashcardDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +49,16 @@ public class CsvImportActivity extends StandardActivity {
         ButterKnife.bind(this);
 
         extractFileIntoFlashcardSet();
+
+        termDialog = new EditFlashcardTermDialog(this, this);
+        definitionDialog = new EditFlashcardDefinitionDialog(this, this);
+        deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
     }
 
     private void onFlashcardSetExtracted(String setName, List<Flashcard> flashcards) {
         runOnUiThread(() -> {
             setNameInput.setText(setName);
-            flashcardsAdapter = new CsvFlashcardsAdapter(flashcards);
+            flashcardsAdapter = new CsvFlashcardsAdapter(flashcards, this);
             flashcardsList.setAdapter(flashcardsAdapter);
         });
     }
@@ -101,8 +113,46 @@ public class CsvImportActivity extends StandardActivity {
         });
     }
 
+    @Override
+    public void onEditTermRequested(Flashcard flashcard) {
+        termDialog.show(flashcard.getTerm());
+    }
+
+    @Override
+    public void onEditDefinitionRequested(Flashcard flashcard) {
+        definitionDialog.show(flashcard.getDefinition());
+    }
+
+    @Override
+    public void onDeleteFlashcardRequested() {
+        deleteFlashcardDialog.show();
+    }
+
+    @Override
+    public void onFlashcardTermEdited(String newTerm) {
+        flashcardsAdapter.onTermEdited(newTerm);
+    }
+
+    @Override
+    public void onFlashcardDefinitionEdited(String newDefinition) {
+        flashcardsAdapter.onDefinitionEdited(newDefinition);
+    }
+
+    @Override
+    public void onFlashcardDeleted() {
+        flashcardsAdapter.onFlashcardDeleted();
+    }
+
     @OnClick(R.id.save)
     public void save() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        termDialog.cleanUp();
+        definitionDialog.cleanUp();
+        deleteFlashcardDialog.cleanUp();
     }
 }

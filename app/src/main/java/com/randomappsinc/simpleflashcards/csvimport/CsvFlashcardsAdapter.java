@@ -18,13 +18,40 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdapter.FlashcardViewHolder> {
 
-    protected List<Flashcard> flashcardList;
+    public interface Listener {
+        void onEditTermRequested(Flashcard flashcard);
 
-    public CsvFlashcardsAdapter(List<Flashcard> flashcardList) {
+        void onEditDefinitionRequested(Flashcard flashcard);
+
+        void onDeleteFlashcardRequested();
+    }
+
+    protected List<Flashcard> flashcardList;
+    protected Listener listener;
+    protected int currentlySelectedPosition;
+
+    public CsvFlashcardsAdapter(List<Flashcard> flashcardList, Listener listener) {
         this.flashcardList = flashcardList;
+        this.listener = listener;
+    }
+
+    public void onTermEdited(String newTerm) {
+        flashcardList.get(currentlySelectedPosition).setTerm(newTerm);
+        notifyItemChanged(currentlySelectedPosition);
+    }
+
+    public void onDefinitionEdited(String newDefinition) {
+        flashcardList.get(currentlySelectedPosition).setDefinition(newDefinition);
+        notifyItemChanged(currentlySelectedPosition);
+    }
+
+    public void onFlashcardDeleted() {
+        flashcardList.remove(currentlySelectedPosition);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -79,6 +106,24 @@ public class CsvFlashcardsAdapter extends RecyclerView.Adapter<CsvFlashcardsAdap
             } else {
                 definitionText.setTextNormally(definition);
             }
+        }
+
+        @OnClick(R.id.term_text)
+        public void onTermClicked() {
+            currentlySelectedPosition = getAdapterPosition();
+            listener.onEditTermRequested(flashcardList.get(currentlySelectedPosition));
+        }
+
+        @OnClick(R.id.definition_text)
+        public void onDefinitionClicked() {
+            currentlySelectedPosition = getAdapterPosition();
+            listener.onEditDefinitionRequested(flashcardList.get(currentlySelectedPosition));
+        }
+
+        @OnClick(R.id.delete_flashcard)
+        public void onDeleteClicked() {
+            currentlySelectedPosition = getAdapterPosition();
+            listener.onDeleteFlashcardRequested();
         }
     }
 }

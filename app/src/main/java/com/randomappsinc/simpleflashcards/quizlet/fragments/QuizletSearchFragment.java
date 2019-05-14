@@ -101,16 +101,17 @@ public class QuizletSearchFragment extends Fragment {
         });
 
         if (setSearch.requestFocus()) {
-            setSearch.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    InputMethodManager imm =
-                            (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm == null) {
-                        return;
-                    }
-                    imm.showSoftInput(setSearch, InputMethodManager.SHOW_IMPLICIT);
+            setSearch.postDelayed(() -> {
+                Activity activity = getActivity();
+                if (activity == null) {
+                    return;
                 }
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager == null) {
+                    return;
+                }
+                inputMethodManager.showSoftInput(setSearch, InputMethodManager.SHOW_IMPLICIT);
             }, MILLIS_DELAY_FOR_KEYBOARD);
         }
     }
@@ -159,16 +160,13 @@ public class QuizletSearchFragment extends Fragment {
     };
 
     private final QuizletSearchResultsAdapter.Listener resultClickListener =
-            new QuizletSearchResultsAdapter.Listener() {
-                @Override
-                public void onResultClicked(QuizletSetResult result) {
-                    Intent intent = new Intent(
-                            getActivity(), QuizletSetViewActivity.class)
-                            .putExtra(Constants.QUIZLET_SET_ID, result.getQuizletSetId())
-                            .putExtra(Constants.QUIZLET_SET_TITLE, result.getTitle());
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
-                }
+            result -> {
+                Intent intent = new Intent(
+                        getActivity(), QuizletSetViewActivity.class)
+                        .putExtra(Constants.QUIZLET_SET_ID, result.getQuizletSetId())
+                        .putExtra(Constants.QUIZLET_SET_TITLE, result.getTitle());
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
             };
 
     @OnClick(R.id.voice_search)

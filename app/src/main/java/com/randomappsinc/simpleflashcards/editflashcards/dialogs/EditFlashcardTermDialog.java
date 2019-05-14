@@ -8,7 +8,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
-import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
 public class EditFlashcardTermDialog implements ThemeManager.Listener {
@@ -36,29 +35,23 @@ public class EditFlashcardTermDialog implements ThemeManager.Listener {
                 .alwaysCallInputCallback()
                 .input(context.getString(R.string.term),
                         "",
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                String setName = input.toString();
-                                boolean notEmpty = !setName.trim().isEmpty();
-                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
-                            }
+                        (dialog, input) -> {
+                            String setName = input.toString();
+                            boolean notEmpty = !setName.trim().isEmpty();
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
                         })
                 .positiveText(R.string.save)
                 .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String newTerm = dialog.getInputEditText().getText().toString().trim();
-                        listener.onFlashcardTermEdited(newTerm);
-                    }
+                .onPositive((dialog, which) -> {
+                    String newTerm = dialog.getInputEditText().getText().toString().trim();
+                    listener.onFlashcardTermEdited(newTerm);
                 })
                 .build();
         dialog.getInputEditText().setSingleLine(false);
     }
 
-    public void show(FlashcardDO flashcard) {
-        dialog.getInputEditText().setText(flashcard.getTerm());
+    public void show(String term) {
+        dialog.getInputEditText().setText(term);
         dialog.show();
     }
 

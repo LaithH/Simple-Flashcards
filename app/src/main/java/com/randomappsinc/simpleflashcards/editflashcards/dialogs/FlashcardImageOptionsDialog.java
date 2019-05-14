@@ -1,11 +1,9 @@
 package com.randomappsinc.simpleflashcards.editflashcards.dialogs;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
@@ -41,23 +39,19 @@ public class FlashcardImageOptionsDialog implements ThemeManager.Listener {
         optionsDialog = new MaterialDialog.Builder(context)
                 .theme(themeManager.getDarkModeEnabled(context) ? Theme.DARK : Theme.LIGHT)
                 .items(options)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(
-                            MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                        switch (position) {
-                            case 0:
-                                listener.onFullViewRequested();
-                                break;
-                            case 1:
-                                listener.onFlashcardImageChangeRequested();
-                                break;
-                            case 2:
-                                confirmDeletionDialog.show();
-                                break;
-                            default:
-                                throw new IllegalStateException("Unsupported index clicked for image options");
-                        }
+                .itemsCallback((dialog, itemView, position, text) -> {
+                    switch (position) {
+                        case 0:
+                            listener.onFullViewRequested();
+                            break;
+                        case 1:
+                            listener.onFlashcardImageChangeRequested();
+                            break;
+                        case 2:
+                            confirmDeletionDialog.show();
+                            break;
+                        default:
+                            throw new IllegalStateException("Unsupported index clicked for image options");
                     }
                 })
                 .build();
@@ -67,12 +61,7 @@ public class FlashcardImageOptionsDialog implements ThemeManager.Listener {
                 .content(R.string.delete_image_confirmation_body)
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        listener.onFlashcardImageDeleted();
-                    }
-                })
+                .onPositive((dialog, which) -> listener.onFlashcardImageDeleted())
                 .build();
     }
 

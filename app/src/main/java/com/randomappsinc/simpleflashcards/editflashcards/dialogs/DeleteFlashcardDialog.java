@@ -4,13 +4,12 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
-public class DeleteFlashcardDialog implements ThemeManager.Listener{
+public class DeleteFlashcardDialog implements ThemeManager.Listener {
 
     public interface Listener {
         void onFlashcardDeleted();
@@ -35,12 +34,7 @@ public class DeleteFlashcardDialog implements ThemeManager.Listener{
                 .content(R.string.flashcard_delete_message)
                 .positiveText(R.string.yes)
                 .negativeText(R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        listener.onFlashcardDeleted();
-                    }
-                })
+                .onPositive((dialog, which) -> listener.onFlashcardDeleted())
                 .build();
     }
 

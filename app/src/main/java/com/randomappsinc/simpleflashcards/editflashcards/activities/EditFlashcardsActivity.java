@@ -291,13 +291,13 @@ public class EditFlashcardsActivity extends StandardActivity
     @Override
     public void onEditTerm(FlashcardDO flashcard) {
         currentlySelectedFlashcardId = flashcard.getId();
-        editFlashcardTermDialog.show(flashcard);
+        editFlashcardTermDialog.show(flashcard.getTerm());
     }
 
     @Override
     public void onEditDefinition(FlashcardDO flashcard) {
         currentlySelectedFlashcardId = flashcard.getId();
-        editFlashcardDefinitionDialog.show(flashcard);
+        editFlashcardDefinitionDialog.show(flashcard.getDefinition());
     }
 
     @Override

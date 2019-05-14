@@ -8,7 +8,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
-import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
 public class EditFlashcardDefinitionDialog implements ThemeManager.Listener {
@@ -36,29 +35,23 @@ public class EditFlashcardDefinitionDialog implements ThemeManager.Listener {
                 .alwaysCallInputCallback()
                 .input(context.getString(R.string.definition),
                         "",
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                String definition = input.toString();
-                                boolean notEmpty = !definition.trim().isEmpty();
-                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
-                            }
+                        (dialog, input) -> {
+                            String definition = input.toString();
+                            boolean notEmpty = !definition.trim().isEmpty();
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
                         })
                 .positiveText(R.string.save)
                 .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String newDefinition = dialog.getInputEditText().getText().toString().trim();
-                        listener.onFlashcardDefinitionEdited(newDefinition);
-                    }
+                .onPositive((dialog, which) -> {
+                    String newDefinition = dialog.getInputEditText().getText().toString().trim();
+                    listener.onFlashcardDefinitionEdited(newDefinition);
                 })
                 .build();
         dialog.getInputEditText().setSingleLine(false);
     }
 
-    public void show(FlashcardDO flashcard) {
-        dialog.getInputEditText().setText(flashcard.getDefinition());
+    public void show(String definition) {
+        dialog.getInputEditText().setText(definition);
         dialog.show();
     }
 
