@@ -75,6 +75,7 @@
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCardView
                 android:id="@+id/import_from_csv_button"
+                android:layout_marginBottom="4dp"
                 style="@style/no_sets_option_card"
                 >
 

@@ -100,7 +100,16 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
 
                 CsvRow row;
                 while ((row = csvParser.nextRow()) != null) {
-                    Flashcard flashcard = new Flashcard(row.getField(0), row.getField(1));
+                    String term = "";
+                    try {
+                        term = row.getField(0);
+                    } catch (IndexOutOfBoundsException ignored) {}
+                    String definition = "";
+                    try {
+                        definition = row.getField(1);
+                    } catch (IndexOutOfBoundsException ignored) {}
+
+                    Flashcard flashcard = new Flashcard(term, definition);
                     flashcards.add(flashcard);
                 }
             } catch (IOException exception) {
