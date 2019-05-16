@@ -127,4 +127,9 @@
         to where you want it to go.
     </string>
     <string name="save_order">Save Order</string>
+
+    <string name="mark_all_flashcards_as_unlearned">Mark all flashcards as unlearned</string>
+    <string name="mark_all_flashcards_as_learned">Mark all flashcards as learned</string>
+    <string name="mark_all_unlearned_confirmation">All flashcards marked as unlearned.</string>
+    <string name="mark_all_learned_confirmation">All flashcards marked as learned.</string>
 </resources>

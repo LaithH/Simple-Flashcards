@@ -820,4 +820,21 @@ public class DatabaseManager {
             addFlashcard(setId, flashcard.getTerm(), flashcard.getDefinition());
         }
     }
+
+    public void setAllFlashcardLearnedStatuses(int setId, boolean learned) {
+        try {
+            realm.beginTransaction();
+            FlashcardSetDO flashcardSetDO = realm
+                    .where(FlashcardSetDO.class)
+                    .equalTo("id", setId)
+                    .findFirst();
+            List<FlashcardDO> flashcards = flashcardSetDO.getFlashcards();
+            for (FlashcardDO flashcardDO : flashcards) {
+                flashcardDO.setLearned(learned);
+            }
+            realm.commitTransaction();
+        } catch (Exception e) {
+            realm.cancelTransaction();
+        }
+    }
 }

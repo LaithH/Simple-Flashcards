@@ -8,13 +8,13 @@ android {
         applicationId "com.randomappsinc.simpleflashcards"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 293
-        versionName "3.1.6"
+        versionCode 294
+        versionName "3.1.7"
     }
     buildTypes {
         release {
             // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type
+            // the project's release build type
             minifyEnabled true
 
             // Enables resource shrinking, which is performed by the

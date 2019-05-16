@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -387,5 +389,29 @@ public class EditFlashcardsActivity extends StandardActivity
         editFlashcardTermDialog.cleanUp();
         editFlashcardDefinitionDialog.cleanUp();
         flashcardImageOptionsDialog.cleanUp();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_flashcards, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mark_all_as_unlearned:
+                databaseManager.setAllFlashcardLearnedStatuses(setId, false);
+                adapter.setAllLearnedStatuses(false);
+                UIUtils.showShortToast(R.string.mark_all_unlearned_confirmation, this);
+                return true;
+            case R.id.mark_all_as_learned:
+                databaseManager.setAllFlashcardLearnedStatuses(setId, true);
+                adapter.setAllLearnedStatuses(true);
+                UIUtils.showShortToast(R.string.mark_all_learned_confirmation, this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

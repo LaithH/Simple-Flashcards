@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:id="@+id/mark_all_as_unlearned"
+        android:title="@string/mark_all_flashcards_as_unlearned"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/mark_all_as_learned"
+        android:title="@string/mark_all_flashcards_as_learned"
+        app:showAsAction="never"
+        />
+</menu>

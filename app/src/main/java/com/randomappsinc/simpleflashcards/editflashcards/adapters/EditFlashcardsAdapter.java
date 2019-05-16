@@ -83,6 +83,13 @@ public class EditFlashcardsAdapter extends RecyclerView.Adapter<EditFlashcardsAd
         refreshCount();
     }
 
+    public void setAllLearnedStatuses(boolean learned) {
+        for (FlashcardDO flashcardDO : flashcards) {
+            flashcardDO.setLearned(learned);
+        }
+        notifyDataSetChanged();
+    }
+
     public void onFlashcardDeleted() {
         refreshSet();
     }
