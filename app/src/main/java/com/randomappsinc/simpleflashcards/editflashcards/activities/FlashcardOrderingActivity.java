@@ -1,6 +1,8 @@
 package com.randomappsinc.simpleflashcards.editflashcards.activities;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,5 +67,43 @@ public class FlashcardOrderingActivity extends StandardActivity {
         databaseManager.setFlashcardPositions(flashcardOrderingAdapter.getFlashcards());
         UIUtils.showShortToast(R.string.flashcards_reordered, this);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_reorder_flashcards, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_by_term_ascending:
+                flashcardOrderingAdapter.sortFlashcards(
+                        (first, second) -> first.getTerm().toLowerCase()
+                                .compareTo(second.getTerm().toLowerCase()));
+                flashcardsList.scrollToPosition(0);
+                return true;
+            case R.id.sort_by_term_descending:
+                flashcardOrderingAdapter.sortFlashcards(
+                        (first, second) -> first.getTerm().toLowerCase()
+                                .compareTo(second.getTerm().toLowerCase()) * -1);
+                flashcardsList.scrollToPosition(0);
+                return true;
+            case R.id.sort_by_definition_ascending:
+                flashcardOrderingAdapter.sortFlashcards(
+                        (first, second) -> first.getDefinition().toLowerCase()
+                                .compareTo(second.getDefinition().toLowerCase()));
+                flashcardsList.scrollToPosition(0);
+                return true;
+            case R.id.sort_by_definition_descending:
+                flashcardOrderingAdapter.sortFlashcards(
+                        (first, second) -> first.getDefinition().toLowerCase()
+                                .compareTo(second.getDefinition().toLowerCase()) * -1);
+                flashcardsList.scrollToPosition(0);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

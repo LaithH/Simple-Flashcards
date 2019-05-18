@@ -14,6 +14,8 @@ import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +34,11 @@ public class FlashcardOrderingAdapter
 
     public List<FlashcardDO> getFlashcards() {
         return flashcards;
+    }
+
+    public void sortFlashcards(Comparator<FlashcardDO> comparator) {
+        Collections.sort(flashcards, comparator);
+        notifyDataSetChanged();
     }
 
     @Override

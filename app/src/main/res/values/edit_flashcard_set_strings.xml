@@ -119,17 +119,21 @@
     <string name="set_languages_title">Set Languages</string>
     <string name="language_settings_applied">Language settings applied.</string>
 
-    <string name="flashcards_reordered">Flashcards reordered.</string>
+    <string name="mark_all_flashcards_as_unlearned">Mark all flashcards as unlearned</string>
+    <string name="mark_all_flashcards_as_learned">Mark all flashcards as learned</string>
+    <string name="mark_all_unlearned_confirmation">All flashcards marked as unlearned.</string>
+    <string name="mark_all_learned_confirmation">All flashcards marked as learned.</string>
 
+    <!-- Reorder flashcards -->
     <string name="reordering_flashcards">Reordering Flashcards</string>
     <string name="reorder_flashcards_instructions">
         To change the position of a flashcard, simply tap and hold on it and then drag it
         to where you want it to go.
     </string>
     <string name="save_order">Save Order</string>
-
-    <string name="mark_all_flashcards_as_unlearned">Mark all flashcards as unlearned</string>
-    <string name="mark_all_flashcards_as_learned">Mark all flashcards as learned</string>
-    <string name="mark_all_unlearned_confirmation">All flashcards marked as unlearned.</string>
-    <string name="mark_all_learned_confirmation">All flashcards marked as learned.</string>
+    <string name="flashcards_reordered">Flashcards reordered.</string>
+    <string name="sort_by_term_ascending">Sort by term (A - Z)</string>
+    <string name="sort_by_term_descending">Sort by term (Z - A)</string>
+    <string name="sort_by_definition_ascending">Sort by definition (A - Z)</string>
+    <string name="sort_by_definition_descending">Sort by definition (Z - A)</string>
 </resources>
