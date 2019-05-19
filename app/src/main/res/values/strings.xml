@@ -114,4 +114,6 @@
 
     <string name="learned">Learned {ion-checkmark}</string>
     <string name="not_learned">Not learned</string>
+
+    <string name="confirm_exit">Confirm Exit</string>
 </resources>

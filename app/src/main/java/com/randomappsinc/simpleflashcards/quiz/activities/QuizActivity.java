@@ -20,11 +20,11 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.PictureFullViewActivity;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
+import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuestionType;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuizScore;
-import com.randomappsinc.simpleflashcards.quiz.dialogs.QuitQuizDialog;
 import com.randomappsinc.simpleflashcards.quiz.managers.TimerManager;
 import com.randomappsinc.simpleflashcards.quiz.models.Problem;
 import com.randomappsinc.simpleflashcards.quiz.models.Quiz;
@@ -43,7 +43,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class QuizActivity extends StandardActivity implements QuitQuizDialog.Listener {
+public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.Listener {
 
     @BindView(R.id.problem_parent) ScrollView problemParent;
     @BindView(R.id.question_header) TextView questionHeader;
@@ -67,7 +67,7 @@ public class QuizActivity extends StandardActivity implements QuitQuizDialog.Lis
 
     private FlashcardSetDO flashcardSet;
     private Quiz quiz;
-    private QuitQuizDialog quitQuizDialog;
+    private ConfirmQuitDialog confirmQuitDialog;
     private QuizSettings quizSettings;
     @Nullable private TimerManager timerManager;
 
@@ -87,7 +87,7 @@ public class QuizActivity extends StandardActivity implements QuitQuizDialog.Lis
             timerManager = new TimerManager(timerListener, quizSettings.getNumSeconds());
         }
 
-        quitQuizDialog = new QuitQuizDialog(this, this);
+        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_quiz_exit_body);
 
         quiz = new Quiz(flashcardSet, quizSettings);
         int numOptions = quiz.getNumOptions();
@@ -427,14 +427,14 @@ public class QuizActivity extends StandardActivity implements QuitQuizDialog.Lis
 
     private void onQuizExit() {
         if (!quiz.isQuizComplete()) {
-            quitQuizDialog.show();
+            confirmQuitDialog.show();
         } else {
             finish();
         }
     }
 
     @Override
-    public void onQuitQuizConfirmed() {
+    public void onQuitConfirmed() {
         finish();
     }
 
@@ -465,7 +465,7 @@ public class QuizActivity extends StandardActivity implements QuitQuizDialog.Lis
         if (timerManager != null) {
             timerManager.finish();
         }
-        quitQuizDialog.cleanUp();
+        confirmQuitDialog.cleanUp();
     }
 
     @Override

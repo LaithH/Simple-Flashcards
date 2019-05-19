@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="csv_format_instructions">Make sure terms are in the first column and definitions in the second.</string>
+    <string name="csv_format_instructions">
+        Make sure terms are in the first column and definitions in the second.
+    </string>
     <string name="import_from_csv">Import From .csv</string>
     <string name="csv_read_failed">We failed to parse your .csv file.</string>
     <string name="x_of_y">%1$d of %2$d</string>
     <string name="flashcard_set_saved">Flashcard set saved.</string>
+    <string name="confirm_csv_quit_body">
+        Are you sure you want to quit? This flashcard set will not be saved.
+    </string>
 </resources>

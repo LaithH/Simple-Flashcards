@@ -19,7 +19,6 @@ import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;

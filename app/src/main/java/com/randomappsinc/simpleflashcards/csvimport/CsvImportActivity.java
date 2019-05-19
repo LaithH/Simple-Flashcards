@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
+import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.common.models.Flashcard;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcardDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
@@ -35,7 +37,7 @@ import de.siegmar.fastcsv.reader.CsvRow;
 
 public class CsvImportActivity extends StandardActivity implements EditFlashcardTermDialog.Listener,
         EditFlashcardDefinitionDialog.Listener, CsvFlashcardsAdapter.Listener,
-        DeleteFlashcardDialog.Listener {
+        DeleteFlashcardDialog.Listener, ConfirmQuitDialog.Listener {
 
     @BindView(R.id.set_name_input) EditText setNameInput;
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
@@ -44,6 +46,7 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
     private EditFlashcardTermDialog termDialog;
     private EditFlashcardDefinitionDialog definitionDialog;
     private DeleteFlashcardDialog deleteFlashcardDialog;
+    private ConfirmQuitDialog confirmQuitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
         termDialog = new EditFlashcardTermDialog(this, this);
         definitionDialog = new EditFlashcardDefinitionDialog(this, this);
         deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
+        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_csv_quit_body);
     }
 
     private void onFlashcardSetExtracted(String setName, List<Flashcard> flashcards) {
@@ -168,10 +172,30 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
     }
 
     @Override
+    public void onQuitConfirmed() {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        confirmQuitDialog.show();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         termDialog.cleanUp();
         definitionDialog.cleanUp();
         deleteFlashcardDialog.cleanUp();
+        confirmQuitDialog.cleanUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            confirmQuitDialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
