@@ -15,7 +15,9 @@
         Welcome to your library!
         To add flashcard sets, you can:
     </string>
-    <string name="home_settings_info_text">You can find most of these options in the settings menu as well.</string>
+    <string name="home_settings_info_text">
+        You can find most of these options in the settings menu as well.
+    </string>
 
     <string name="backup_your_data">Back Up Your Data!</string>
     <string name="backup_your_data_explanation">
@@ -112,8 +114,11 @@
 
     <string name="add">Add</string>
 
-    <string name="learned">Learned {ion-checkmark}</string>
+    <string name="learned_with_icon">Learned {ion-checkmark}</string>
     <string name="not_learned">Not learned</string>
 
     <string name="confirm_exit">Confirm Exit</string>
+
+    <string name="percent_string">%1$s%%</string>
+    <string name="learned">learned</string>
 </resources>

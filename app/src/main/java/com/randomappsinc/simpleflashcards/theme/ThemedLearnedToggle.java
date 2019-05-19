@@ -43,7 +43,7 @@ public class ThemedLearnedToggle extends IconTextView implements ThemeManager.Li
 
     public void setProperColors(boolean darkModeEnabled) {
         if (learned) {
-            setText(R.string.learned);
+            setText(R.string.learned_with_icon);
             setTextColor(darkModeEnabled ? darkModeTextColor : normalLearnedTextColor);
             setBackground(learnedBackground);
         } else {

@@ -103,7 +103,7 @@ public class HomepageFragment extends Fragment
 
         createFlashcardSetDialog = new CreateFlashcardSetDialog(getActivity(), this);
 
-        adapter = new HomepageFlashcardSetsAdapter(this, getActivity());
+        adapter = new HomepageFlashcardSetsAdapter(this);
         sets.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         sets.setAdapter(adapter);
 

@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
+import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +34,11 @@ public class HomepageFlashcardSetsAdapter
     }
 
     @NonNull protected Listener listener;
-    private Context context;
     protected List<FlashcardSetDO> flashcardSets;
     private ThemeManager themeManager = ThemeManager.get();
 
-    public HomepageFlashcardSetsAdapter(@NonNull Listener listener, Context context) {
+    public HomepageFlashcardSetsAdapter(@NonNull Listener listener) {
         this.listener = listener;
-        this.context = context;
         this.flashcardSets = new ArrayList<>();
         this.themeManager.registerListener(this);
     }
@@ -62,7 +62,7 @@ public class HomepageFlashcardSetsAdapter
     @NonNull
     @Override
     public FlashcardSetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.flashcard_set_cell,
                 parent,
                 false);
@@ -83,6 +83,7 @@ public class HomepageFlashcardSetsAdapter
 
         @BindView(R.id.flashcard_set_name) ThemedTextView setName;
         @BindView(R.id.num_flashcards) ThemedTextView numFlashcardsText;
+        @BindView(R.id.percent_view) ThemedTextView percentText;
 
         FlashcardSetViewHolder(View view) {
             super(view);
@@ -98,12 +99,26 @@ public class HomepageFlashcardSetsAdapter
             } else {
                 numFlashcardsText.setText(setName.getContext().getString(R.string.x_flashcards, numFlashcards));
             }
+
+            List<FlashcardDO> flashcardList = flashcardSet.getFlashcards();
+            double totalFlashcards = flashcardList.size();
+            double numLearned = 0;
+            for (FlashcardDO flashcardDO : flashcardList) {
+                if (flashcardDO.isLearned()) {
+                    numLearned++;
+                }
+            }
+            double percentLearned = (numLearned / totalFlashcards) * 100.0f;
+            String percentString = new DecimalFormat("#.#").format(percentLearned);
+            Context context = percentText.getContext();
+            percentText.setText(context.getString(R.string.percent_string, percentString));
             adjustForDarkMode();
         }
 
         void adjustForDarkMode() {
             setName.setProperTextColor();
             numFlashcardsText.setProperTextColor();
+            percentText.setProperTextColor();
         }
 
         @OnClick(R.id.set_cell_parent)
