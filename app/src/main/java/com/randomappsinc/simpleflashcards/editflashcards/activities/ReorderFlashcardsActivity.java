@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
+import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.adapters.FlashcardOrderingAdapter;
 import com.randomappsinc.simpleflashcards.editflashcards.adapters.SimpleItemTouchHelperCallback;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
@@ -25,12 +26,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FlashcardOrderingActivity extends StandardActivity {
+public class ReorderFlashcardsActivity extends StandardActivity implements ConfirmQuitDialog.Listener {
 
     @BindView(R.id.flashcards_list) RecyclerView flashcardsList;
 
     private FlashcardOrderingAdapter flashcardOrderingAdapter;
     private DatabaseManager databaseManager = DatabaseManager.get();
+    private ConfirmQuitDialog confirmQuitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,8 @@ public class FlashcardOrderingActivity extends StandardActivity {
                     .cancelable(false)
                     .show();
         }
+
+        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_reorder_exit_body);
     }
 
     @OnClick(R.id.save)
@@ -66,6 +70,22 @@ public class FlashcardOrderingActivity extends StandardActivity {
         databaseManager.setFlashcardPositions(flashcardOrderingAdapter.getFlashcards());
         UIUtils.showShortToast(R.string.flashcards_reordered, this);
         finish();
+    }
+
+    @Override
+    public void onQuitConfirmed() {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        confirmQuitDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        confirmQuitDialog.cleanUp();
     }
 
     @Override
@@ -100,6 +120,9 @@ public class FlashcardOrderingActivity extends StandardActivity {
                         (first, second) -> first.getDefinition().toLowerCase()
                                 .compareTo(second.getDefinition().toLowerCase()) * -1);
                 flashcardsList.scrollToPosition(0);
+                return true;
+            case android.R.id.home:
+                confirmQuitDialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

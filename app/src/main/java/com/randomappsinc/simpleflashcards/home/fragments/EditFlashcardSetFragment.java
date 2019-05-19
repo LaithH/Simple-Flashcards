@@ -15,8 +15,8 @@ import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.constants.Language;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
 import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
-import com.randomappsinc.simpleflashcards.editflashcards.activities.FlashcardOrderingActivity;
 import com.randomappsinc.simpleflashcards.editflashcards.activities.PickAndImportFlashcardsActivity;
+import com.randomappsinc.simpleflashcards.editflashcards.activities.ReorderFlashcardsActivity;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardSetNameDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.SetLanguagesDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.managers.ImportFlashcardsManager;
@@ -100,7 +100,7 @@ public class EditFlashcardSetFragment extends Fragment
                 break;
             case 3:
                 startActivity(new Intent(
-                        getActivity(), FlashcardOrderingActivity.class)
+                        getActivity(), ReorderFlashcardsActivity.class)
                         .putExtra(Constants.FLASHCARD_SET_ID_KEY, setId));
                 getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
                 break;

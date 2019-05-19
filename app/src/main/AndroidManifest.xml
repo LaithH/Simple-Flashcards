@@ -148,7 +148,7 @@
             />
 
         <activity
-            android:name=".editflashcards.activities.FlashcardOrderingActivity"
+            android:name=".editflashcards.activities.ReorderFlashcardsActivity"
             android:configChanges="orientation|screenSize"
             />
 
