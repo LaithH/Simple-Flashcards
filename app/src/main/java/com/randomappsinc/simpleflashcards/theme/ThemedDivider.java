@@ -17,7 +17,7 @@ public class ThemedDivider extends View implements ThemeManager.Listener {
     public ThemedDivider(Context context, AttributeSet attrs) {
         super(context, attrs);
         themeManager = ThemeManager.get();
-        normalModeColor = ContextCompat.getColor(context, R.color.dark_gray);
+        normalModeColor = ContextCompat.getColor(context, R.color.gray_300);
         darkModeColor = ContextCompat.getColor(context, R.color.white);
 
         setBackgroundColor(themeManager.getDarkModeEnabled(context) ? darkModeColor : normalModeColor);

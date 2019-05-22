@@ -137,12 +137,10 @@ public class FolderActivity extends StandardActivity implements FlashcardSetSele
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.rename_folder:
-                renameFolderDialog.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.rename_folder) {
+            renameFolderDialog.show();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
