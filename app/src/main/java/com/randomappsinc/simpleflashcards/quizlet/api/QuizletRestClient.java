@@ -15,14 +15,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuizletRestClient {
 
+    private static final long SEARCH_DELAY_MILLISECONDS = 1000L;
+
+    private final Runnable searchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
+                    currentSearchTerm,
+                    imageSetsOnly,
+                    pageToFetch,
+                    ApiConstants.PAGE_SIZE);
+            currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+        }
+    };
+
     private static QuizletRestClient instance;
 
     protected QuizletService quizletService;
     private Handler handler;
+    private Handler searchHandler;
     private boolean isPaginating = false;
-    private String currentSearchTerm;
-    private int imageSetsOnly;
-    private int pageToFetch;
+    protected String currentSearchTerm;
+    protected int imageSetsOnly;
+    protected int pageToFetch;
     protected Call<QuizletSearchResults> currentFindFlashcardSetsCall;
     protected Call<QuizletFlashcardSet> currentFetchSetCall;
 
@@ -49,9 +64,14 @@ public class QuizletRestClient {
         HandlerThread backgroundThread = new HandlerThread("");
         backgroundThread.start();
         handler = new Handler(backgroundThread.getLooper());
+
+        HandlerThread backgroundSearchThread = new HandlerThread("");
+        backgroundSearchThread.start();
+        searchHandler = new Handler(backgroundSearchThread.getLooper());
     }
 
     void doFlashcardSetSearch(final String searchTerm, final int imageSetsOnly) {
+        searchHandler.removeCallbacks(searchRunnable);
         isPaginating = false;
         pageToFetch = 1;
         currentSearchTerm = searchTerm;
@@ -60,12 +80,7 @@ public class QuizletRestClient {
             if (currentFetchSetCall != null) {
                 currentFetchSetCall.cancel();
             }
-            currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
-                    searchTerm,
-                    imageSetsOnly,
-                    pageToFetch,
-                    ApiConstants.PAGE_SIZE);
-            currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+            searchHandler.postDelayed(searchRunnable, SEARCH_DELAY_MILLISECONDS);
         });
     }
 
