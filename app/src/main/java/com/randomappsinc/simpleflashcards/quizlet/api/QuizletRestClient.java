@@ -56,13 +56,17 @@ public class QuizletRestClient {
         pageToFetch = 1;
         currentSearchTerm = searchTerm;
         this.imageSetsOnly = imageSetsOnly;
-        cancelFlashcardsSearch();
-        currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
-                searchTerm,
-                imageSetsOnly,
-                pageToFetch,
-                ApiConstants.PAGE_SIZE);
-        currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+        handler.post(() -> {
+            if (currentFetchSetCall != null) {
+                currentFetchSetCall.cancel();
+            }
+            currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
+                    searchTerm,
+                    imageSetsOnly,
+                    pageToFetch,
+                    ApiConstants.PAGE_SIZE);
+            currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+        });
     }
 
     void fetchNewPage() {

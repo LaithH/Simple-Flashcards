@@ -125,15 +125,13 @@ public class QuizletSearchFragment extends Fragment
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void afterTextChanged(Editable input) {
-        if (input.length() > 0) {
-            searchManager.performSearch(input.toString());
-        }
-
+        adapter.clear();
         searchResults.setVisibility(View.GONE);
         searchResults.scrollToPosition(0);
         skeletonResults.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
 
         if (input.length() == 0) {
+            searchManager.cancelCurrentSearch();
             searchEmptyText.setText(R.string.quizlet_search_empty_state);
         }
         searchEmptyText.setVisibility(input.length() == 0 ? View.VISIBLE : View.GONE);
@@ -141,11 +139,14 @@ public class QuizletSearchFragment extends Fragment
         voiceSearch.setVisibility(input.length() == 0 ? View.VISIBLE : View.GONE);
         clearSearch.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
 
-        adapter.clear();
+        if (input.length() > 0) {
+            searchManager.performSearch(input.toString());
+        }
     }
 
     @OnClick(R.id.clear_search)
     public void clearSearch() {
+        searchManager.cancelCurrentSearch();
         setSearch.setText("");
     }
 
@@ -157,6 +158,7 @@ public class QuizletSearchFragment extends Fragment
             searchEmptyText.setText(R.string.no_quizlet_results);
             searchEmptyText.setVisibility(View.VISIBLE);
         } else {
+            searchEmptyText.setVisibility(View.GONE);
             searchResults.setVisibility(View.VISIBLE);
         }
     }

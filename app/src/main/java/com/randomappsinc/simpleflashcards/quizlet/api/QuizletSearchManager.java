@@ -64,6 +64,10 @@ public class QuizletSearchManager {
         this.onlyShowImageSets = onlyShowImageSets;
     }
 
+    public void cancelCurrentSearch() {
+        restClient.cancelFlashcardsSearch();
+    }
+
     public void clearEverything() {
         restClient.cancelFlashcardsSearch();
         listener = null;
