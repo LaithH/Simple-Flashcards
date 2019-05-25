@@ -38,6 +38,7 @@ public class QuizletSearchResultsAdapter
     protected Context context;
     protected Listener listener;
     protected List<QuizletSetResult> results = new ArrayList<>();
+    protected boolean paginationEnabled;
     protected DatabaseManager databaseManager = DatabaseManager.get();
     private ThemeManager themeManager = ThemeManager.get();
 
@@ -47,9 +48,14 @@ public class QuizletSearchResultsAdapter
         themeManager.registerListener(this);
     }
 
-    public void setResults(List<QuizletSetResult> results) {
-        this.results.clear();
+    public void clear() {
+        results.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addFlashcardSets(List<QuizletSetResult> results, boolean paginationEnabled) {
         this.results.addAll(results);
+        this.paginationEnabled = paginationEnabled;
         notifyDataSetChanged();
     }
 
@@ -79,7 +85,8 @@ public class QuizletSearchResultsAdapter
 
     @Override
     public int getItemCount() {
-        return results.size();
+        int paginationAddition = paginationEnabled ? 1 : 0;
+        return results.size() + paginationAddition;
     }
 
     class ResultViewHolder extends RecyclerView.ViewHolder {
@@ -93,6 +100,7 @@ public class QuizletSearchResultsAdapter
         @BindView(R.id.images_icon) ThemedIconTextView imageIcon;
         @BindView(R.id.images_text) ThemedTextView imageText;
         @BindView(R.id.in_library) View inLibraryText;
+        @BindView(R.id.loading_spinner) View loadingSpinner;
 
         ResultViewHolder(View view) {
             super(view);
@@ -100,29 +108,37 @@ public class QuizletSearchResultsAdapter
         }
 
         void loadResult(int position) {
-            QuizletSetResult result = results.get(position);
-            title.setText(result.getTitle());
-            int numFlashcards = result.getFlashcardCount();
-            if (numFlashcards == 1) {
-                numFlashcardsText.setText(R.string.one_flashcard);
+            if (paginationEnabled && position == getItemCount() - 1) {
+                card.setVisibility(View.GONE);
+                loadingSpinner.setVisibility(View.VISIBLE);
             } else {
-                numFlashcardsText.setText(context.getString(R.string.x_flashcards, numFlashcards));
+                loadingSpinner.setVisibility(View.GONE);
+                card.setVisibility(View.VISIBLE);
+
+                QuizletSetResult result = results.get(position);
+                title.setText(result.getTitle());
+                int numFlashcards = result.getFlashcardCount();
+                if (numFlashcards == 1) {
+                    numFlashcardsText.setText(R.string.one_flashcard);
+                } else {
+                    numFlashcardsText.setText(context.getString(R.string.x_flashcards, numFlashcards));
+                }
+                createdOn.setText(context.getString(
+                        R.string.created_on_template,
+                        TimeUtils.getFlashcardSetTime(result.getCreatedDate())));
+                lastUpdated.setText(context.getString(
+                        R.string.last_updated_template,
+                        TimeUtils.getFlashcardSetTime(result.getModifiedDate())));
+                imageIcon.setVisibility(result.hasImages() ? View.VISIBLE : View.GONE);
+                imageText.setVisibility(result.hasImages() ? View.VISIBLE : View.GONE);
+
+                boolean setAlreadyInLibrary = databaseManager.alreadyHasQuizletSet(result.getQuizletSetId());
+                inLibraryText.setVisibility(setAlreadyInLibrary ? View.VISIBLE : View.GONE);
+
+                sideInfo.setVisibility(result.hasImages() || setAlreadyInLibrary ? View.VISIBLE : View.GONE);
+
+                adjustForDarkMode();
             }
-            createdOn.setText(context.getString(
-                    R.string.created_on_template,
-                    TimeUtils.getFlashcardSetTime(result.getCreatedDate())));
-            lastUpdated.setText(context.getString(
-                    R.string.last_updated_template,
-                    TimeUtils.getFlashcardSetTime(result.getModifiedDate())));
-            imageIcon.setVisibility(result.hasImages() ? View.VISIBLE : View.GONE);
-            imageText.setVisibility(result.hasImages() ? View.VISIBLE : View.GONE);
-
-            boolean setAlreadyInLibrary = databaseManager.alreadyHasQuizletSet(result.getQuizletSetId());
-            inLibraryText.setVisibility(setAlreadyInLibrary ? View.VISIBLE : View.GONE);
-
-            sideInfo.setVisibility(result.hasImages() || setAlreadyInLibrary ? View.VISIBLE : View.GONE);
-
-            adjustForDarkMode();
         }
 
         void adjustForDarkMode() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
@@ -9,15 +9,18 @@
     android:paddingBottom="3dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    tools:ignore="SpUsage, RtlHardcoded">
+    tools:ignore="SpUsage, RtlHardcoded"
+    >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedCardView
         android:id="@+id/card_parent"
-        style="@style/clickable_card">
+        style="@style/clickable_card"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <LinearLayout
                 android:id="@+id/side_info"
@@ -27,7 +30,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="8dp"
                 android:orientation="vertical"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
                     android:id="@+id/images_icon"
@@ -36,7 +40,8 @@
                     android:layout_marginBottom="4dp"
                     android:text="@string/images_icon"
                     android:textSize="40dp"
-                    android:textColor="@color/dark_gray"/>
+                    android:textColor="@color/dark_gray"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                     android:id="@+id/images_text"
@@ -44,7 +49,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/has_images"
                     android:textSize="15dp"
-                    android:textColor="@color/dark_gray"/>
+                    android:textColor="@color/dark_gray"
+                    />
 
                 <LinearLayout
                     android:id="@+id/in_library"
@@ -52,14 +58,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <com.joanzapata.iconify.widget.IconTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/library_icon"
                         android:textSize="16dp"
-                        android:textColor="@color/green"/>
+                        android:textColor="@color/green"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -67,7 +75,8 @@
                         android:layout_marginLeft="4dp"
                         android:text="@string/in_library"
                         android:textSize="13dp"
-                        android:textColor="@color/green"/>
+                        android:textColor="@color/green"
+                        />
                 </LinearLayout>
             </LinearLayout>
 
@@ -76,14 +85,15 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/side_info"
                 android:layout_centerVertical="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedTitleTextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="19sp"
-                    android:textColor="@color/black"/>
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedSubtitleTextView
                     android:id="@+id/num_flashcards"
@@ -91,22 +101,32 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:textSize="15sp"
-                    android:textColor="@color/dark_gray"/>
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedExtrasTextView
                     android:id="@+id/created_on"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark_gray"/>
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedExtrasTextView
                     android:id="@+id/last_updated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="@color/dark_gray"/>
+                    />
             </LinearLayout>
         </RelativeLayout>
     </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-</LinearLayout>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        style="?android:attr/progressBarStyle"
+        />
+</FrameLayout>

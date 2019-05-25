@@ -19,6 +19,10 @@ public class QuizletRestClient {
 
     protected QuizletService quizletService;
     private Handler handler;
+    private boolean isPaginating = false;
+    private String currentSearchTerm;
+    private int imageSetsOnly;
+    private int pageToFetch;
     protected Call<QuizletSearchResults> currentFindFlashcardSetsCall;
     protected Call<QuizletFlashcardSet> currentFetchSetCall;
 
@@ -47,50 +51,59 @@ public class QuizletRestClient {
         handler = new Handler(backgroundThread.getLooper());
     }
 
-    void findFlashcardSets(final String searchTerm, final int imageSetsOnly) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (currentFindFlashcardSetsCall != null) {
-                    currentFindFlashcardSetsCall.cancel();
-                }
-                currentFindFlashcardSetsCall = quizletService.findFlashcardSets(searchTerm, imageSetsOnly);
-                currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
-            }
-        });
+    void doFlashcardSetSearch(final String searchTerm, final int imageSetsOnly) {
+        isPaginating = false;
+        pageToFetch = 1;
+        currentSearchTerm = searchTerm;
+        this.imageSetsOnly = imageSetsOnly;
+        cancelFlashcardsSearch();
+        currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
+                searchTerm,
+                imageSetsOnly,
+                pageToFetch,
+                ApiConstants.PAGE_SIZE);
+        currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+    }
+
+    void fetchNewPage() {
+        if (!isPaginating) {
+            isPaginating = true;
+            currentFindFlashcardSetsCall = quizletService.findFlashcardSets(
+                    currentSearchTerm,
+                    imageSetsOnly,
+                    pageToFetch,
+                    ApiConstants.PAGE_SIZE);
+            currentFindFlashcardSetsCall.enqueue(new FindFlashcardSetsCallback());
+        }
+    }
+
+    void onFlashcardSetsFetched() {
+        isPaginating = false;
+        pageToFetch++;
     }
 
     void cancelFlashcardsSearch() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (currentFindFlashcardSetsCall != null) {
-                    currentFindFlashcardSetsCall.cancel();
-                }
+        handler.post(() -> {
+            if (currentFindFlashcardSetsCall != null) {
+                currentFindFlashcardSetsCall.cancel();
             }
         });
     }
 
     void fetchFlashcardSet(final long setId) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (currentFetchSetCall != null) {
-                    currentFetchSetCall.cancel();
-                }
-                currentFetchSetCall = quizletService.getFlashcardSetInfo(setId);
-                currentFetchSetCall.enqueue(new FetchFlashcardSetCallback());
+        handler.post(() -> {
+            if (currentFetchSetCall != null) {
+                currentFetchSetCall.cancel();
             }
+            currentFetchSetCall = quizletService.getFlashcardSetInfo(setId);
+            currentFetchSetCall.enqueue(new FetchFlashcardSetCallback());
         });
     }
 
     void cancelFlashcardSetFetch() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (currentFetchSetCall != null) {
-                    currentFetchSetCall.cancel();
-                }
+        handler.post(() -> {
+            if (currentFetchSetCall != null) {
+                currentFetchSetCall.cancel();
             }
         });
     }

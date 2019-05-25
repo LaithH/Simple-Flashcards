@@ -40,7 +40,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
-public class QuizletSearchFragment extends Fragment {
+public class QuizletSearchFragment extends Fragment implements QuizletSearchManager.Listener {
 
     public static QuizletSearchFragment newInstance() {
         return new QuizletSearchFragment();
@@ -85,7 +85,7 @@ public class QuizletSearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         searchManager = QuizletSearchManager.getInstance();
-        searchManager.setListener(searchListener);
+        searchManager.setListener(this);
 
         adapter = new QuizletSearchResultsAdapter(getActivity(), resultClickListener);
         searchResults.setAdapter(adapter);
@@ -127,6 +127,7 @@ public class QuizletSearchFragment extends Fragment {
         if (input.length() > 0) {
             searchManager.performSearch(input.toString());
         }
+
         searchResults.setVisibility(View.GONE);
         searchResults.scrollToPosition(0);
         skeletonResults.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
@@ -138,6 +139,8 @@ public class QuizletSearchFragment extends Fragment {
         quizletAttribution.setVisibility(input.length() == 0 ? View.VISIBLE : View.GONE);
         voiceSearch.setVisibility(input.length() == 0 ? View.VISIBLE : View.GONE);
         clearSearch.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
+
+        adapter.clear();
     }
 
     @OnClick(R.id.clear_search)
@@ -145,19 +148,17 @@ public class QuizletSearchFragment extends Fragment {
         setSearch.setText("");
     }
 
-    private final QuizletSearchManager.Listener searchListener = new QuizletSearchManager.Listener() {
-        @Override
-        public void onResultsFetched(List<QuizletSetResult> results) {
-            skeletonResults.setVisibility(View.GONE);
-            adapter.setResults(results);
-            if (results.isEmpty()) {
-                searchEmptyText.setText(R.string.no_quizlet_results);
-                searchEmptyText.setVisibility(View.VISIBLE);
-            } else {
-                searchResults.setVisibility(View.VISIBLE);
-            }
+    @Override
+    public void onResultsFetched(List<QuizletSetResult> results, boolean paginationEnabled) {
+        skeletonResults.setVisibility(View.GONE);
+        adapter.addFlashcardSets(results, paginationEnabled);
+        if (adapter.getItemCount() == 0) {
+            searchEmptyText.setText(R.string.no_quizlet_results);
+            searchEmptyText.setVisibility(View.VISIBLE);
+        } else {
+            searchResults.setVisibility(View.VISIBLE);
         }
-    };
+    }
 
     private final QuizletSearchResultsAdapter.Listener resultClickListener =
             result -> {
@@ -232,15 +233,13 @@ public class QuizletSearchFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.filter:
-                startActivityForResult(
-                        new Intent(getActivity(), QuizletSearchFilterActivity.class),
-                        FILTER_REQUEST_CODE);
-                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.filter) {
+            startActivityForResult(
+                    new Intent(getActivity(), QuizletSearchFilterActivity.class),
+                    FILTER_REQUEST_CODE);
+            getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
