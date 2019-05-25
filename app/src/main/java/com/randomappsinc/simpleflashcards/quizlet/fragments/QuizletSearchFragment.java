@@ -40,7 +40,8 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
-public class QuizletSearchFragment extends Fragment implements QuizletSearchManager.Listener {
+public class QuizletSearchFragment extends Fragment
+        implements QuizletSearchManager.Listener, QuizletSearchResultsAdapter.Listener {
 
     public static QuizletSearchFragment newInstance() {
         return new QuizletSearchFragment();
@@ -87,7 +88,7 @@ public class QuizletSearchFragment extends Fragment implements QuizletSearchMana
         searchManager = QuizletSearchManager.getInstance();
         searchManager.setListener(this);
 
-        adapter = new QuizletSearchResultsAdapter(getActivity(), resultClickListener);
+        adapter = new QuizletSearchResultsAdapter(getActivity(), this);
         searchResults.setAdapter(adapter);
         searchResults.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -160,15 +161,20 @@ public class QuizletSearchFragment extends Fragment implements QuizletSearchMana
         }
     }
 
-    private final QuizletSearchResultsAdapter.Listener resultClickListener =
-            result -> {
-                Intent intent = new Intent(
-                        getActivity(), QuizletSetViewActivity.class)
-                        .putExtra(Constants.QUIZLET_SET_ID, result.getQuizletSetId())
-                        .putExtra(Constants.QUIZLET_SET_TITLE, result.getTitle());
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
-            };
+    @Override
+    public void onResultClicked(QuizletSetResult result) {
+        Intent intent = new Intent(
+                getActivity(), QuizletSetViewActivity.class)
+                .putExtra(Constants.QUIZLET_SET_ID, result.getQuizletSetId())
+                .putExtra(Constants.QUIZLET_SET_TITLE, result.getTitle());
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
+    }
+
+    @Override
+    public void onPaginationSpinnerLoaded() {
+        searchManager.fetchNewPage();
+    }
 
     @OnClick(R.id.voice_search)
     public void searchWithVoice() {

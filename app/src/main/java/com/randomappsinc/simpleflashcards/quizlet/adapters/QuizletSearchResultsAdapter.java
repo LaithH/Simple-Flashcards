@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
@@ -33,6 +35,8 @@ public class QuizletSearchResultsAdapter
 
     public interface Listener {
         void onResultClicked(QuizletSetResult result);
+
+        void onPaginationSpinnerLoaded();
     }
 
     protected Context context;
@@ -53,10 +57,22 @@ public class QuizletSearchResultsAdapter
         notifyDataSetChanged();
     }
 
-    public void addFlashcardSets(List<QuizletSetResult> results, boolean paginationEnabled) {
-        this.results.addAll(results);
+    public void addFlashcardSets(List<QuizletSetResult> newSets, boolean paginationEnabled) {
+        int previousSize = getItemCount();
+        this.results.addAll(newSets);
+        if (newSets.isEmpty()) {
+            if (this.paginationEnabled) {
+                notifyItemRemoved(previousSize - 1);
+            }
+        } else {
+            if (this.paginationEnabled) {
+                notifyItemChanged(previousSize - 1);
+                notifyItemRangeInserted(previousSize, newSets.size() - 1);
+            } else {
+                notifyItemRangeInserted(previousSize, newSets.size());
+            }
+        }
         this.paginationEnabled = paginationEnabled;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -100,7 +116,8 @@ public class QuizletSearchResultsAdapter
         @BindView(R.id.images_icon) ThemedIconTextView imageIcon;
         @BindView(R.id.images_text) ThemedTextView imageText;
         @BindView(R.id.in_library) View inLibraryText;
-        @BindView(R.id.loading_spinner) View loadingSpinner;
+        @BindView(R.id.loading_spinner_stub) ViewStub loadingSpinnerStub;
+        @Nullable View loadingSpinner;
 
         ResultViewHolder(View view) {
             super(view);
@@ -110,9 +127,15 @@ public class QuizletSearchResultsAdapter
         void loadResult(int position) {
             if (paginationEnabled && position == getItemCount() - 1) {
                 card.setVisibility(View.GONE);
+                if (loadingSpinner == null) {
+                    loadingSpinner = loadingSpinnerStub.inflate();
+                }
                 loadingSpinner.setVisibility(View.VISIBLE);
+                listener.onPaginationSpinnerLoaded();
             } else {
-                loadingSpinner.setVisibility(View.GONE);
+                if (loadingSpinner != null) {
+                    loadingSpinner.setVisibility(View.GONE);
+                }
                 card.setVisibility(View.VISIBLE);
 
                 QuizletSetResult result = results.get(position);
