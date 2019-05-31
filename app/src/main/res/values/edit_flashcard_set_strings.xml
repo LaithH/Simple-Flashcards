@@ -97,6 +97,7 @@
     <string name="hindi">Hindi</string>
     <string name="bengali">Bengali</string>
     <string name="russian">Russian</string>
+    <string name="norwegian">Norwegian</string>
     <string-array name="language_options">
         <item>@string/english</item>
         <item>@string/spanish</item>
@@ -110,6 +111,7 @@
         <item>@string/hindi</item>
         <item>@string/bengali</item>
         <item>@string/russian</item>
+        <item>@string/norwegian</item>
     </string-array>
 
     <string name="terms">Terms</string>

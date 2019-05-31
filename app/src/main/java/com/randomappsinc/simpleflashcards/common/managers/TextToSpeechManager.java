@@ -91,6 +91,8 @@ public class TextToSpeechManager implements TextToSpeech.OnInitListener {
                 return new Locale("bn");
             case Language.RUSSIAN:
                 return new Locale("ru");
+            case Language.NORWEGIAN:
+                return new Locale("nb");
             default:
                 return Locale.getDefault();
         }

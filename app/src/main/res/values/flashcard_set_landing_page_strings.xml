@@ -18,7 +18,7 @@
 
     <string-array name="flashcard_set_edit_options">
         <item>Add/edit flashcards</item>
-        <item>Import flashcards</item>
+        <item>Cross-set import</item>
         <item>Set languages</item>
         <item>Reorder flashcards</item>
         <item>Rename flashcard set</item>

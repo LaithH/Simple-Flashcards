@@ -115,6 +115,8 @@ public class SetLanguagesDialog implements ThemeManager.Listener {
                 return 10;
             case Language.RUSSIAN:
                 return 11;
+            case Language.NORWEGIAN:
+                return 12;
             default:
                 throw new IllegalArgumentException("Unsupported language!");
         }
@@ -146,6 +148,8 @@ public class SetLanguagesDialog implements ThemeManager.Listener {
                 return Language.BENGALI;
             case 11:
                 return Language.RUSSIAN;
+            case 12:
+                return Language.NORWEGIAN;
             default:
                 throw new IllegalArgumentException("Unsupported index!");
         }

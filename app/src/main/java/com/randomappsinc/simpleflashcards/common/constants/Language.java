@@ -14,7 +14,8 @@ import androidx.annotation.IntDef;
         Language.KOREAN,
         Language.HINDI,
         Language.BENGALI,
-        Language.RUSSIAN
+        Language.RUSSIAN,
+        Language.NORWEGIAN
 })
 public @interface Language {
     int ENGLISH = 0;
@@ -29,4 +30,5 @@ public @interface Language {
     int HINDI = 9;
     int BENGALI = 10;
     int RUSSIAN = 11;
+    int NORWEGIAN = 12;
 }
