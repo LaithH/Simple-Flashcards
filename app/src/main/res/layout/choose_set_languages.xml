@@ -8,6 +8,14 @@
     tools:ignore="RtlHardcoded"
     >
 
+    <com.randomappsinc.simpleflashcards.theme.ThemedTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_languages_instructions"
+        android:textSize="15sp"
+        android:layout_marginBottom="16dp"
+        />
+
     <com.randomappsinc.simpleflashcards.theme.ThemedTitleTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

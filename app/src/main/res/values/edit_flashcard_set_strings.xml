@@ -141,4 +141,9 @@
     <string name="confirm_reorder_exit_body">
         Are you sure you want to quit? Any unsaved changes you have will be lost.
     </string>
+
+    <string name="set_languages_instructions">
+        If you are using this flashcard set to study non-English languages, set them here.
+        This is necessary for the app to pronounce non-English words properly.
+    </string>
 </resources>
