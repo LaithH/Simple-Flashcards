@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,10 +37,12 @@ import com.randomappsinc.simpleflashcards.editflashcards.dialogs.FlashcardImageO
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
+import com.randomappsinc.simpleflashcards.utils.FileUtils;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.StringUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -213,7 +216,20 @@ public class EditFlashcardsActivity extends StandardActivity
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-                    String uriString = uri.toString();
+                    File photoFile = FileUtils.createImageFile(this);
+                    if (photoFile == null) {
+                        UIUtils.showLongToast(R.string.image_load_fail, this);
+                        return;
+                    }
+                    Uri copyUri = FileProvider.getUriForFile(this,
+                            "com.randomappsinc.simpleflashcards.provider",
+                            photoFile);
+                    if (!FileUtils.copyFromUriIntoFile(getContentResolver(), resultData.getData(), copyUri)) {
+                        UIUtils.showLongToast(R.string.image_load_fail, this);
+                        return;
+                    }
+
+                    String uriString = copyUri.toString();
                     if (forTerm) {
                         databaseManager.updateFlashcardTermImageUrl(currentlySelectedFlashcardId, uriString);
                         adapter.onTermImageUpdated(uriString);

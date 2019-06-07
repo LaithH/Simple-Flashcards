@@ -146,4 +146,6 @@
         If you are using this flashcard set to study non-English languages, set them here.
         This is necessary for the app to pronounce non-English words properly.
     </string>
+
+    <string name="image_load_failed">Failed to load your image</string>
 </resources>

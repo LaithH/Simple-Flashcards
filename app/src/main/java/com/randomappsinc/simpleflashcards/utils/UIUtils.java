@@ -2,10 +2,6 @@ package com.randomappsinc.simpleflashcards.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
 import com.randomappsinc.simpleflashcards.R;
@@ -32,21 +27,6 @@ public class UIUtils {
             view = new View(activity);
         }
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public static void showSnackbar(View parent, String message, int length) {
-        SpannableStringBuilder spanBuilder = new SpannableStringBuilder(message);
-        spanBuilder.setSpan(
-                new ForegroundColorSpan(Color.WHITE),
-                0,
-                message.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        Snackbar snackbar = Snackbar.make(parent, spanBuilder, length);
-        snackbar.getView().setBackgroundColor(parent
-                .getContext()
-                .getResources()
-                .getColor(R.color.app_blue));
-        snackbar.show();
     }
 
     public static void showShortToast(@StringRes int stringId, Context context) {

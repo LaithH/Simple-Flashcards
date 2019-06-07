@@ -12,6 +12,7 @@ import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FolderDO;
 import com.randomappsinc.simpleflashcards.quizlet.api.models.QuizletFlashcard;
 import com.randomappsinc.simpleflashcards.quizlet.api.models.QuizletFlashcardSet;
+import com.randomappsinc.simpleflashcards.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -326,6 +327,8 @@ public class DatabaseManager {
             FlashcardDO flashcard = realm.where(FlashcardDO.class)
                     .equalTo("id", flashcardId)
                     .findFirst();
+            String currentImagePath = flashcard.getTermImageUrl();
+            FileUtils.maybeDeleteFileWithUri(currentImagePath);
             flashcard.setTermImageUrl(imageUrl);
             realm.commitTransaction();
         } catch (Exception e) {
@@ -339,6 +342,8 @@ public class DatabaseManager {
             FlashcardDO flashcard = realm.where(FlashcardDO.class)
                     .equalTo("id", flashcardId)
                     .findFirst();
+            String currentImagePath = flashcard.getDefinitionImageUrl();
+            FileUtils.maybeDeleteFileWithUri(currentImagePath);
             flashcard.setDefinitionImageUrl(imageUrl);
             realm.commitTransaction();
         } catch (Exception e) {
