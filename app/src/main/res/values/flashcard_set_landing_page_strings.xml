@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="learn">Learn</string>
+    <string name="more">More</string>
     <string-array name="flashcard_set_option_categories">
         <item>@string/learn</item>
         <item>@string/edit</item>
+        <item>@string/more</item>
     </string-array>
 
     <string-array name="flashcard_set_learning_options">
@@ -35,6 +37,14 @@
         <item>@string/swap_icon</item>
         <item>@string/edit_icon</item>
         <item>@string/delete_icon</item>
+    </string-array>
+
+    <string-array name="flashcard_set_more_options">
+        <item>Export as .csv</item>
+    </string-array>
+
+    <string-array name="flashcard_set_more_options_icons">
+        <item>@string/document_icon</item>
     </string-array>
 
     <string name="flashcard_set_deleted">Flashcard set deleted.</string>

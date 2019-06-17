@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.randomappsinc.simpleflashcards.home.fragments.EditFlashcardSetFragment;
+import com.randomappsinc.simpleflashcards.home.fragments.FlashcardSetMoreOptionsFragment;
 import com.randomappsinc.simpleflashcards.home.fragments.LearnFlashcardSetFragment;
 
 public class FlashcardSetOptionTabsAdapter extends FragmentPagerAdapter {
@@ -14,7 +15,7 @@ public class FlashcardSetOptionTabsAdapter extends FragmentPagerAdapter {
     private int setId;
 
     public FlashcardSetOptionTabsAdapter(FragmentManager fragmentManager, String[] tabNames, int setId) {
-        super(fragmentManager);
+        super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.optionTabs = tabNames;
         this.setId = setId;
     }
@@ -27,6 +28,8 @@ public class FlashcardSetOptionTabsAdapter extends FragmentPagerAdapter {
                 return LearnFlashcardSetFragment.getInstance(setId);
             case 1:
                 return EditFlashcardSetFragment.getInstance(setId);
+            case 2:
+                return FlashcardSetMoreOptionsFragment.getInstance(setId);
             default:
                 throw new IllegalStateException("Unsupported index for set options: " + position);
         }

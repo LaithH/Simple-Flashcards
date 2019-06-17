@@ -74,11 +74,7 @@ public class BackupDataManager {
         if (backupFilePath != null) {
             return backupFilePath;
         }
-        String backupUri = preferencesManager.getBackupUri();
-        if (backupUri != null) {
-            return backupUri;
-        }
-        return null;
+        return preferencesManager.getBackupUri();
     }
 
     @Nullable
@@ -104,23 +100,20 @@ public class BackupDataManager {
         // Try the File IO strategy (should only apply on pre-KitKat devices)
         final String backupFolderPath = preferencesManager.getBackupFilePath();
         if (backupFolderPath != null) {
-            backgroundHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    File file = new File(backupFolderPath);
-                    try {
-                        FileOutputStream stream = new FileOutputStream(file);
-                        List<FlashcardSetDO> flashcardSets = databaseManager.getAllFlashcardSetsOnAnyThread();
-                        stream.write(JSONUtils.serializeFlashcardSets(flashcardSets).getBytes());
-                        stream.close();
-                        preferencesManager.updateLastBackupTime();
-                        if (userTriggered) {
-                            alertListenerOfBackupComplete();
-                        }
-                    } catch (Exception exception) {
-                        if (userTriggered) {
-                            alertListenerOfBackupFail();
-                        }
+            backgroundHandler.post(() -> {
+                File file = new File(backupFolderPath);
+                try {
+                    FileOutputStream stream = new FileOutputStream(file);
+                    List<FlashcardSetDO> flashcardSets = databaseManager.getAllFlashcardSetsOnAnyThread();
+                    stream.write(JSONUtils.serializeFlashcardSets(flashcardSets).getBytes());
+                    stream.close();
+                    preferencesManager.updateLastBackupTime();
+                    if (userTriggered) {
+                        alertListenerOfBackupComplete();
+                    }
+                } catch (Exception exception) {
+                    if (userTriggered) {
+                        alertListenerOfBackupFail();
                     }
                 }
             });
@@ -128,32 +121,29 @@ public class BackupDataManager {
         // Try the Storage Access Framework URI strategy for KitKat+
         else if (preferencesManager.getBackupUri() != null){
             final String backupUri = preferencesManager.getBackupUri();
-            backgroundHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        ParcelFileDescriptor fileDescriptor = context.getContentResolver().
-                                openFileDescriptor(Uri.parse(backupUri), "w");
-                        if (fileDescriptor == null) {
-                            if (userTriggered) {
-                                alertListenerOfBackupFail();
-                            }
-                            return;
-                        }
-                        FileOutputStream fileOutputStream =
-                                new FileOutputStream(fileDescriptor.getFileDescriptor());
-                        List<FlashcardSetDO> flashcardSets = databaseManager.getAllFlashcardSetsOnAnyThread();
-                        fileOutputStream.write(JSONUtils.serializeFlashcardSets(flashcardSets).getBytes());
-                        fileOutputStream.close();
-                        fileDescriptor.close();
-                        preferencesManager.updateLastBackupTime();
-                        if (userTriggered) {
-                            alertListenerOfBackupComplete();
-                        }
-                    } catch (Exception exception) {
+            backgroundHandler.post(() -> {
+                try {
+                    ParcelFileDescriptor fileDescriptor = context.getContentResolver().
+                            openFileDescriptor(Uri.parse(backupUri), "w");
+                    if (fileDescriptor == null) {
                         if (userTriggered) {
                             alertListenerOfBackupFail();
                         }
+                        return;
+                    }
+                    FileOutputStream fileOutputStream =
+                            new FileOutputStream(fileDescriptor.getFileDescriptor());
+                    List<FlashcardSetDO> flashcardSets = databaseManager.getAllFlashcardSetsOnAnyThread();
+                    fileOutputStream.write(JSONUtils.serializeFlashcardSets(flashcardSets).getBytes());
+                    fileOutputStream.close();
+                    fileDescriptor.close();
+                    preferencesManager.updateLastBackupTime();
+                    if (userTriggered) {
+                        alertListenerOfBackupComplete();
+                    }
+                } catch (Exception exception) {
+                    if (userTriggered) {
+                        alertListenerOfBackupFail();
                     }
                 }
             });
@@ -168,23 +158,13 @@ public class BackupDataManager {
 
     protected void alertListenerOfBackupComplete() {
         if (listener != null) {
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onBackupComplete();
-                }
-            });
+            uiHandler.post(() -> listener.onBackupComplete());
         }
     }
 
     protected void alertListenerOfBackupFail() {
         if (listener != null) {
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onBackupFailed();
-                }
-            });
+            uiHandler.post(() -> listener.onBackupFailed());
         }
     }
 
