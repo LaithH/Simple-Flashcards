@@ -60,7 +60,8 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
         termDialog = new EditFlashcardTermDialog(this, this);
         definitionDialog = new EditFlashcardDefinitionDialog(this, this);
         deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
-        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_csv_quit_body);
+        confirmQuitDialog = new ConfirmQuitDialog(
+                this, this, R.string.confirm_csv_quit_body);
     }
 
     private void onFlashcardSetExtracted(String setName, List<Flashcard> flashcards) {

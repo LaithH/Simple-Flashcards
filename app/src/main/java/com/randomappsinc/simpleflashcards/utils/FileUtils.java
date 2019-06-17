@@ -3,6 +3,7 @@ package com.randomappsinc.simpleflashcards.utils;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.annotation.Nullable;
@@ -55,6 +56,7 @@ public class FileUtils {
         return contents;
     }
 
+    @Nullable
     public static File createImageFile(Context context) {
         File imageFile;
         try {
@@ -112,5 +114,14 @@ public class FileUtils {
             } catch (IOException ignored) {}
         }
         return true;
+    }
+
+    @Nullable
+    public static File createCsvFileForSet(Context context, FlashcardSetDO flashcardSetDO) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return null;
+        }
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        return new File(storageDir, flashcardSetDO.getName() + ".csv");
     }
 }

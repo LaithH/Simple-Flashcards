@@ -10,4 +10,8 @@
     <string name="confirm_csv_quit_body">
         Are you sure you want to quit? This flashcard set will not be saved.
     </string>
+
+    <string name="export_csv_failed">Failed to create a .csv file from your flashcard set</string>
+    <string name="export_csv_title">Flashcard Set - %s</string>
+    <string name="export_csv_with">Export File With</string>
 </resources>
