@@ -5,10 +5,8 @@ import android.graphics.PorterDuff;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
@@ -56,22 +54,16 @@ public class SetLanguagesDialog implements ThemeManager.Listener {
                 .title(R.string.set_languages_title)
                 .customView(R.layout.choose_set_languages, true)
                 .positiveText(R.string.apply)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        termIndex = termOptions.getSelectedItemPosition();
-                        definitionIndex = definitionOptions.getSelectedItemPosition();
-                        listener.onLanguagesSelected(getLanguageFromIndex(termIndex), getLanguageFromIndex(definitionIndex));
-                        UIUtils.showShortToast(R.string.language_settings_applied, context);
-                    }
+                .onPositive((dialog, which) -> {
+                    termIndex = termOptions.getSelectedItemPosition();
+                    definitionIndex = definitionOptions.getSelectedItemPosition();
+                    listener.onLanguagesSelected(getLanguageFromIndex(termIndex), getLanguageFromIndex(definitionIndex));
+                    UIUtils.showShortToast(R.string.language_settings_applied, context);
                 })
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        termOptions.setSelection(termIndex);
-                        definitionOptions.setSelection(definitionIndex);
-                    }
+                .onNegative((dialog, which) -> {
+                    termOptions.setSelection(termIndex);
+                    definitionOptions.setSelection(definitionIndex);
                 })
                 .cancelable(false)
                 .build();

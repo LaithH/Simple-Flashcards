@@ -5,26 +5,8 @@
     >
 
     <item
-        android:id="@+id/sort_by_term_ascending"
-        android:title="@string/sort_by_term_ascending"
-        app:showAsAction="never"
-        />
-
-    <item
-        android:id="@+id/sort_by_term_descending"
-        android:title="@string/sort_by_term_descending"
-        app:showAsAction="never"
-        />
-
-    <item
-        android:id="@+id/sort_by_definition_ascending"
-        android:title="@string/sort_by_definition_ascending"
-        app:showAsAction="never"
-        />
-
-    <item
-        android:id="@+id/sort_by_definition_descending"
-        android:title="@string/sort_by_definition_descending"
-        app:showAsAction="never"
+        android:id="@+id/sort"
+        android:title="@string/sort"
+        app:showAsAction="always"
         />
 </menu>

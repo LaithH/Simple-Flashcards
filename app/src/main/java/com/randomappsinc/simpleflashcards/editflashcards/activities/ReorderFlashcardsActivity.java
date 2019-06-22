@@ -4,17 +4,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.adapters.FlashcardOrderingAdapter;
 import com.randomappsinc.simpleflashcards.editflashcards.adapters.SimpleItemTouchHelperCallback;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.SortFlashcardsDialog;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
@@ -26,13 +29,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ReorderFlashcardsActivity extends StandardActivity implements ConfirmQuitDialog.Listener {
+public class ReorderFlashcardsActivity extends StandardActivity
+        implements ConfirmQuitDialog.Listener, SortFlashcardsDialog.Listener {
 
     @BindView(R.id.flashcards_list) RecyclerView flashcardsList;
 
     private FlashcardOrderingAdapter flashcardOrderingAdapter;
     private DatabaseManager databaseManager = DatabaseManager.get();
     private ConfirmQuitDialog confirmQuitDialog;
+    private @Nullable SortFlashcardsDialog sortFlashcardsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,8 @@ public class ReorderFlashcardsActivity extends StandardActivity implements Confi
                     .show();
         }
 
-        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_reorder_exit_body);
+        confirmQuitDialog = new ConfirmQuitDialog(
+                this, this, R.string.confirm_reorder_exit_body);
     }
 
     @OnClick(R.id.save)
@@ -75,6 +81,38 @@ public class ReorderFlashcardsActivity extends StandardActivity implements Confi
     @Override
     public void onQuitConfirmed() {
         finish();
+    }
+
+    @Override
+    public void onSortTermAscending() {
+        flashcardOrderingAdapter.sortFlashcards(
+                (first, second) -> first.getTerm().toLowerCase()
+                        .compareTo(second.getTerm().toLowerCase()));
+        flashcardsList.scrollToPosition(0);
+    }
+
+    @Override
+    public void onSortTermDescending() {
+        flashcardOrderingAdapter.sortFlashcards(
+                (first, second) -> first.getTerm().toLowerCase()
+                        .compareTo(second.getTerm().toLowerCase()) * -1);
+        flashcardsList.scrollToPosition(0);
+    }
+
+    @Override
+    public void onSortDefinitionAscending() {
+        flashcardOrderingAdapter.sortFlashcards(
+                (first, second) -> first.getDefinition().toLowerCase()
+                        .compareTo(second.getDefinition().toLowerCase()));
+        flashcardsList.scrollToPosition(0);
+    }
+
+    @Override
+    public void onSortDefinitionDescending() {
+        flashcardOrderingAdapter.sortFlashcards(
+                (first, second) -> first.getDefinition().toLowerCase()
+                        .compareTo(second.getDefinition().toLowerCase()) * -1);
+        flashcardsList.scrollToPosition(0);
     }
 
     @Override
@@ -91,41 +129,19 @@ public class ReorderFlashcardsActivity extends StandardActivity implements Confi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_reorder_flashcards, menu);
+        UIUtils.loadMenuIcon(menu, R.id.sort, FontAwesomeIcons.fa_sort_alpha_asc, this);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sort_by_term_ascending:
-                flashcardOrderingAdapter.sortFlashcards(
-                        (first, second) -> first.getTerm().toLowerCase()
-                                .compareTo(second.getTerm().toLowerCase()));
-                flashcardsList.scrollToPosition(0);
-                return true;
-            case R.id.sort_by_term_descending:
-                flashcardOrderingAdapter.sortFlashcards(
-                        (first, second) -> first.getTerm().toLowerCase()
-                                .compareTo(second.getTerm().toLowerCase()) * -1);
-                flashcardsList.scrollToPosition(0);
-                return true;
-            case R.id.sort_by_definition_ascending:
-                flashcardOrderingAdapter.sortFlashcards(
-                        (first, second) -> first.getDefinition().toLowerCase()
-                                .compareTo(second.getDefinition().toLowerCase()));
-                flashcardsList.scrollToPosition(0);
-                return true;
-            case R.id.sort_by_definition_descending:
-                flashcardOrderingAdapter.sortFlashcards(
-                        (first, second) -> first.getDefinition().toLowerCase()
-                                .compareTo(second.getDefinition().toLowerCase()) * -1);
-                flashcardsList.scrollToPosition(0);
-                return true;
-            case android.R.id.home:
-                confirmQuitDialog.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.sort) {
+            if (sortFlashcardsDialog == null) {
+                sortFlashcardsDialog = new SortFlashcardsDialog(this, this);
+            }
+            sortFlashcardsDialog.show();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

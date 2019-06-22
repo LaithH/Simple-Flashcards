@@ -134,10 +134,19 @@
     </string>
     <string name="save_order">Save Order</string>
     <string name="flashcards_reordered">Flashcards reordered.</string>
+    <string name="sort">Sort</string>
+
     <string name="sort_by_term_ascending">Sort by term (A - Z)</string>
     <string name="sort_by_term_descending">Sort by term (Z - A)</string>
     <string name="sort_by_definition_ascending">Sort by definition (A - Z)</string>
     <string name="sort_by_definition_descending">Sort by definition (Z - A)</string>
+    <string-array name="sort_flashcards_options">
+        <item>@string/sort_by_term_ascending</item>
+        <item>@string/sort_by_term_descending</item>
+        <item>@string/sort_by_definition_ascending</item>
+        <item>@string/sort_by_definition_descending</item>
+    </string-array>
+
     <string name="confirm_reorder_exit_body">
         Are you sure you want to quit? Any unsaved changes you have will be lost.
     </string>
