@@ -1,7 +1,6 @@
 package com.randomappsinc.simpleflashcards.editflashcards.dialogs;
 
 import android.content.Context;
-import android.widget.Spinner;
 
 import androidx.core.content.ContextCompat;
 
@@ -9,8 +8,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
-
-import butterknife.BindView;
 
 public class SortFlashcardsDialog implements ThemeManager.Listener {
 
@@ -23,10 +20,6 @@ public class SortFlashcardsDialog implements ThemeManager.Listener {
 
         void onSortDefinitionDescending();
     }
-
-    @BindView(R.id.term_language_options)
-    Spinner termOptions;
-    @BindView(R.id.definition_language_options) Spinner definitionOptions;
 
     protected Listener listener;
     private MaterialDialog dialog;
