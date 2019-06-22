@@ -39,7 +39,6 @@ public class SortFlashcardsDialog implements ThemeManager.Listener {
         dialog = new MaterialDialog.Builder(context)
                 .theme(darkModeEnabled ? Theme.DARK : Theme.LIGHT)
                 .backgroundColor(darkModeEnabled ? darkModeBackground : white)
-                .title(R.string.set_languages_title)
                 .items(R.array.sort_flashcards_options)
                 .negativeText(R.string.cancel)
                 .itemsCallback((dialog, itemView, position, text) -> {
