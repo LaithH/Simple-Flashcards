@@ -50,7 +50,7 @@ public class FlashcardSetOptionsAdapter
 
     @Override
     public void onBindViewHolder(@NonNull OptionViewHolder holder, int position) {
-        holder.loadSetting(position);
+        holder.loadOption(position);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class FlashcardSetOptionsAdapter
     }
 
     class OptionViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.icon) TextView icon;
         @BindView(R.id.option) TextView option;
 
@@ -67,13 +68,13 @@ public class FlashcardSetOptionsAdapter
             ButterKnife.bind(this, view);
         }
 
-        void loadSetting(int position) {
+        void loadOption(int position) {
             option.setText(options[position]);
             icon.setText(icons[position]);
         }
 
         @OnClick(R.id.parent)
-        void onSettingSelected() {
+        void onOptionSelected() {
             itemSelectionListener.onItemClick(getAdapterPosition());
         }
     }
