@@ -1,4 +1,4 @@
-package com.randomappsinc.simpleflashcards.editflashcards.dialogs;
+package com.randomappsinc.simpleflashcards.home.dialogs;
 
 import android.content.Context;
 
@@ -9,16 +9,9 @@ import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
-public class SortFlashcardsDialog implements ThemeManager.Listener {
+public class SortFlashcardSetsDialog implements ThemeManager.Listener {
 
     public interface Listener {
-        void onSortTermAscending();
-
-        void onSortTermDescending();
-
-        void onSortDefinitionAscending();
-
-        void onSortDefinitionDescending();
     }
 
     protected Listener listener;
@@ -26,7 +19,7 @@ public class SortFlashcardsDialog implements ThemeManager.Listener {
     protected Context context;
     private ThemeManager themeManager = ThemeManager.get();
 
-    public SortFlashcardsDialog(Context context, Listener listener) {
+    public SortFlashcardSetsDialog(Context context, Listener listener) {
         this.listener = listener;
         this.context = context;
         createDialog(themeManager.getDarkModeEnabled(context));
@@ -39,25 +32,9 @@ public class SortFlashcardsDialog implements ThemeManager.Listener {
         dialog = new MaterialDialog.Builder(context)
                 .theme(darkModeEnabled ? Theme.DARK : Theme.LIGHT)
                 .backgroundColor(darkModeEnabled ? darkModeBackground : white)
-                .title(R.string.sort_flashcards_title)
-                .items(R.array.sort_flashcards_options)
+                .title(R.string.sort_flashcard_sets_title)
+                .customView(R.layout.sort_flashcard_sets, true)
                 .negativeText(R.string.cancel)
-                .itemsCallback((dialog, itemView, position, text) -> {
-                    switch (position) {
-                        case 0:
-                            listener.onSortTermAscending();
-                            break;
-                        case 1:
-                            listener.onSortTermDescending();
-                            break;
-                        case 2:
-                            listener.onSortDefinitionAscending();
-                            break;
-                        case 3:
-                            listener.onSortDefinitionDescending();
-                            break;
-                    }
-                })
                 .build();
     }
 

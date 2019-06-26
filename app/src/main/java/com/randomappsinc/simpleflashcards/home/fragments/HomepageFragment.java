@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -32,6 +33,7 @@ import com.randomappsinc.simpleflashcards.home.activities.FlashcardSetActivity;
 import com.randomappsinc.simpleflashcards.home.activities.MainActivity;
 import com.randomappsinc.simpleflashcards.home.adapters.HomepageFlashcardSetsAdapter;
 import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
+import com.randomappsinc.simpleflashcards.home.dialogs.SortFlashcardSetsDialog;
 import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
@@ -48,7 +50,8 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 public class HomepageFragment extends Fragment
-        implements HomepageFlashcardSetsAdapter.Listener, CreateFlashcardSetDialog.Listener {
+        implements HomepageFlashcardSetsAdapter.Listener, CreateFlashcardSetDialog.Listener,
+        SortFlashcardSetsDialog.Listener {
 
     public static HomepageFragment newInstance() {
         return new HomepageFragment();
@@ -75,6 +78,7 @@ public class HomepageFragment extends Fragment
     protected HomepageFlashcardSetsAdapter adapter;
     private CreateFlashcardSetDialog createFlashcardSetDialog;
     private DatabaseManager databaseManager = DatabaseManager.get();
+    private SortFlashcardSetsDialog sortFlashcardSetsDialog;
     private Unbinder unbinder;
 
     @Override
@@ -293,5 +297,17 @@ public class HomepageFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.sort_flashcard_sets).setVisible(true);
         menu.findItem(R.id.filter).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.sort_flashcard_sets) {
+            if (sortFlashcardSetsDialog == null) {
+                sortFlashcardSetsDialog =  new SortFlashcardSetsDialog(getContext(), this);
+            }
+            sortFlashcardSetsDialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

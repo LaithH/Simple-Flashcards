@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="RtlHardcoded, ContentDescription">
+    tools:ignore="RtlHardcoded, ContentDescription"
+    >
 
     <ScrollView
         android:id="@+id/problem_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/submit">
+        android:layout_above="@id/submit"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                 android:id="@+id/question_header"
@@ -25,7 +28,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedTitleTextView
                 android:id="@+id/question"
@@ -34,7 +38,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="4dp"
-                android:textSize="21sp"/>
+                android:textSize="21sp"
+                />
 
             <ImageView
                 android:id="@+id/question_image"
@@ -44,7 +49,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"/>
+                android:layout_marginBottom="4dp"
+                />
 
             <RadioGroup
                 android:id="@+id/options"
@@ -52,25 +58,30 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
                     android:id="@+id/option_1"
-                    style="@style/quiz_radio_button"/>
+                    style="@style/quiz_radio_button"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
                     android:id="@+id/option_2"
-                    style="@style/quiz_radio_button"/>
+                    style="@style/quiz_radio_button"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
                     android:id="@+id/option_3"
                     style="@style/quiz_radio_button"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
                     android:id="@+id/option_4"
                     style="@style/quiz_radio_button"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    />
             </RadioGroup>
 
             <com.randomappsinc.simpleflashcards.theme.ThemedEditText
@@ -80,7 +91,8 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/free_form_input_hint"
-                style="@style/blue_line_edittext"/>
+                style="@style/blue_line_edittext"
+                />
         </LinearLayout>
     </ScrollView>
 
@@ -89,19 +101,22 @@
         android:layout_marginTop="0dp"
         android:layout_alignParentBottom="true"
         android:text="@string/submit"
-        style="@style/button"/>
+        style="@style/button"
+        />
 
     <ScrollView
         android:id="@+id/results_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:alpha="0">
+        android:alpha="0"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                 android:id="@+id/results_header"
@@ -109,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:gravity="center_horizontal"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedTitleTextView
                 android:id="@+id/score"
@@ -118,13 +134,15 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center_horizontal"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:id="@+id/retake"
@@ -132,7 +150,8 @@
                     android:layout_weight="1"
                     android:layout_marginRight="8dp"
                     android:text="@string/retake"
-                    style="@style/rounded_button"/>
+                    style="@style/rounded_button"
+                    />
 
                 <TextView
                     android:id="@+id/exit"
@@ -140,7 +159,8 @@
                     android:layout_weight="1"
                     android:layout_marginLeft="8dp"
                     android:text="@string/exit"
-                    style="@style/rounded_button"/>
+                    style="@style/rounded_button"
+                    />
             </LinearLayout>
 
             <TextView
@@ -150,7 +170,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                style="@style/rounded_button"/>
+                style="@style/rounded_button"
+                />
         </LinearLayout>
     </ScrollView>
 </com.randomappsinc.simpleflashcards.theme.ThemedRelativeLayout>

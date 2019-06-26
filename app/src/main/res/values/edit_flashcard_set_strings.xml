@@ -134,7 +134,8 @@
     </string>
     <string name="save_order">Save Order</string>
     <string name="flashcards_reordered">Flashcards reordered.</string>
-    <string name="sort">Sort</string>
+    <string name="sort_flashcards">Sort flashcards</string>
+    <string name="sort_flashcards_title">Sort Flashcards</string>
 
     <string name="sort_by_term_ascending">Sort by term (A - Z)</string>
     <string name="sort_by_term_descending">Sort by term (Z - A)</string>
