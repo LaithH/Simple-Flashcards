@@ -236,6 +236,7 @@ public class QuizletSearchFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.sort_flashcard_sets).setVisible(false);
         menu.findItem(R.id.filter).setVisible(true);
     }
 

@@ -121,4 +121,6 @@
 
     <string name="percent_string">%1$s%%</string>
     <string name="learned">learned</string>
+
+    <string name="sort_flashcard_sets">Sort flashcard sets</string>
 </resources>

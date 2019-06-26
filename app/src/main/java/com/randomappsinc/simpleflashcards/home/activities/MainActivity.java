@@ -3,6 +3,7 @@ package com.randomappsinc.simpleflashcards.home.activities;
 import android.os.Bundle;
 import android.view.Menu;
 
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.managers.BackupDataManager;
@@ -77,6 +78,7 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        UIUtils.loadMenuIcon(menu, R.id.sort_flashcard_sets, FontAwesomeIcons.fa_sort_alpha_asc, this);
         UIUtils.loadMenuIcon(menu, R.id.filter, IoniconsIcons.ion_funnel, this);
         return true;
     }
