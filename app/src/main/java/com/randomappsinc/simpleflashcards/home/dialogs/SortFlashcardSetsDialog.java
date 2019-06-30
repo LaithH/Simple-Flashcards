@@ -1,6 +1,7 @@
 package com.randomappsinc.simpleflashcards.home.dialogs;
 
 import android.content.Context;
+import android.widget.RadioButton;
 
 import androidx.core.content.ContextCompat;
 
@@ -9,10 +10,19 @@ import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SortFlashcardSetsDialog implements ThemeManager.Listener {
 
     public interface Listener {
+        void onSortAlphabeticalAscending();
+
+        void onSortAlphabeticalDescending();
     }
+
+    @BindView(R.id.alphabetical_ascending) RadioButton alphabeticalAscending;
+    @BindView(R.id.alphabetical_descending) RadioButton alphabeticalDescending;
 
     protected Listener listener;
     private MaterialDialog dialog;
@@ -34,8 +44,17 @@ public class SortFlashcardSetsDialog implements ThemeManager.Listener {
                 .backgroundColor(darkModeEnabled ? darkModeBackground : white)
                 .title(R.string.sort_flashcard_sets_title)
                 .customView(R.layout.sort_flashcard_sets, true)
+                .positiveText(R.string.apply)
                 .negativeText(R.string.cancel)
+                .onPositive((dialog, which) -> {
+                    if (alphabeticalDescending.isChecked()) {
+                        listener.onSortAlphabeticalDescending();
+                    } else if (alphabeticalAscending.isChecked()) {
+                        listener.onSortAlphabeticalAscending();
+                    }
+                })
                 .build();
+        ButterKnife.bind(this, dialog.getCustomView());
     }
 
     public void show() {

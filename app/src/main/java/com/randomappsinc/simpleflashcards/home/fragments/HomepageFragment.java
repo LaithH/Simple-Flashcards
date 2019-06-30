@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +41,7 @@ import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.utils.StringUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,6 +81,7 @@ public class HomepageFragment extends Fragment
     private CreateFlashcardSetDialog createFlashcardSetDialog;
     private DatabaseManager databaseManager = DatabaseManager.get();
     private SortFlashcardSetsDialog sortFlashcardSetsDialog;
+    @Nullable private Comparator<FlashcardSetDO> setComparator;
     private Unbinder unbinder;
 
     @Override
@@ -94,7 +97,6 @@ public class HomepageFragment extends Fragment
                 container,
                 false);
         unbinder = ButterKnife.bind(this, rootView);
-
         addFlashcardSet.setImageDrawable(new IconDrawable(getContext(), IoniconsIcons.ion_android_add)
                 .colorRes(R.color.white)
                 .actionBarSize());
@@ -132,12 +134,12 @@ public class HomepageFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        adapter.refreshContent(setSearch.getText().toString());
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void afterTextChanged(Editable input) {
-        adapter.refreshContent(input.toString());
+        adapter.refreshContent(input.toString(), setComparator);
         voiceSearch.setVisibility(input.length() == 0 ? View.VISIBLE : View.GONE);
         clearSearch.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
     }
@@ -192,7 +194,7 @@ public class HomepageFragment extends Fragment
     @Override
     public void onFlashcardSetCreated(String newSetName) {
         int newSetId = databaseManager.createFlashcardSet(newSetName);
-        adapter.refreshContent(setSearch.getText().toString());
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
         Intent intent = new Intent(getActivity(), EditFlashcardsActivity.class);
         intent.putExtra(Constants.FLASHCARD_SET_ID_KEY, newSetId);
         startActivity(intent);
@@ -209,7 +211,7 @@ public class HomepageFragment extends Fragment
 
     @Override
     public void onContentUpdated(int numSets) {
-        if (DatabaseManager.get().getNumFlashcardSets() == 0) {
+        if (databaseManager.getNumFlashcardSets() == 0) {
             searchBar.setVisibility(View.GONE);
             setsContainer.setVisibility(View.GONE);
             noSetsMatch.setVisibility(View.GONE);
@@ -243,6 +245,22 @@ public class HomepageFragment extends Fragment
         } catch (ActivityNotFoundException exception) {
             UIUtils.showLongToast(R.string.speech_not_supported, getContext());
         }
+    }
+
+    @Override
+    public void onSortAlphabeticalAscending() {
+        setComparator = (set1, set2) -> set1.getName().toLowerCase().compareTo(set2.getName().toLowerCase());
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
+        sets.scrollToPosition(0);
+        UIUtils.showShortToast(R.string.sort_applied, getContext());
+    }
+
+    @Override
+    public void onSortAlphabeticalDescending() {
+        setComparator = (set1, set2) -> set2.getName().toLowerCase().compareTo(set1.getName().toLowerCase());
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
+        sets.scrollToPosition(0);
+        UIUtils.showShortToast(R.string.sort_applied, getContext());
     }
 
     @Override
@@ -303,7 +321,7 @@ public class HomepageFragment extends Fragment
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.sort_flashcard_sets) {
             if (sortFlashcardSetsDialog == null) {
-                sortFlashcardSetsDialog =  new SortFlashcardSetsDialog(getContext(), this);
+                sortFlashcardSetsDialog = new SortFlashcardSetsDialog(getContext(), this);
             }
             sortFlashcardSetsDialog.show();
             return true;

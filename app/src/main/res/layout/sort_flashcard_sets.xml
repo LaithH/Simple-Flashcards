@@ -8,22 +8,22 @@
     >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
-        android:id="@+id/alphabetical_descending"
+        android:id="@+id/alphabetical_ascending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:paddingLeft="4dp"
-        android:text="@string/exit"
+        android:text="@string/alphabetically_ascending"
         android:textSize="19dp"
         />
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
-        android:id="@+id/alphabetical_ascending"
+        android:id="@+id/alphabetical_descending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:paddingLeft="4dp"
-        android:text="@string/exit"
+        android:text="@string/alphabetically_descending"
         android:textSize="19dp"
         />
 </RadioGroup>

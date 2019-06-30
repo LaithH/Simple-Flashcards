@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
@@ -17,6 +18,8 @@ import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,9 +55,12 @@ public class HomepageFlashcardSetsAdapter
         themeManager.unregisterListener(this);
     }
 
-    public void refreshContent(String searchTerm) {
+    public void refreshContent(String searchTerm, @Nullable Comparator<FlashcardSetDO> comparator) {
         flashcardSets.clear();
         flashcardSets.addAll(DatabaseManager.get().getFlashcardSets(searchTerm));
+        if (comparator != null) {
+            Collections.sort(flashcardSets, comparator);
+        }
         notifyDataSetChanged();
         listener.onContentUpdated(getItemCount());
     }
