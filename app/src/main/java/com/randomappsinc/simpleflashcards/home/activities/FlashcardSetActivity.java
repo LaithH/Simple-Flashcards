@@ -12,11 +12,8 @@ import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.home.adapters.FlashcardSetOptionTabsAdapter;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
-import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
-
-import java.text.DecimalFormat;
-import java.util.List;
+import com.randomappsinc.simpleflashcards.utils.StringUtils;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -65,18 +62,7 @@ public class FlashcardSetActivity extends StandardActivity {
         } else {
             numCardsText.setText(getString(R.string.x_flashcards, numFlashcards));
         }
-
-        List<FlashcardDO> flashcardList = flashcardSet.getFlashcards();
-        double totalFlashcards = flashcardList.size();
-        double numLearned = 0;
-        for (FlashcardDO flashcardDO : flashcardList) {
-            if (flashcardDO.isLearned()) {
-                numLearned++;
-            }
-        }
-        double percentLearned = (numLearned / totalFlashcards) * 100.0f;
-        String percentString = new DecimalFormat("#.#").format(percentLearned);
-        percentText.setText(getString(R.string.percent_string, percentString));
+        percentText.setText(getString(R.string.percent_string, StringUtils.getSetPercentLearnedText(flashcardSet)));
     }
 
     @Override

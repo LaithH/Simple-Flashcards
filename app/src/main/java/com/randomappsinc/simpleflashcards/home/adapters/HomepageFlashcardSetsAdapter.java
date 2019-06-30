@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
-import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
+import com.randomappsinc.simpleflashcards.utils.StringUtils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -105,19 +104,9 @@ public class HomepageFlashcardSetsAdapter
             } else {
                 numFlashcardsText.setText(setName.getContext().getString(R.string.x_flashcards, numFlashcards));
             }
-
-            List<FlashcardDO> flashcardList = flashcardSet.getFlashcards();
-            double totalFlashcards = flashcardList.size();
-            double numLearned = 0;
-            for (FlashcardDO flashcardDO : flashcardList) {
-                if (flashcardDO.isLearned()) {
-                    numLearned++;
-                }
-            }
-            double percentLearned = (numLearned / totalFlashcards) * 100.0f;
-            String percentString = new DecimalFormat("#.#").format(percentLearned);
             Context context = percentText.getContext();
-            percentText.setText(context.getString(R.string.percent_string, percentString));
+            percentText.setText(context.getString(
+                    R.string.percent_string, StringUtils.getSetPercentLearnedText(flashcardSet)));
             adjustForDarkMode();
         }
 
