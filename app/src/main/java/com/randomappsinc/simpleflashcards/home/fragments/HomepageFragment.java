@@ -38,6 +38,7 @@ import com.randomappsinc.simpleflashcards.home.dialogs.SortFlashcardSetsDialog;
 import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
+import com.randomappsinc.simpleflashcards.utils.FlashcardUtils;
 import com.randomappsinc.simpleflashcards.utils.StringUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -258,6 +259,40 @@ public class HomepageFragment extends Fragment
     @Override
     public void onSortAlphabeticalDescending() {
         setComparator = (set1, set2) -> set2.getName().toLowerCase().compareTo(set1.getName().toLowerCase());
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
+        sets.scrollToPosition(0);
+        UIUtils.showShortToast(R.string.sort_applied, getContext());
+    }
+
+    @Override
+    public void onLeastLearnedFirst() {
+        setComparator = (set1, set2) -> {
+            double firstLearnedPercent = FlashcardUtils.getLearnedPercent(set1);
+            double secondLearnedPercent = FlashcardUtils.getLearnedPercent(set2);
+            if (firstLearnedPercent > secondLearnedPercent) {
+                return 1;
+            } else if (firstLearnedPercent == secondLearnedPercent) {
+                return 0;
+            }
+            return -1;
+        };
+        adapter.refreshContent(setSearch.getText().toString(), setComparator);
+        sets.scrollToPosition(0);
+        UIUtils.showShortToast(R.string.sort_applied, getContext());
+    }
+
+    @Override
+    public void onMostLearnedFirst() {
+        setComparator = (set1, set2) -> {
+            double firstLearnedPercent = FlashcardUtils.getLearnedPercent(set1);
+            double secondLearnedPercent = FlashcardUtils.getLearnedPercent(set2);
+            if (firstLearnedPercent > secondLearnedPercent) {
+                return -1;
+            } else if (firstLearnedPercent == secondLearnedPercent) {
+                return 0;
+            }
+            return 1;
+        };
         adapter.refreshContent(setSearch.getText().toString(), setComparator);
         sets.scrollToPosition(0);
         UIUtils.showShortToast(R.string.sort_applied, getContext());

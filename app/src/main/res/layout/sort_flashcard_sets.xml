@@ -26,4 +26,24 @@
         android:text="@string/alphabetically_descending"
         android:textSize="19dp"
         />
+
+    <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
+        android:id="@+id/least_learned_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingLeft="4dp"
+        android:text="@string/least_learned_first"
+        android:textSize="19dp"
+        />
+
+    <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
+        android:id="@+id/most_learned_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingLeft="4dp"
+        android:text="@string/most_learned_first"
+        android:textSize="19dp"
+        />
 </RadioGroup>

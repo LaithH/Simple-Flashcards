@@ -19,10 +19,16 @@ public class SortFlashcardSetsDialog implements ThemeManager.Listener {
         void onSortAlphabeticalAscending();
 
         void onSortAlphabeticalDescending();
+
+        void onLeastLearnedFirst();
+
+        void onMostLearnedFirst();
     }
 
     @BindView(R.id.alphabetical_ascending) RadioButton alphabeticalAscending;
     @BindView(R.id.alphabetical_descending) RadioButton alphabeticalDescending;
+    @BindView(R.id.least_learned_first) RadioButton leastLearnedFirst;
+    @BindView(R.id.most_learned_first) RadioButton mostLearnedFirst;
 
     protected Listener listener;
     private MaterialDialog dialog;
@@ -47,10 +53,14 @@ public class SortFlashcardSetsDialog implements ThemeManager.Listener {
                 .positiveText(R.string.apply)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
-                    if (alphabeticalDescending.isChecked()) {
-                        listener.onSortAlphabeticalDescending();
-                    } else if (alphabeticalAscending.isChecked()) {
+                    if (alphabeticalAscending.isChecked()) {
                         listener.onSortAlphabeticalAscending();
+                    } else if (alphabeticalDescending.isChecked()) {
+                        listener.onSortAlphabeticalDescending();
+                    } else if (leastLearnedFirst.isChecked()) {
+                        listener.onLeastLearnedFirst();
+                    } else if (mostLearnedFirst.isChecked()) {
+                        listener.onMostLearnedFirst();
                     }
                 })
                 .build();
