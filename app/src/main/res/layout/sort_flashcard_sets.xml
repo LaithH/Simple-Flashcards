@@ -1,49 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RadioGroup
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="SpUsage"
     >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
         android:id="@+id/alphabetical_ascending"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:paddingLeft="4dp"
         android:text="@string/alphabetically_ascending"
-        android:textSize="19dp"
+        style="@style/sort_flashcard_set_radio_button"
         />
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
         android:id="@+id/alphabetical_descending"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="4dp"
         android:text="@string/alphabetically_descending"
-        android:textSize="19dp"
+        style="@style/sort_flashcard_set_radio_button"
         />
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
         android:id="@+id/least_learned_first"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="4dp"
         android:text="@string/least_learned_first"
-        android:textSize="19dp"
+        style="@style/sort_flashcard_set_radio_button"
         />
 
     <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
         android:id="@+id/most_learned_first"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:paddingLeft="4dp"
         android:text="@string/most_learned_first"
-        android:textSize="19dp"
+        style="@style/sort_flashcard_set_radio_button"
         />
 </RadioGroup>
