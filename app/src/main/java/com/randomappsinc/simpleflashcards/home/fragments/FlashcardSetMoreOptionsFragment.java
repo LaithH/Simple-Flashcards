@@ -24,8 +24,8 @@ import com.randomappsinc.simpleflashcards.utils.FileUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,21 +74,24 @@ public class FlashcardSetMoreOptionsFragment extends Fragment
     @Override
     public void onItemClick(int position) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            DatabaseManager databaseManager = DatabaseManager.get();
-            FlashcardSetDO flashcardSetDO = databaseManager.getFlashcardSet(setId);
+            FlashcardSetDO flashcardSetDO = DatabaseManager.get().getFlashcardSet(setId);
             File csvFile = FileUtils.createCsvFileForSet(getContext(), flashcardSetDO);
             if (csvFile == null) {
                 UIUtils.showLongToast(R.string.export_csv_failed, getContext());
                 return;
             }
 
-            CsvWriter csvWriter = new CsvWriter();
-            try (CsvAppender csvAppender = csvWriter.append(csvFile, StandardCharsets.UTF_8)) {
+            try {
+                CsvWriter csvWriter = new CsvWriter();
+                FileWriter fileWriter = new FileWriter(csvFile, true);
+                CsvAppender csvAppender = csvWriter.append(fileWriter);
                 for (FlashcardDO flashcardDO : flashcardSetDO.getFlashcards()) {
                     csvAppender.appendLine(flashcardDO.getTerm(), flashcardDO.getDefinition());
                 }
+                csvAppender.flush();
             } catch (IOException exception) {
                 UIUtils.showLongToast(R.string.export_csv_failed, getContext());
+                return;
             }
 
             Uri fileUri = FileProvider.getUriForFile(getContext(),
