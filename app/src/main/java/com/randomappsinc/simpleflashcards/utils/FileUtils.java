@@ -122,6 +122,15 @@ public class FileUtils {
             return null;
         }
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        return new File(storageDir, flashcardSetDO.getName() + ".csv");
+        File file = new File(storageDir, flashcardSetDO.getName() + ".csv");
+        // Delete file if it already exists to prevent ourselves from appending to old content
+        if (file.delete()) {
+            try {
+                return file.createNewFile() ? file : null;
+            } catch (IOException exception) {
+                return null;
+            }
+        }
+        return file;
     }
 }
