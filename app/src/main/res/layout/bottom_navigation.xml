@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
+    tools:ignore="SpUsage"
     >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedLinearLayout
@@ -21,6 +23,13 @@
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/search"
             android:text="@string/download_icon"
+            style="@style/bottom_navigation_item"
+            />
+
+        <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
+            android:id="@+id/add"
+            android:text="@string/add_circle_icon"
+            android:textSize="40dp"
             style="@style/bottom_navigation_item"
             />
 

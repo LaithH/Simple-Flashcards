@@ -1,7 +1,10 @@
 package com.randomappsinc.simpleflashcards.home.views;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +14,7 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
 import butterknife.BindColor;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +27,7 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
 
     @BindView(R.id.home) TextView homeButton;
     @BindView(R.id.search) TextView searchButton;
+    @BindView(R.id.add) TextView addButton;
     @BindView(R.id.folders) TextView folderButton;
     @BindView(R.id.settings) TextView settingsButton;
 
@@ -31,12 +36,15 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
     @BindColor(R.color.half_white) int halfWhite;
     @BindColor(R.color.white) int white;
 
+    @BindInt(R.integer.shorter_anim_length) int animLength;
+
     private int selectedColor;
     private int nonSelectedColor;
 
     private Listener listener;
     private TextView currentlySelected;
     private ThemeManager themeManager = ThemeManager.get();
+    private final ObjectAnimator rotateAddAnimation;
 
     public BottomNavigationView(Context context) {
         this(context, null, 0);
@@ -56,6 +64,9 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
         searchButton.setTextColor(nonSelectedColor);
         folderButton.setTextColor(nonSelectedColor);
         settingsButton.setTextColor(nonSelectedColor);
+        rotateAddAnimation = ObjectAnimator.ofFloat(addButton, View.ROTATION, 0, 45);
+        rotateAddAnimation.setDuration(animLength);
+        rotateAddAnimation.setInterpolator(new LinearInterpolator());
     }
 
     private void setColors() {
@@ -107,6 +118,15 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
         currentlySelected = searchButton;
         searchButton.setTextColor(selectedColor);
         listener.onNavItemSelected(R.id.search);
+    }
+
+    @OnClick(R.id.add)
+    public void onAddClicked() {
+        if (addButton.getRotation() > 0) {
+            rotateAddAnimation.reverse();
+        } else {
+            rotateAddAnimation.start();
+        }
     }
 
     @OnClick(R.id.folders)
