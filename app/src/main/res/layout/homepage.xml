@@ -1,14 +1,12 @@
 <com.randomappsinc.simpleflashcards.theme.ThemedLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/focus_sink"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:ignore="SpUsage, RtlHardcoded"
     >
 
     <include
@@ -16,193 +14,7 @@
         layout="@layout/search_bar"
         />
 
-    <LinearLayout
-        android:id="@+id/no_sets"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        >
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="@string/no_sets_at_all"
-            android:textColor="@color/dark_gray"
-            android:textSize="23sp"
-            />
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-            android:id="@+id/download_sets_button"
-            android:layout_marginBottom="4dp"
-            style="@style/no_sets_option_card"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:text="@string/download_icon"
-                    android:textColor="@color/app_blue"
-                    android:textSize="24dp"
-                    android:gravity="center"
-                    />
-
-                <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/download_sets_button_text"
-                    android:textSize="17dp"
-                    />
-            </LinearLayout>
-        </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-            android:id="@+id/import_from_csv_button"
-            android:layout_marginBottom="4dp"
-            style="@style/no_sets_option_card"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:text="@string/document_icon"
-                    android:textColor="@color/app_blue"
-                    android:textSize="24dp"
-                    android:gravity="center"
-                    />
-
-                <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/import_from_csv_home_text"
-                    android:textSize="17dp"
-                    />
-            </LinearLayout>
-        </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-            android:id="@+id/share_with_nearby_button"
-            android:layout_marginBottom="4dp"
-            style="@style/no_sets_option_card"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:text="@string/share_nearby_icon"
-                    android:textColor="@color/app_blue"
-                    android:textSize="24dp"
-                    android:gravity="center"
-                    />
-
-                <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/get_from_nearby"
-                    android:textSize="17dp"
-                    />
-            </LinearLayout>
-        </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-            android:id="@+id/create_set_button"
-            android:layout_marginBottom="4dp"
-            style="@style/no_sets_option_card"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:text="@string/add_circle_icon"
-                    android:textColor="@color/app_blue"
-                    android:textSize="24dp"
-                    android:gravity="center"
-                    />
-
-                <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/create_your_own"
-                    android:textSize="17dp"
-                    />
-            </LinearLayout>
-        </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-            android:id="@+id/restore_sets_button"
-            style="@style/no_sets_option_card"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                >
-
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:text="@string/download_icon"
-                    android:textColor="@color/app_blue"
-                    android:textSize="24dp"
-                    android:gravity="center"
-                    />
-
-                <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/restore_them_from_backup"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="17dp"
-                    />
-            </LinearLayout>
-        </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-        <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/home_settings_info_text"
-            android:textColor="@color/dark_gray"
-            android:textSize="15sp"
-            />
-    </LinearLayout>
+    <include layout="@layout/library_empty_state"/>
 
     <com.randomappsinc.simpleflashcards.theme.ThemedTextView
         android:id="@+id/no_sets_match"
