@@ -1,5 +1,6 @@
 package com.randomappsinc.simpleflashcards.home.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,6 +13,9 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.managers.BackupDataManager;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
+import com.randomappsinc.simpleflashcards.common.constants.Constants;
+import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
+import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
 import com.randomappsinc.simpleflashcards.home.fragments.HomepageFragmentController;
 import com.randomappsinc.simpleflashcards.home.views.BottomNavigationView;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
@@ -21,8 +25,10 @@ import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class MainActivity extends StandardActivity implements BottomNavigationView.Listener {
+public class MainActivity extends StandardActivity
+        implements BottomNavigationView.Listener, CreateFlashcardSetDialog.Listener {
 
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
     @BindView(R.id.bottom_sheet) View bottomSheet;
@@ -31,12 +37,17 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
     private HomepageFragmentController navigationController;
     protected BackupDataManager backupDataManager = BackupDataManager.get();
     private DatabaseManager databaseManager = DatabaseManager.get();
+    private CreateFlashcardSetDialog createFlashcardSetDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        PreferencesManager preferencesManager = new PreferencesManager(this);
+        preferencesManager.logAppOpen();
+        DialogUtil.showHomepageDialog(this);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -55,9 +66,7 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
         navigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
         navigationController.loadHomeInitially();
 
-        PreferencesManager preferencesManager = new PreferencesManager(this);
-        preferencesManager.logAppOpen();
-        DialogUtil.showHomepageDialog(this);
+        createFlashcardSetDialog = new CreateFlashcardSetDialog(this, this);
 
         databaseManager.setListener(databaseListener);
     }
@@ -97,8 +106,33 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
+    @OnClick(R.id.sheet_download_flashcards)
+    public void downloadSets() {
+        bottomNavigation.onSearchClicked();
+    }
+
+    @OnClick(R.id.sheet_create_set)
+    public void createSet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        createFlashcardSetDialog.show();
+    }
+
+    @Override
+    public void onFlashcardSetCreated(String newSetName) {
+        int newSetId = databaseManager.createFlashcardSet(newSetName);
+        Intent intent = new Intent(this, EditFlashcardsActivity.class);
+        intent.putExtra(Constants.FLASHCARD_SET_ID_KEY, newSetId);
+        startActivity(intent);
+    }
+
     public void loadQuizletSetSearch() {
         bottomNavigation.onSearchClicked();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        createFlashcardSetDialog.cleanUp();
     }
 
     @Override

@@ -21,19 +21,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndRestoreActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
 import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
-import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
 import com.randomappsinc.simpleflashcards.home.activities.FlashcardSetActivity;
 import com.randomappsinc.simpleflashcards.home.activities.MainActivity;
 import com.randomappsinc.simpleflashcards.home.adapters.HomepageFlashcardSetsAdapter;
-import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
 import com.randomappsinc.simpleflashcards.home.dialogs.SortFlashcardSetsDialog;
 import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
@@ -53,8 +48,7 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 public class HomepageFragment extends Fragment
-        implements HomepageFlashcardSetsAdapter.Listener, CreateFlashcardSetDialog.Listener,
-        SortFlashcardSetsDialog.Listener {
+        implements HomepageFlashcardSetsAdapter.Listener, SortFlashcardSetsDialog.Listener {
 
     public static HomepageFragment newInstance() {
         return new HomepageFragment();
@@ -63,7 +57,6 @@ public class HomepageFragment extends Fragment
     private static final int SPEECH_REQUEST_CODE = 1;
     private static final int CSV_IMPORT_REQUEST_CODE = 2;
 
-    @BindView(R.id.parent) View parent;
     @BindView(R.id.focus_sink) View focusSink;
     @BindView(R.id.search_bar) View searchBar;
     @BindView(R.id.search_input) EditText setSearch;
@@ -76,10 +69,8 @@ public class HomepageFragment extends Fragment
     @BindView(R.id.flashcard_sets) RecyclerView sets;
     @BindView(R.id.no_sets) View noSetsAtAll;
     @BindView(R.id.no_sets_match) View noSetsMatch;
-    @BindView(R.id.add_flashcard_set) FloatingActionButton addFlashcardSet;
 
     protected HomepageFlashcardSetsAdapter adapter;
-    private CreateFlashcardSetDialog createFlashcardSetDialog;
     private DatabaseManager databaseManager = DatabaseManager.get();
     private SortFlashcardSetsDialog sortFlashcardSetsDialog;
     @Nullable private Comparator<FlashcardSetDO> setComparator;
@@ -98,17 +89,12 @@ public class HomepageFragment extends Fragment
                 container,
                 false);
         unbinder = ButterKnife.bind(this, rootView);
-        addFlashcardSet.setImageDrawable(new IconDrawable(getContext(), IoniconsIcons.ion_android_add)
-                .colorRes(R.color.white)
-                .actionBarSize());
         return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        createFlashcardSetDialog = new CreateFlashcardSetDialog(getActivity(), this);
 
         adapter = new HomepageFlashcardSetsAdapter(this);
         sets.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
@@ -150,11 +136,6 @@ public class HomepageFragment extends Fragment
         setSearch.setText("");
     }
 
-    @OnClick(R.id.add_flashcard_set)
-    public void addSet() {
-        createFlashcardSetDialog.show();
-    }
-
     @OnClick(R.id.download_sets_button)
     public void downloadFlashcards() {
         MainActivity activity = (MainActivity) getActivity();
@@ -175,7 +156,7 @@ public class HomepageFragment extends Fragment
 
     @OnClick(R.id.create_set_button)
     public void createSet() {
-        createFlashcardSetDialog.show();
+        ((MainActivity) getActivity()).createSet();
     }
 
     @OnClick(R.id.restore_sets_button)
@@ -189,16 +170,6 @@ public class HomepageFragment extends Fragment
     @OnClick(R.id.share_with_nearby_button)
     public void shareWithNearby() {
         startActivity(new Intent(getActivity(), NearbySharingActivity.class));
-        getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
-    }
-
-    @Override
-    public void onFlashcardSetCreated(String newSetName) {
-        int newSetId = databaseManager.createFlashcardSet(newSetName);
-        adapter.refreshContent(setSearch.getText().toString(), setComparator);
-        Intent intent = new Intent(getActivity(), EditFlashcardsActivity.class);
-        intent.putExtra(Constants.FLASHCARD_SET_ID_KEY, newSetId);
-        startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
     }
 
@@ -341,7 +312,6 @@ public class HomepageFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         adapter.cleanup();
-        createFlashcardSetDialog.cleanUp();
         unbinder.unbind();
     }
 
