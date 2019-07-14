@@ -67,7 +67,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="@string/download_sets_button_text"
-                        android:textColor="@color/dark_gray"
                         android:textSize="17dp"
                         />
                 </LinearLayout>
@@ -100,7 +99,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="@string/import_from_csv_home_text"
-                        android:textColor="@color/dark_gray"
                         android:textSize="17dp"
                         />
                 </LinearLayout>
@@ -133,7 +131,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="@string/get_from_nearby"
-                        android:textColor="@color/dark_gray"
                         android:textSize="17dp"
                         />
                 </LinearLayout>
@@ -166,7 +163,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="@string/create_your_own"
-                        android:textColor="@color/dark_gray"
                         android:textSize="17dp"
                         />
                 </LinearLayout>

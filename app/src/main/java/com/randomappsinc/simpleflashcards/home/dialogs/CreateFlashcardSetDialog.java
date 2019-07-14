@@ -32,27 +32,21 @@ public class CreateFlashcardSetDialog implements ThemeManager.Listener {
     private void createDialog() {
         adderDialog = new MaterialDialog.Builder(context)
                 .theme(themeManager.getDarkModeEnabled(context) ? Theme.DARK : Theme.LIGHT)
-                .title(R.string.create_flashcard_set)
+                .title(R.string.create_flashcard_set_title)
                 .alwaysCallInputCallback()
                 .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .input(context.getString(R.string.flashcard_set_name),
                         "",
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                String setName = input.toString();
-                                boolean notEmpty = !setName.trim().isEmpty();
-                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
-                            }
+                        (dialog, input) -> {
+                            String setName = input.toString();
+                            boolean notEmpty = !setName.trim().isEmpty();
+                            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(notEmpty);
                         })
                 .positiveText(R.string.create)
                 .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String setName = dialog.getInputEditText().getText().toString().trim();
-                        listener.onFlashcardSetCreated(setName);
-                    }
+                .onPositive((dialog, which) -> {
+                    String setName = dialog.getInputEditText().getText().toString().trim();
+                    listener.onFlashcardSetCreated(setName);
                 })
                 .build();
     }

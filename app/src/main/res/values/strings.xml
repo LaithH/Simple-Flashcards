@@ -33,7 +33,7 @@
 
     <string name="no_sets_search">You do not have any flashcard sets that match your search.</string>
 
-    <string name="create_flashcard_set">Create Flashcard Set</string>
+    <string name="create_flashcard_set_title">Create Flashcard Set</string>
     <string name="flashcard_set_name">Flashcard set name</string>
     <string name="create">Create</string>
 

@@ -3,7 +3,7 @@
     <string name="share_with_nearby_settings">Share flashcards with nearby users</string>
     <string name="backup_and_restore_data">Backup and restore data</string>
     <string name="dark_mode">Dark mode</string>
-    <string name="import_flashcards_from_csv">Import flashcards from .csv</string>
+    <string name="import_flashcards_from_csv">Import flashcards from .csv file</string>
     <string name="set_nearby_name">Set nearby name</string>
     <string name="send_feedback">Send feedback</string>
     <string name="share_this_app">Share this app</string>

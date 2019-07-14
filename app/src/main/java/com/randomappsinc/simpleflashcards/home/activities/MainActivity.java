@@ -68,6 +68,7 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
     @Override
     public void onNavItemSelected(int viewId) {
         UIUtils.closeKeyboard(this);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         navigationController.onNavItemSelected(viewId);
 
         switch (viewId) {
