@@ -23,6 +23,10 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
 
     public interface Listener {
         void onNavItemSelected(@IdRes int viewId);
+
+        void onAddOptionsExpanded();
+
+        void onAddOptionsContracted();
     }
 
     @BindView(R.id.home) TextView homeButton;
@@ -124,8 +128,17 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
     public void onAddClicked() {
         if (addButton.getRotation() > 0) {
             rotateAddAnimation.reverse();
+            listener.onAddOptionsContracted();
         } else {
             rotateAddAnimation.start();
+            listener.onAddOptionsExpanded();
+        }
+    }
+
+    public void maybeResetAddButton() {
+        // Only reset the add button if it hasn't already been reset and it isn't currently animating
+        if (addButton.getRotation() > 0 && !rotateAddAnimation.isRunning()) {
+            rotateAddAnimation.reverse();
         }
     }
 

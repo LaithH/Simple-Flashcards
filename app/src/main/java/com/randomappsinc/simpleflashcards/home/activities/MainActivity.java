@@ -2,7 +2,11 @@ package com.randomappsinc.simpleflashcards.home.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
@@ -21,7 +25,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends StandardActivity implements BottomNavigationView.Listener {
 
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
+    @BindView(R.id.bottom_sheet) View bottomSheet;
 
+    private BottomSheetBehavior bottomSheetBehavior;
     private HomepageFragmentController navigationController;
     protected BackupDataManager backupDataManager = BackupDataManager.get();
     private DatabaseManager databaseManager = DatabaseManager.get();
@@ -32,6 +38,19 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    bottomNavigation.maybeResetAddButton();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+        });
         bottomNavigation.setListener(this);
         navigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
         navigationController.loadHomeInitially();
@@ -43,12 +62,8 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
         databaseManager.setListener(databaseListener);
     }
 
-    private final DatabaseManager.Listener databaseListener = new DatabaseManager.Listener() {
-        @Override
-        public void onDatabaseUpdated() {
-            backupDataManager.backupData(getApplicationContext(), false);
-        }
-    };
+    private final DatabaseManager.Listener databaseListener
+            = () -> backupDataManager.backupData(getApplicationContext(), false);
 
     @Override
     public void onNavItemSelected(int viewId) {
@@ -69,6 +84,16 @@ public class MainActivity extends StandardActivity implements BottomNavigationVi
                 setTitle(R.string.settings);
                 break;
         }
+    }
+
+    @Override
+    public void onAddOptionsExpanded() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @Override
+    public void onAddOptionsContracted() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     public void loadQuizletSetSearch() {
