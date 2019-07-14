@@ -6,20 +6,24 @@
     android:layout_height="wrap_content"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
-    tools:ignore="SpUsage, RtlHardcoded, ContentDescription">
+    tools:ignore="SpUsage, RtlHardcoded, ContentDescription"
+    >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedCardView
         android:layout_height="wrap_content"
-        style="@style/flashcard_card">
+        style="@style/flashcard_card"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedLearnedToggle
                     android:id="@+id/learned_toggle"
@@ -31,7 +35,8 @@
                     android:paddingRight="8dp"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
                     android:id="@+id/delete_flashcard"
@@ -40,18 +45,21 @@
                     android:layout_gravity="center_vertical|right"
                     android:gravity="center"
                     android:text="@string/delete_icon"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp"
+                    />
             </FrameLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/dark_gray"/>
+                android:background="@color/dark_gray"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -61,7 +69,8 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                         android:id="@+id/term_text"
@@ -69,12 +78,14 @@
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:paddingTop="8dp"
-                        android:paddingBottom="8dp"/>
+                        android:paddingBottom="8dp"
+                        />
 
                     <com.randomappsinc.simpleflashcards.common.views.SquareImageView
                         android:id="@+id/term_image"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"/>
+                        android:layout_height="0dp"
+                        />
 
                     <LinearLayout
                         android:id="@+id/add_term_image"
@@ -84,27 +95,31 @@
                         android:paddingBottom="8dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:background="@drawable/rounded_gray_border">
+                        android:background="@drawable/rounded_gray_border"
+                        >
 
                         <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/picture_icon"
-                            android:textSize="36dp"/>
+                            android:textSize="36dp"
+                            />
 
                         <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/add_image"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp"
+                            />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/dark_gray"/>
+                    android:background="@color/dark_gray"
+                    />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -114,7 +129,8 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="8dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                         android:id="@+id/definition_text"
@@ -122,12 +138,14 @@
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
                         android:paddingTop="8dp"
-                        android:paddingBottom="8dp"/>
+                        android:paddingBottom="8dp"
+                        />
 
                     <com.randomappsinc.simpleflashcards.common.views.SquareImageView
                         android:id="@+id/definition_image"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"/>
+                        android:layout_height="0dp"
+                        />
 
                     <LinearLayout
                         android:id="@+id/add_definition_image"
@@ -137,20 +155,23 @@
                         android:paddingBottom="8dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:background="@drawable/rounded_gray_border">
+                        android:background="@drawable/rounded_gray_border"
+                        >
 
                         <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/picture_icon"
-                            android:textSize="36dp"/>
+                            android:textSize="36dp"
+                            />
 
                         <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/add_image"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

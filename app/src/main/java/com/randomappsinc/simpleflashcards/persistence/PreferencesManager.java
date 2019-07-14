@@ -12,7 +12,6 @@ public class PreferencesManager {
 
     private static final int DEFAULT_BROWSE_TEXT_SIZE_SP = 24;
 
-    private static final String FIRST_TIME_USER = "firstTimeUser";
     private static final String NUM_OPENS_KEY = "numOpens";
     private static final String NEARBY_NAME = "nearbyName";
     private static final String ENABLE_SHAKE = "enableShake";
@@ -45,14 +44,6 @@ public class PreferencesManager {
 
     public PreferencesManager(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    public boolean isFirstTimeUser() {
-        return prefs.getBoolean(FIRST_TIME_USER, true);
-    }
-
-    public void rememberWelcome() {
-        prefs.edit().putBoolean(FIRST_TIME_USER, false).apply();
     }
 
     public void logAppOpen() {

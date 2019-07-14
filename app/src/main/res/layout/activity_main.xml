@@ -31,29 +31,21 @@
         <LinearLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:background="@android:color/darker_gray"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@drawable/top_rounded_blue_background"
             app:behavior_hideable="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/app_blue"
-                android:gravity="center"
-                android:text="@string/sort_flashcards"
-                android:textColor="@android:color/white"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/alphabetically_descending"
-                android:textColor="@android:color/white"
-                />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>
