@@ -1,6 +1,9 @@
 package com.randomappsinc.simpleflashcards.home.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -11,13 +14,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
+import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndRestoreActivity;
 import com.randomappsinc.simpleflashcards.backupandrestore.managers.BackupDataManager;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
+import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
 import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
 import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
 import com.randomappsinc.simpleflashcards.home.fragments.HomepageFragmentController;
 import com.randomappsinc.simpleflashcards.home.views.BottomNavigationView;
+import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.utils.DialogUtil;
@@ -29,6 +35,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends StandardActivity
         implements BottomNavigationView.Listener, CreateFlashcardSetDialog.Listener {
+
+    private static final int CSV_IMPORT_REQUEST_CODE = 2;
 
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
     @BindView(R.id.bottom_sheet) View bottomSheet;
@@ -117,6 +125,33 @@ public class MainActivity extends StandardActivity
         createFlashcardSetDialog.show();
     }
 
+    @OnClick(R.id.sheet_import_from_csv)
+    public void importFromCsv() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            UIUtils.showLongToast(R.string.csv_format_instructions, this);
+            Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            csvIntent.setType("*/*");
+            csvIntent.putExtra(Intent.EXTRA_MIME_TYPES, Constants.CSV_MIME_TYPES);
+            startActivityForResult(csvIntent, CSV_IMPORT_REQUEST_CODE);
+        }
+    }
+
+    @OnClick(R.id.sheet_share_nearby)
+    public void shareWithNearby() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        startActivity(new Intent(this, NearbySharingActivity.class));
+    }
+
+    @OnClick(R.id.sheet_restore_from_backup)
+    public void restoreFromBackup() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        Intent intent = new Intent(this, BackupAndRestoreActivity.class)
+                .putExtra(Constants.GO_TO_RESTORE_IMMEDIATELY_KEY, true);
+        startActivity(intent);
+    }
+
     @Override
     public void onFlashcardSetCreated(String newSetName) {
         int newSetId = databaseManager.createFlashcardSet(newSetName);
@@ -127,6 +162,28 @@ public class MainActivity extends StandardActivity
 
     public void loadQuizletSetSearch() {
         bottomNavigation.onSearchClicked();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CSV_IMPORT_REQUEST_CODE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && resultCode == Activity.RESULT_OK
+                    && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+
+                // Persist ability to read from this file
+                int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
+                String uriString = uri.toString();
+                Intent intent = new Intent(this, CsvImportActivity.class);
+                intent.putExtra(Constants.URI_KEY, uriString);
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
