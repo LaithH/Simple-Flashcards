@@ -23,7 +23,6 @@ import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
 import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
 import com.randomappsinc.simpleflashcards.home.adapters.SettingsAdapter;
-import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
 import com.randomappsinc.simpleflashcards.nearbysharing.managers.NearbyNameManager;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
@@ -82,38 +81,22 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
         Intent intent = null;
         switch (position) {
             case 0:
-                intent = new Intent(getActivity(), NearbySharingActivity.class);
-                break;
-            case 1:
                 intent = new Intent(getActivity(), BackupAndRestoreActivity.class);
                 break;
-            case 2:
-                View thirdCell = settingsOptions.getChildAt(2);
+            case 1:
+                View thirdCell = settingsOptions.getChildAt(position);
                 Switch darkThemeToggle = thirdCell.findViewById(R.id.toggle);
                 boolean darkThemeEnabled = darkThemeToggle.isChecked();
                 darkThemeToggle.setChecked(!darkThemeEnabled);
                 themeManager.setDarkModeEnabled(getContext(), !darkThemeEnabled);
                 return;
-            case 3:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    UIUtils.showLongToast(R.string.csv_format_instructions, getContext());
-                    Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                    csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                    csvIntent.setType("*/*");
-                    csvIntent.putExtra(Intent.EXTRA_MIME_TYPES, Constants.CSV_MIME_TYPES);
-                    startActivityForResult(csvIntent, 1);
-                }
-                return;
-            case 4:
-                nearbyNameManager.showNameSetter();
-                return;
-            case 5:
+            case 2:
                 String uriText = "mailto:" + SUPPORT_EMAIL + "?subject=" + Uri.encode(feedbackSubject);
                 Uri mailUri = Uri.parse(uriText);
                 Intent sendIntent = new Intent(Intent.ACTION_SENDTO, mailUri);
                 startActivity(Intent.createChooser(sendIntent, sendEmail));
                 return;
-            case 6:
+            case 3:
                 Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
                         .setText(getString(R.string.share_app_message))
@@ -122,10 +105,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     startActivity(shareIntent);
                 }
                 return;
-            case 7:
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OTHER_APPS_URL));
-                break;
-            case 8:
+            case 4:
                 Uri uri =  Uri.parse("market://details?id=" + getContext().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getContext().getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
@@ -133,7 +113,13 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                     return;
                 }
                 break;
-            case 9:
+            case 5:
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OTHER_APPS_URL));
+                break;
+            case 6:
+                nearbyNameManager.showNameSetter();
+                return;
+            case 7:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL));
                 break;
         }

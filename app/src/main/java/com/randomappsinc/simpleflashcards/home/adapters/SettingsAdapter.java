@@ -87,14 +87,11 @@ public class SettingsAdapter
             icon.setText(icons[position]);
             adjustForDarkMode();
 
-            switch (position) {
-                case 2:
-                    UIUtils.setCheckedImmediately(toggle, preferencesManager.getDarkModeEnabled());
-                    toggle.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    toggle.setVisibility(View.GONE);
-                    break;
+            if (position == 1) {
+                UIUtils.setCheckedImmediately(toggle, preferencesManager.getDarkModeEnabled());
+                toggle.setVisibility(View.VISIBLE);
+            } else {
+                toggle.setVisibility(View.GONE);
             }
         }
 
@@ -105,10 +102,8 @@ public class SettingsAdapter
 
         @OnClick(R.id.toggle)
         void onToggle() {
-            switch (getAdapterPosition()) {
-                case 2:
-                    themeManager.setDarkModeEnabled(toggle.getContext(), toggle.isChecked());
-                    break;
+            if (getAdapterPosition() == 1) {
+                themeManager.setDarkModeEnabled(toggle.getContext(), toggle.isChecked());
             }
         }
 

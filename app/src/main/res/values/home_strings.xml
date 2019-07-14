@@ -2,6 +2,7 @@
 <resources>
     <string name="download_flashcards_from_quizlet">Download flashcards from Quizlet</string>
     <string name="create_flashcard_set">Create flashcard set</string>
+    <string name="import_flashcards_from_csv">Import flashcards from .csv file</string>
     <string name="get_flashcards_from_nearby_users">Get flashcards from nearby study buddies</string>
     <string name="restore_flashcards_from_backup">Restore flashcards from a backup</string>
 </resources>
