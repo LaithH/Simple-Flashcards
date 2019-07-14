@@ -10,6 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndRestoreActivity;
+import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
@@ -18,7 +19,7 @@ public class DialogUtil {
     public static void showHomepageDialog(final Activity activity) {
         PreferencesManager preferencesManager = new PreferencesManager(activity);
         final ThemeManager themeManager = ThemeManager.get();
-        if (!preferencesManager.hasSeenBackupDataDialog()) {
+        if (DatabaseManager.get().getNumFlashcardSets() > 0 && !preferencesManager.hasSeenBackupDataDialog()) {
             preferencesManager.rememberBackupDataDialogSeen();
             new MaterialDialog.Builder(activity)
                     .theme(themeManager.getDarkModeEnabled(activity) ? Theme.DARK : Theme.LIGHT)

@@ -28,6 +28,7 @@ public class PreferencesManager {
     private static final String SHARING_DIALOG_SEEN = "sharingDialogSeen";
     private static final String BACKUP_DATA_DIALOG_SEEN = "backupDataDialogSeen";
 
+    private static final int NUM_APP_OPENS_BEFORE_TEACHING_DARK_MODE = 3;
     private static final int NUM_APP_OPENS_BEFORE_ASKING_FOR_RATING = 5;
     private static final int NUM_APP_OPENS_BEFORE_ASKING_FOR_SHARE = 10;
 
@@ -130,8 +131,11 @@ public class PreferencesManager {
     }
 
     public boolean shouldTeachAboutDarkMode() {
+        int currentOpens = prefs.getInt(NUM_OPENS_KEY, 0);
         boolean darkModeDisabled = !getDarkModeEnabled();
-        return darkModeDisabled && !prefs.getBoolean(HAS_SEEN_DARK_MODE_DIALOG, false);
+        return currentOpens >= NUM_APP_OPENS_BEFORE_TEACHING_DARK_MODE
+                && darkModeDisabled
+                && !prefs.getBoolean(HAS_SEEN_DARK_MODE_DIALOG, false);
     }
 
     public void rememberDarkModeDialogSeen() {
