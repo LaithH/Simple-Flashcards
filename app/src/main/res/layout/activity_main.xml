@@ -38,6 +38,14 @@
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             >
 
+            <View
+                android:layout_marginTop="12dp"
+                android:layout_width="60dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rounded_white_rectangle"
+                />
+
             <LinearLayout
                 android:id="@+id/sheet_download_flashcards"
                 style="@style/add_bottom_sheet_option_container">
