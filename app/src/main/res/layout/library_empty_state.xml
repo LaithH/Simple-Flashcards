@@ -41,6 +41,26 @@
     </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
 
     <com.randomappsinc.simpleflashcards.theme.ThemedCardView
+        android:id="@+id/create_set_button"
+        android:layout_marginBottom="4dp"
+        style="@style/no_sets_option_card"
+        >
+
+        <LinearLayout style="@style/library_empty_state_option_container">
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:text="@string/add_circle_icon"
+                style="@style/library_empty_state_icon"
+                />
+
+            <com.randomappsinc.simpleflashcards.theme.ThemedTextView
+                android:text="@string/create_flashcard_set"
+                style="@style/library_empty_state_text"
+                />
+        </LinearLayout>
+    </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
+
+    <com.randomappsinc.simpleflashcards.theme.ThemedCardView
         android:id="@+id/import_from_csv_button"
         android:layout_marginBottom="4dp"
         style="@style/no_sets_option_card"
@@ -75,26 +95,6 @@
 
             <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                 android:text="@string/get_flashcards_from_nearby_users"
-                style="@style/library_empty_state_text"
-                />
-        </LinearLayout>
-    </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
-
-    <com.randomappsinc.simpleflashcards.theme.ThemedCardView
-        android:id="@+id/create_set_button"
-        android:layout_marginBottom="4dp"
-        style="@style/no_sets_option_card"
-        >
-
-        <LinearLayout style="@style/library_empty_state_option_container">
-
-            <com.joanzapata.iconify.widget.IconTextView
-                android:text="@string/add_circle_icon"
-                style="@style/library_empty_state_icon"
-                />
-
-            <com.randomappsinc.simpleflashcards.theme.ThemedTextView
-                android:text="@string/create_flashcard_set"
                 style="@style/library_empty_state_text"
                 />
         </LinearLayout>
