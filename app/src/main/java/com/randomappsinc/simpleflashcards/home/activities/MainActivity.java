@@ -116,6 +116,7 @@ public class MainActivity extends StandardActivity
 
     @OnClick(R.id.sheet_download_flashcards)
     public void downloadSets() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomNavigation.onSearchClicked();
     }
 
