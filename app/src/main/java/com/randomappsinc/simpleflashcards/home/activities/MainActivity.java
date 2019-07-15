@@ -41,7 +41,7 @@ public class MainActivity extends StandardActivity
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
     @BindView(R.id.bottom_sheet) View bottomSheet;
 
-    private BottomSheetBehavior bottomSheetBehavior;
+    protected BottomSheetBehavior bottomSheetBehavior;
     private HomepageFragmentController navigationController;
     protected BackupDataManager backupDataManager = BackupDataManager.get();
     private DatabaseManager databaseManager = DatabaseManager.get();
@@ -68,7 +68,13 @@ public class MainActivity extends StandardActivity
             }
 
             @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Set state to HIDDEN on slideOffset being -1 (fully hidden),
+                // because if you expand/collapse it super fast, the state machine is broken
+                if (slideOffset == -1) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                }
+            }
         });
         bottomNavigation.setListener(this);
         navigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
