@@ -166,6 +166,7 @@ public class MainActivity extends StandardActivity
 
     @Override
     public void onFlashcardSetCreated(String newSetName) {
+        UIUtils.showShortToast(R.string.flashcard_set_created, this);
         int newSetId = databaseManager.createFlashcardSet(newSetName);
         Intent intent = new Intent(this, EditFlashcardsActivity.class);
         intent.putExtra(Constants.FLASHCARD_SET_ID_KEY, newSetId);

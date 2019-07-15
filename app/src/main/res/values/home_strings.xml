@@ -5,4 +5,6 @@
     <string name="import_flashcards_from_csv">Import flashcards from .csv file</string>
     <string name="get_flashcards_from_nearby_users">Get flashcards from nearby study buddies</string>
     <string name="restore_flashcards_from_backup">Restore flashcards from a backup</string>
+
+    <string name="flashcard_set_created">Flashcard set created.</string>
 </resources>
