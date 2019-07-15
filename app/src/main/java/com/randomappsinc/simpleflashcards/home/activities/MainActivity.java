@@ -122,20 +122,20 @@ public class MainActivity extends StandardActivity
 
     @OnClick(R.id.sheet_download_flashcards)
     public void downloadSets() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        hideBottomSheet();
         bottomNavigation.onSearchClicked();
     }
 
     @OnClick(R.id.sheet_create_set)
     public void createSet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        hideBottomSheet();
         createFlashcardSetDialog.show();
     }
 
     @OnClick(R.id.sheet_import_from_csv)
     public void importFromCsv() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            hideBottomSheet();
             UIUtils.showLongToast(R.string.csv_format_instructions, this);
             Intent csvIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             csvIntent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -147,16 +147,21 @@ public class MainActivity extends StandardActivity
 
     @OnClick(R.id.sheet_share_nearby)
     public void shareWithNearby() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        hideBottomSheet();
         startActivity(new Intent(this, NearbySharingActivity.class));
     }
 
     @OnClick(R.id.sheet_restore_from_backup)
     public void restoreFromBackup() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        hideBottomSheet();
         Intent intent = new Intent(this, BackupAndRestoreActivity.class)
                 .putExtra(Constants.GO_TO_RESTORE_IMMEDIATELY_KEY, true);
         startActivity(intent);
+    }
+
+    public void hideBottomSheet() {
+        bottomNavigation.maybeResetAddButton();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
