@@ -17,7 +17,6 @@ import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.quizlet.adapters.QuizletFlashcardsAdapter;
 import com.randomappsinc.simpleflashcards.quizlet.api.QuizletFlashcardSetFetcher;
-import com.randomappsinc.simpleflashcards.quizlet.api.models.QuizletFlashcard;
 import com.randomappsinc.simpleflashcards.quizlet.api.models.QuizletFlashcardSet;
 
 import butterknife.BindColor;
@@ -53,7 +52,7 @@ public class QuizletSetViewActivity extends StandardActivity {
         String title = getIntent().getStringExtra(Constants.QUIZLET_SET_TITLE);
         setTitle(title);
 
-        adapter = new QuizletFlashcardsAdapter(this, flashcardClickListener);
+        adapter = new QuizletFlashcardsAdapter(flashcardClickListener);
         flashcards.setAdapter(adapter);
 
         setFetcher = QuizletFlashcardSetFetcher.getInstance();
@@ -85,17 +84,14 @@ public class QuizletSetViewActivity extends StandardActivity {
             };
 
     private final QuizletFlashcardsAdapter.Listener flashcardClickListener =
-            new QuizletFlashcardsAdapter.Listener() {
-                @Override
-                public void onImageClicked(QuizletFlashcard flashcard) {
-                    Intent intent = new Intent(
-                            QuizletSetViewActivity.this,
-                            PictureFullViewActivity.class)
-                            .putExtra(Constants.IMAGE_URL_KEY, flashcard.getImageUrl())
-                            .putExtra(Constants.CAPTION_KEY, flashcard.getTerm());
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.fade_in, 0);
-                }
+            flashcard -> {
+                Intent intent = new Intent(
+                        QuizletSetViewActivity.this,
+                        PictureFullViewActivity.class)
+                        .putExtra(Constants.IMAGE_URL_KEY, flashcard.getImageUrl())
+                        .putExtra(Constants.CAPTION_KEY, flashcard.getTerm());
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, 0);
             };
 
     @OnClick(R.id.download)

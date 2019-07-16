@@ -22,18 +22,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class QuizletFlashcardsAdapter extends RecyclerView.Adapter<QuizletFlashcardsAdapter.FlashcardViewHolder> {
+public class QuizletFlashcardsAdapter
+        extends RecyclerView.Adapter<QuizletFlashcardsAdapter.FlashcardViewHolder> {
 
     public interface Listener {
         void onImageClicked(QuizletFlashcard flashcard);
     }
 
-    protected Context context;
     @NonNull protected Listener listener;
     protected List<QuizletFlashcard> flashcards = new ArrayList<>();
 
-    public QuizletFlashcardsAdapter(Context context, @NonNull Listener listener) {
-        this.context = context;
+    public QuizletFlashcardsAdapter(@NonNull Listener listener) {
         this.listener = listener;
     }
 
@@ -46,7 +45,7 @@ public class QuizletFlashcardsAdapter extends RecyclerView.Adapter<QuizletFlashc
     @NonNull
     @Override
     public FlashcardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.quizlet_flashcard_cell,
                 parent,
                 false);
@@ -77,6 +76,7 @@ public class QuizletFlashcardsAdapter extends RecyclerView.Adapter<QuizletFlashc
 
         void loadFlashcard(int position) {
             QuizletFlashcard flashcard = flashcards.get(position);
+            Context context = positionInfo.getContext();
             positionInfo.setText(context.getString(
                     R.string.flashcard_x_of_y,
                     position + 1,

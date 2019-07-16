@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class QuizResultsFragment extends Fragment {
+public class QuizResultsFragment extends Fragment implements QuizResultsAdapter.Listener {
 
     public static QuizResultsFragment getInstance(
             ArrayList<Problem> problems,
@@ -61,23 +61,23 @@ public class QuizResultsFragment extends Fragment {
             QuizResultsAdapter quizResultsAdapter = new QuizResultsAdapter(
                     problems,
                     numQuestions,
-                    resultClickListener);
+                    this);
             quizResults.setAdapter(quizResultsAdapter);
         } else {
             quizResults.setVisibility(View.GONE);
             boolean showWrongAnswers = getArguments().getBoolean(Constants.SHOW_WRONG_QUESTIONS_KEY);
-            noProblems.setText(showWrongAnswers ? R.string.none_wrong : R.string.none_right);
+            noProblems.setText(showWrongAnswers
+                    ? R.string.none_wrong
+                    : R.string.none_right);
             noProblems.setVisibility(View.VISIBLE);
         }
         return rootView;
     }
 
-    private final QuizResultsAdapter.Listener resultClickListener = new QuizResultsAdapter.Listener() {
-        @Override
-        public void onImageClicked(Problem problem) {
-            openFullImageView(problem);
-        }
-    };
+    @Override
+    public void onImageClicked(Problem problem) {
+        openFullImageView(problem);
+    }
 
     protected void openFullImageView(Problem problem) {
         Activity activity = getActivity();

@@ -96,12 +96,7 @@ public class QuizResultsAdapter extends RecyclerView.Adapter<QuizResultsAdapter.
                 if (ViewCompat.isLaidOut(questionImage)) {
                     loadImage(imageUrl);
                 } else {
-                    ViewUtils.runOnPreDraw(questionImage, new Runnable() {
-                        @Override
-                        public void run() {
-                            loadImage(imageUrl);
-                        }
-                    });
+                    ViewUtils.runOnPreDraw(questionImage, () -> loadImage(imageUrl));
                 }
             } else {
                 questionImage.setVisibility(View.GONE);

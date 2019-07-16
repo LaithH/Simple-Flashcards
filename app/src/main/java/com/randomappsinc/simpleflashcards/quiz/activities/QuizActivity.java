@@ -87,7 +87,8 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
             timerManager = new TimerManager(timerListener, quizSettings.getNumSeconds());
         }
 
-        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_quiz_exit_body);
+        confirmQuitDialog = new ConfirmQuitDialog(
+                this, this, R.string.confirm_quiz_exit_body);
 
         quiz = new Quiz(flashcardSet, quizSettings);
         int numOptions = quiz.getNumOptions();
