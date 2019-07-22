@@ -5,6 +5,8 @@
     android:id="@+id/browse_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     tools:ignore="RtlHardcoded"
     >
 
@@ -55,5 +57,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_above="@id/flashcards_slider"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         />
 </RelativeLayout>

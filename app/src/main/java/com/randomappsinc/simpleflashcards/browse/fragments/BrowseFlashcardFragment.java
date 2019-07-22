@@ -32,13 +32,15 @@ import com.randomappsinc.simpleflashcards.utils.ViewUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindInt;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class BrowseFlashcardFragment extends Fragment {
+
+    // I do not know how this works.
+    private static final int CAMERA_DISTANCE = 8000;
 
     public static BrowseFlashcardFragment create(Flashcard flashcard) {
         BrowseFlashcardFragment flashcardFragment = new BrowseFlashcardFragment();
@@ -58,7 +60,6 @@ public class BrowseFlashcardFragment extends Fragment {
     protected TextView content;
 
     @BindInt(R.integer.default_anim_length) int flipAnimLength;
-    @BindString(R.string.view_all) String viewAll;
 
     protected Flashcard flashcard;
     protected boolean isShowingTerm;
@@ -82,6 +83,9 @@ public class BrowseFlashcardFragment extends Fragment {
         flashcard = getArguments().getParcelable(Constants.FLASHCARD_KEY);
         Preconditions.checkNotNull(flashcard, "No flashcard passed to flashcard browse fragment.");
         learnedToggle.setLearned(flashcard.isLearned());
+
+        float scale = getResources().getDisplayMetrics().density * CAMERA_DISTANCE;
+        flashcardContainer.setCameraDistance(scale);
 
         loadFlashcardIntoView();
 

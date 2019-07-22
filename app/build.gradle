@@ -8,8 +8,8 @@ android {
         applicationId "com.randomappsinc.simpleflashcards"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 310
-        versionName "3.2.2"
+        versionCode 311
+        versionName "3.2.3"
     }
     buildTypes {
         release {
@@ -47,7 +47,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
