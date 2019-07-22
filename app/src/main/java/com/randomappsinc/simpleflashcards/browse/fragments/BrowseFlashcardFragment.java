@@ -1,6 +1,8 @@
 package com.randomappsinc.simpleflashcards.browse.fragments;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,7 +13,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,14 +53,18 @@ public class BrowseFlashcardFragment extends Fragment {
 
     @BindView(R.id.flashcard_container) View flashcardContainer;
     @BindView(R.id.learned_toggle) ThemedLearnedToggle learnedToggle;
-    @BindView(R.id.speak) View speak;
+    @BindView(R.id.speak) View speakIcon;
     @BindView(R.id.flip_icon) View flipIcon;
     @BindView(R.id.content_container) ViewGroup contentContainer;
-
     protected ImageView cardImage;
     protected TextView content;
 
     @BindInt(R.integer.default_anim_length) int flipAnimLength;
+    @BindInt(R.integer.half_default_anim_length) int halfAnimLength;
+
+    // Animations
+    private AnimatorSet flipCardAnimatorSet;
+    protected AnimatorSet fadeInAnimatorSet;
 
     protected Flashcard flashcard;
     protected boolean isShowingTerm;
@@ -87,9 +92,60 @@ public class BrowseFlashcardFragment extends Fragment {
         float scale = getResources().getDisplayMetrics().density * CAMERA_DISTANCE;
         flashcardContainer.setCameraDistance(scale);
 
+        initializeAnimations();
         loadFlashcardIntoView();
 
         return rootView;
+    }
+
+    private void initializeAnimations() {
+        ObjectAnimator fadeLearnedIn = ObjectAnimator.ofFloat(learnedToggle, View.ALPHA, 0, 1)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeSpeakIn = ObjectAnimator.ofFloat(speakIcon, View.ALPHA, 0, 1)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeFlipIn = ObjectAnimator.ofFloat(flipIcon, View.ALPHA, 0, 1)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeContentIn = ObjectAnimator.ofFloat(contentContainer, View.ALPHA, 0, 1)
+                .setDuration(halfAnimLength);
+        fadeInAnimatorSet = new AnimatorSet();
+        fadeInAnimatorSet.playTogether(fadeLearnedIn, fadeSpeakIn, fadeFlipIn, fadeContentIn);
+
+        ObjectAnimator flipCardAnimation = ObjectAnimator.ofFloat(
+                flashcardContainer, View.ROTATION_Y, 0, 180).setDuration(flipAnimLength);
+        ObjectAnimator fadeLearnOut = ObjectAnimator.ofFloat(learnedToggle, View.ALPHA, 1, 0)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeSpeakOut = ObjectAnimator.ofFloat(speakIcon, View.ALPHA, 1, 0)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeFlipOut = ObjectAnimator.ofFloat(flipIcon, View.ALPHA, 1, 0)
+                .setDuration(halfAnimLength);
+        ObjectAnimator fadeContentOut = ObjectAnimator.ofFloat(contentContainer, View.ALPHA, 1, 0)
+                .setDuration(halfAnimLength);
+
+        flipCardAnimatorSet = new AnimatorSet();
+        flipCardAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                isShowingTerm = !isShowingTerm;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                flashcardContainer.setEnabled(true);
+                flashcardContainer.setRotationY(0);
+                loadFlashcardIntoView();
+                fadeInAnimatorSet.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                flashcardContainer.setEnabled(true);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+        flipCardAnimatorSet.playTogether(
+                flipCardAnimation, fadeLearnOut, fadeSpeakOut, fadeFlipOut, fadeContentOut);
     }
 
     @OnClick(R.id.learned_toggle)
@@ -109,41 +165,7 @@ public class BrowseFlashcardFragment extends Fragment {
     public void flipFlashcard() {
         stopSpeaking();
         flashcardContainer.setEnabled(false);
-        flashcardContainer.clearAnimation();
-        flashcardContainer
-                .animate()
-                .rotationY(180)
-                .setDuration(flipAnimLength)
-                .setInterpolator(new AccelerateDecelerateInterpolator())
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        isShowingTerm = !isShowingTerm;
-                        learnedToggle.setVisibility(View.GONE);
-                        speak.setVisibility(View.GONE);
-                        content.setVisibility(View.GONE);
-                        cardImage.setVisibility(View.GONE);
-                        flipIcon.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        flashcardContainer.setRotationY(0);
-                        learnedToggle.setVisibility(View.VISIBLE);
-                        loadFlashcardIntoView();
-                        speak.setVisibility(View.VISIBLE);
-                        flipIcon.setVisibility(View.VISIBLE);
-                        flashcardContainer.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        flashcardContainer.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {}
-                });
+        flipCardAnimatorSet.start();
     }
 
     protected void loadFlashcardIntoView() {
