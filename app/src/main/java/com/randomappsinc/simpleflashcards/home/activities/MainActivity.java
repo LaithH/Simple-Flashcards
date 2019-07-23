@@ -61,11 +61,7 @@ public class MainActivity extends StandardActivity
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomNavigation.maybeResetAddButton();
-                }
-            }
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {}
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
@@ -74,6 +70,7 @@ public class MainActivity extends StandardActivity
                 if (slideOffset == -1) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 }
+                bottomNavigation.onAddSheetSlideOffset(slideOffset);
             }
         });
         bottomNavigation.setListener(this);
@@ -160,7 +157,6 @@ public class MainActivity extends StandardActivity
     }
 
     public void hideBottomSheet() {
-        bottomNavigation.maybeResetAddButton();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 

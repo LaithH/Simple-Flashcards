@@ -1,10 +1,7 @@
 package com.randomappsinc.simpleflashcards.home.views;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,12 +11,13 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 
 import butterknife.BindColor;
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BottomNavigationView extends LinearLayout implements ThemeManager.Listener {
+
+    private static final float ADD_BUTTON_ROTATION_ANGLE = 45.0f;
 
     public interface Listener {
         void onNavItemSelected(@IdRes int viewId);
@@ -40,15 +38,13 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
     @BindColor(R.color.half_white) int halfWhite;
     @BindColor(R.color.white) int white;
 
-    @BindInt(R.integer.shorter_anim_length) int animLength;
-
     private int selectedColor;
     private int nonSelectedColor;
 
     private Listener listener;
     private TextView currentlySelected;
     private ThemeManager themeManager = ThemeManager.get();
-    private final ObjectAnimator rotateAddAnimation;
+    private boolean isAddButtonExpanded = false;
 
     public BottomNavigationView(Context context) {
         this(context, null, 0);
@@ -68,9 +64,6 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
         searchButton.setTextColor(nonSelectedColor);
         folderButton.setTextColor(nonSelectedColor);
         settingsButton.setTextColor(nonSelectedColor);
-        rotateAddAnimation = ObjectAnimator.ofFloat(addButton, View.ROTATION, 0, 45);
-        rotateAddAnimation.setDuration(animLength);
-        rotateAddAnimation.setInterpolator(new LinearInterpolator());
     }
 
     private void setColors() {
@@ -126,19 +119,23 @@ public class BottomNavigationView extends LinearLayout implements ThemeManager.L
 
     @OnClick(R.id.add)
     public void onAddClicked() {
-        if (addButton.getRotation() > 0) {
-            rotateAddAnimation.reverse();
+        if (isAddButtonExpanded) {
             listener.onAddOptionsContracted();
         } else {
-            rotateAddAnimation.start();
             listener.onAddOptionsExpanded();
         }
+        isAddButtonExpanded = !isAddButtonExpanded;
     }
 
-    public void maybeResetAddButton() {
-        // Only reset the add button if it hasn't already been reset and it isn't currently animating
-        if (addButton.getRotation() > 0 && !rotateAddAnimation.isRunning()) {
-            rotateAddAnimation.reverse();
+    public void onAddSheetSlideOffset(float offset) {
+        // Slide offset goes from -1 (hidden) to 0 (fully visible)
+        // If offset is NaN (not a number), it's 0 (unsure why Google returns this value...)
+        float adjustedValue = Float.valueOf(offset).isNaN() ? 1 : offset + 1.0f;
+        float rotation = ADD_BUTTON_ROTATION_ANGLE * adjustedValue;
+        addButton.setRotation(rotation);
+
+        if (adjustedValue == 0) {
+            isAddButtonExpanded = false;
         }
     }
 

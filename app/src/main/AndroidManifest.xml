@@ -154,6 +154,7 @@
 
         <activity
             android:name=".csvimport.CsvImportActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:label="@string/import_from_csv"
             android:configChanges="orientation|screenSize"
             />
