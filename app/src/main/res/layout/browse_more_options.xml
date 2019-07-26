@@ -21,7 +21,7 @@
 
     <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
         android:id="@+id/show_terms_by_default"
-        android:text="@string/show_terms_by_default"
+        android:text="@string/show_terms_on_the_front"
         android:checked="true"
         android:clickable="false"
         style="@style/checkbox"
@@ -29,7 +29,7 @@
 
     <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
         android:id="@+id/show_definitions_by_default"
-        android:text="@string/show_definitions_by_default"
+        android:text="@string/show_definitions_on_the_front"
         style="@style/checkbox"
         />
 </LinearLayout>

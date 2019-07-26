@@ -34,8 +34,8 @@
         Do not show learned flashcards (flashcards will be removed as you learn them)
     </string>
     <string name="enable_shake_to_choose">Enable shake to choose</string>
-    <string name="show_terms_by_default">Show terms by default</string>
-    <string name="show_definitions_by_default">Show definitions by default</string>
+    <string name="show_terms_on_the_front">Show terms on the front</string>
+    <string name="show_definitions_on_the_front">Show definitions on the front</string>
 
     <string name="apply">Apply</string>
     <string name="settings_applied">Settings applied.</string>
