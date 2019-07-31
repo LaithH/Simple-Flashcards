@@ -35,6 +35,7 @@ public class DevFeatureToggleManager {
 
     private List<String> featureToggles = new ArrayList<>();
 
+    // Make sure to add your upcoming features here!
     private DevFeatureToggleManager() {
         featureToggles.add(DevFeatureToggles.RANDOM_TEST_FEATURE);
     }
