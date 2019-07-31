@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +13,7 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 import com.randomappsinc.simpleflashcards.theme.ThemedIconTextView;
+import com.randomappsinc.simpleflashcards.theme.ThemedSwitch;
 import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -95,7 +95,7 @@ public class SettingsAdapter
     class SettingViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.icon) ThemedIconTextView icon;
         @BindView(R.id.option) ThemedTextView option;
-        @BindView(R.id.toggle) Switch toggle;
+        @BindView(R.id.toggle) ThemedSwitch toggle;
 
         SettingViewHolder(View view) {
             super(view);
@@ -118,6 +118,7 @@ public class SettingsAdapter
         void adjustForDarkMode() {
             icon.setProperColors();
             option.setProperTextColor();
+            toggle.setProperColors();
         }
 
         @OnClick(R.id.toggle)

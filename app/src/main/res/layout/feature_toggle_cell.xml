@@ -23,7 +23,7 @@
         android:textSize="15sp"
         />
 
-    <Switch
+    <com.randomappsinc.simpleflashcards.theme.ThemedSwitch
         android:id="@+id/feature_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

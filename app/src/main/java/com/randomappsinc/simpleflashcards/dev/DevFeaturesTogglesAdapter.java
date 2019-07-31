@@ -4,10 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.randomappsinc.simpleflashcards.R;
@@ -58,7 +58,7 @@ public class DevFeaturesTogglesAdapter
     class FeatureToggleViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.feature_name) TextView featureName;
-        @BindView(R.id.feature_toggle) Switch featureToggle;
+        @BindView(R.id.feature_toggle) SwitchCompat featureToggle;
 
         FeatureToggleViewHolder(View view) {
             super(view);

@@ -15,6 +15,8 @@ public class DevFeatureTogglesActivity extends StandardActivity implements DevFe
 
     @BindView(R.id.feature_toggles) RecyclerView featuresList;
 
+    private DevFeatureToggleManager featureToggleManager = DevFeatureToggleManager.get();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,6 @@ public class DevFeatureTogglesActivity extends StandardActivity implements DevFe
 
     @Override
     public void onToggleClicked(String feature, boolean enabled) {
-
+        featureToggleManager.setFeatureEnabled(this, feature, enabled);
     }
 }

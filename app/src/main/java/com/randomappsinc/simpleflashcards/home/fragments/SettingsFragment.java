@@ -10,9 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ShareCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,7 +86,7 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                 break;
             case 1:
                 View thirdCell = settingsOptions.getChildAt(position);
-                Switch darkThemeToggle = thirdCell.findViewById(R.id.toggle);
+                SwitchCompat darkThemeToggle = thirdCell.findViewById(R.id.toggle);
                 boolean darkThemeEnabled = darkThemeToggle.isChecked();
                 darkThemeToggle.setChecked(!darkThemeEnabled);
                 themeManager.setDarkModeEnabled(getContext(), !darkThemeEnabled);
