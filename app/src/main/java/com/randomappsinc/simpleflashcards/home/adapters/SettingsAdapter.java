@@ -9,12 +9,17 @@ import android.widget.Switch;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.randomappsinc.simpleflashcards.BuildConfig;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
 import com.randomappsinc.simpleflashcards.theme.ThemedIconTextView;
 import com.randomappsinc.simpleflashcards.theme.ThemedTextView;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,18 +34,33 @@ public class SettingsAdapter
     }
 
     @NonNull protected ItemSelectionListener itemSelectionListener;
-    protected String[] options;
-    protected String[] icons;
+    protected List<String> options;
+    protected List<String> icons;
     protected PreferencesManager preferencesManager;
     protected ThemeManager themeManager;
 
     public SettingsAdapter(Context context, @NonNull ItemSelectionListener itemSelectionListener) {
         this.itemSelectionListener = itemSelectionListener;
-        this.options = context.getResources().getStringArray(R.array.settings_options);
-        this.icons = context.getResources().getStringArray(R.array.settings_icons);
+        setUpContentLists(context);
         this.preferencesManager = new PreferencesManager(context);
         this.themeManager = ThemeManager.get();
         themeManager.registerListener(this);
+    }
+
+    private void setUpContentLists(Context context) {
+        if (BuildConfig.DEBUG) {
+            List<String> options = new ArrayList<>(Arrays.asList(
+                    (context.getResources().getStringArray(R.array.settings_options))));
+            options.add(context.getString(R.string.feature_toggles));
+            this.options = options;
+            List<String> icons = new ArrayList<>(Arrays.asList(
+                    (context.getResources().getStringArray(R.array.settings_icons))));
+            icons.add(context.getString(R.string.code_icon));
+            this.icons = icons;
+        } else {
+            this.options = Arrays.asList(context.getResources().getStringArray(R.array.settings_options));
+            this.icons = Arrays.asList(context.getResources().getStringArray(R.array.settings_icons));
+        }
     }
 
     @Override
@@ -69,7 +89,7 @@ public class SettingsAdapter
 
     @Override
     public int getItemCount() {
-        return options.length;
+        return options.size();
     }
 
     class SettingViewHolder extends RecyclerView.ViewHolder {
@@ -83,8 +103,8 @@ public class SettingsAdapter
         }
 
         void loadSetting(int position) {
-            option.setText(options[position]);
-            icon.setText(icons[position]);
+            option.setText(options.get(position));
+            icon.setText(icons.get(position));
             adjustForDarkMode();
 
             if (position == 1) {

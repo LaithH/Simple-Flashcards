@@ -22,6 +22,7 @@ import com.randomappsinc.simpleflashcards.backupandrestore.activities.BackupAndR
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.views.SimpleDividerItemDecoration;
 import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
+import com.randomappsinc.simpleflashcards.dev.DevFeatureTogglesActivity;
 import com.randomappsinc.simpleflashcards.home.adapters.SettingsAdapter;
 import com.randomappsinc.simpleflashcards.nearbysharing.managers.NearbyNameManager;
 import com.randomappsinc.simpleflashcards.theme.ThemeManager;
@@ -121,6 +122,9 @@ public class SettingsFragment extends Fragment implements SettingsAdapter.ItemSe
                 return;
             case 7:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL));
+                break;
+            case 8:
+                intent = new Intent(getActivity(), DevFeatureTogglesActivity.class);
                 break;
         }
         startActivity(intent);

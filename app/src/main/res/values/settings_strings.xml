@@ -8,6 +8,7 @@
     <string name="my_other_apps">My other apps</string>
     <string name="source_code">Source code</string>
     <string name="set_nearby_name">Set nearby name</string>
+    <string name="feature_toggles">Feature toggles</string>
     <string-array name="settings_options">
         <item>@string/backup_and_restore</item>
         <item>@string/dark_mode</item>
@@ -31,6 +32,7 @@
     <string name="android_icon">{ion-social-android}</string>
     <string name="like_icon">{ion-thumbsup}</string>
     <string name="github_icon">{ion-social-github}</string>
+    <string name="code_icon">{ion-code}</string>
     <string-array name="settings_icons">
         <item>@string/backup_icon</item>
         <item>@string/moon_icon</item>
