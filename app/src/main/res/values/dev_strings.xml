@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_toggles_title">Feature Toggles</string>
+    <string name="dev_feature_toggles_warning">
+        Here be dragons! If you aren\'t a developer and you\'re here somehow,
+        you should probably leave (unless you want to risk breaking your app).
+    </string>
 </resources>
