@@ -59,7 +59,8 @@ public class CreateFlashcardDialog implements MaterialDialog.SingleButtonCallbac
                 .customView(R.layout.create_flashcard, true)
                 .positiveText(R.string.save)
                 .onPositive(this)
-                .negativeText(R.string.cancel)
+                .neutralText(R.string.cancel)
+                .cancelable(false)
                 .build();
         ButterKnife.bind(this, dialog.getCustomView());
     }
@@ -116,14 +117,13 @@ public class CreateFlashcardDialog implements MaterialDialog.SingleButtonCallbac
         definitionInput.setText("");
         dialog.show();
         if (termInput.requestFocus()) {
-            termInput.post(new Runnable() {
-                @Override
-                public void run() {
-                    InputMethodManager inputMethodManager =
-                            (InputMethodManager) dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (inputMethodManager != null) {
-                        inputMethodManager.showSoftInput(termInput, InputMethodManager.SHOW_IMPLICIT);
-                    }
+            termInput.post(() -> {
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) dialog
+                                .getContext()
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.showSoftInput(termInput, InputMethodManager.SHOW_IMPLICIT);
                 }
             });
         }

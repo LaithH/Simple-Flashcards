@@ -288,6 +288,7 @@ public class EditFlashcardsActivity extends StandardActivity
                     databaseManager.addFlashcard(setId, term, definition);
                     adapter.refreshSet();
                     flashcardsList.scrollToPosition(adapter.getItemCount() - 1);
+                    UIUtils.showShortToast(R.string.flashcard_added, getApplicationContext());
                 }
 
                 @Override
