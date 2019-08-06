@@ -21,8 +21,8 @@
 
     <string name="multiple_choice">Multiple choice</string>
     <string name="free_form_input">Free form input</string>
-    <string name="terms_as_questions">Use terms as questions</string>
-    <string name="definitions_as_questions">Use definitions as questions</string>
+    <string name="terms_as_questions">Use terms (front side) as questions</string>
+    <string name="definitions_as_questions">Use definitions (back side) as questions</string>
 
     <string name="question_type_needed">Please choose multiple choice and/or free form input.</string>
     <string name="question_number_needed">Please enter in how many questions you want.</string>
