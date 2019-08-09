@@ -2,7 +2,7 @@ package com.randomappsinc.simpleflashcards.home.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class BottomNavigationView extends LinearLayout implements ThemeManager.Listener {
+public class BottomNavigationView extends FrameLayout implements ThemeManager.Listener {
 
     private static final float ADD_BUTTON_ROTATION_ANGLE = 45.0f;
 
