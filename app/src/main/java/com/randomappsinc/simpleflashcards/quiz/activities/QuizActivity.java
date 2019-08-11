@@ -21,6 +21,7 @@ import com.randomappsinc.simpleflashcards.common.activities.PictureFullViewActiv
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
+import com.randomappsinc.simpleflashcards.common.views.BetterRadioGroup;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuestionType;
@@ -49,8 +50,12 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
     @BindView(R.id.question_header) TextView questionHeader;
     @BindView(R.id.question) TextView questionText;
     @BindView(R.id.question_image) ImageView questionImage;
+
     @BindView(R.id.options) RadioGroup optionsContainer;
     @BindViews({R.id.option_1, R.id.option_2, R.id.option_3, R.id.option_4}) List<RadioButton> optionButtons;
+
+    @BindView(R.id.radio_button_group) BetterRadioGroup radioButtonGroup;
+
     @BindView(R.id.answer_input) EditText answerInput;
     @BindView(R.id.submit) View submitButton;
     @BindView(R.id.results_page) View resultsPage;
@@ -98,6 +103,9 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
         if (numOptions >= 4) {
             optionButtons.get(3).setVisibility(View.VISIBLE);
         }
+
+        radioButtonGroup.setSize(quiz.getNumOptions());
+
         loadCurrentQuestionIntoView();
     }
 

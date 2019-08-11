@@ -52,6 +52,16 @@
                 android:layout_marginBottom="4dp"
                 />
 
+            <com.randomappsinc.simpleflashcards.common.views.BetterRadioGroup
+                android:id="@+id/radio_button_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                />
+
             <RadioGroup
                 android:id="@+id/options"
                 android:layout_marginLeft="8dp"
@@ -59,6 +69,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedRadioButton
