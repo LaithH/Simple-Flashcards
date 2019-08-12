@@ -8,8 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,6 +19,7 @@ import com.randomappsinc.simpleflashcards.common.activities.PictureFullViewActiv
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
+import com.randomappsinc.simpleflashcards.common.views.BetterRadioButton;
 import com.randomappsinc.simpleflashcards.common.views.BetterRadioGroup;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
@@ -40,7 +39,6 @@ import java.util.Locale;
 import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -50,9 +48,6 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
     @BindView(R.id.question_header) TextView questionHeader;
     @BindView(R.id.question) TextView questionText;
     @BindView(R.id.question_image) ImageView questionImage;
-
-    @BindView(R.id.options) RadioGroup optionsContainer;
-    @BindViews({R.id.option_1, R.id.option_2, R.id.option_3, R.id.option_4}) List<RadioButton> optionButtons;
 
     @BindView(R.id.radio_button_group) BetterRadioGroup radioButtonGroup;
 
@@ -96,14 +91,6 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
                 this, this, R.string.confirm_quiz_exit_body);
 
         quiz = new Quiz(flashcardSet, quizSettings);
-        int numOptions = quiz.getNumOptions();
-        if (numOptions >= 3) {
-            optionButtons.get(2).setVisibility(View.VISIBLE);
-        }
-        if (numOptions >= 4) {
-            optionButtons.get(3).setVisibility(View.VISIBLE);
-        }
-
         radioButtonGroup.setSize(quiz.getNumOptions());
 
         loadCurrentQuestionIntoView();
@@ -123,10 +110,9 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
 
     protected void loadCurrentQuestionIntoView() {
         // Uncheck currently chosen option if applicable
-        RadioButton chosenButton = getChosenButton();
+        BetterRadioButton chosenButton = radioButtonGroup.getCheckedButton();
         if (chosenButton != null) {
-            optionsContainer.clearCheck();
-            optionsContainer.jumpDrawablesToCurrentState();
+            chosenButton.clearCheckImmediately();
         }
         String headerText = String.format(
                 headerTemplate,
@@ -142,12 +128,7 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
             if (ViewCompat.isLaidOut(questionImage)) {
                 loadImage(imageUrl);
             } else {
-                ViewUtils.runOnPreDraw(questionImage, new Runnable() {
-                    @Override
-                    public void run() {
-                        loadImage(imageUrl);
-                    }
-                });
+                ViewUtils.runOnPreDraw(questionImage, () -> loadImage(imageUrl));
             }
         } else {
             questionImage.setVisibility(View.GONE);
@@ -158,12 +139,12 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
                 answerInput.setVisibility(View.GONE);
                 List<String> options = problem.getOptions();
                 for (int i = 0; i < options.size(); i++) {
-                    optionButtons.get(i).setText(options.get(i));
+                    radioButtonGroup.getRadioButton(i).setText(options.get(i));
                 }
-                optionsContainer.setVisibility(View.VISIBLE);
+                radioButtonGroup.setVisibility(View.VISIBLE);
                 break;
             case QuestionType.FREE_FORM_INPUT:
-                optionsContainer.setVisibility(View.GONE);
+                radioButtonGroup.setVisibility(View.GONE);
                 answerInput.setText("");
                 answerInput.setVisibility(View.VISIBLE);
                 break;
@@ -247,12 +228,12 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
         // Verify the user's input and extract answer
         switch (quiz.getCurrentProblem().getQuestionType()) {
             case QuestionType.MULTIPLE_CHOICE:
-                RadioButton chosenButton = getChosenButton();
+                BetterRadioButton chosenButton = radioButtonGroup.getCheckedButton();
                 if (chosenButton == null) {
                     UIUtils.showLongToast(R.string.please_check_something, this);
                     return;
                 } else {
-                    quiz.submitAnswer(chosenButton.getText().toString());
+                    quiz.submitAnswer(chosenButton.getText());
                 }
                 break;
             case QuestionType.FREE_FORM_INPUT:
@@ -422,16 +403,6 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
                 .putParcelableArrayListExtra(Constants.QUIZ_RESULTS_KEY, quiz.getProblems());
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
-    }
-
-    @Nullable
-    private RadioButton getChosenButton() {
-        for (RadioButton radioButton : optionButtons) {
-            if (radioButton.isChecked()) {
-                return radioButton;
-            }
-        }
-        return null;
     }
 
     private void onQuizExit() {

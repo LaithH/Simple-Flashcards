@@ -3,13 +3,15 @@ package com.randomappsinc.simpleflashcards.common.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import androidx.annotation.Nullable;
+
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.theme.ThemedLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BetterRadioGroup extends ThemedLinearLayout {
+public class BetterRadioGroup extends ThemedLinearLayout implements BetterRadioButton.Listener {
 
     private List<BetterRadioButton> radioButtons = new ArrayList<>();
 
@@ -30,11 +32,32 @@ public class BetterRadioGroup extends ThemedLinearLayout {
             params.setMargins(0, spacing, 0, spacing);
             radioButton.setLayoutParams(params);
             radioButtons.add(radioButton);
+            radioButton.setListener(this);
+            radioButton.setIndex(i);
             addView(radioButton);
         }
     }
 
+    @Nullable
+    public BetterRadioButton getCheckedButton() {
+        for (BetterRadioButton radioButton : radioButtons) {
+            if (radioButton.isChecked()) {
+                return radioButton;
+            }
+        }
+        return null;
+    }
+
     public BetterRadioButton getRadioButton(int index) {
         return radioButtons.get(index);
+    }
+
+    @Override
+    public void onChecked(int index) {
+        for (int i = 0; i < radioButtons.size(); i++) {
+            if (i != index) {
+                radioButtons.get(i).setChecked(false);
+            }
+        }
     }
 }
