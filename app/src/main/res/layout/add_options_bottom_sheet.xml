@@ -22,7 +22,8 @@
 
     <LinearLayout
         android:id="@+id/sheet_download_flashcards"
-        style="@style/add_bottom_sheet_option_container">
+        style="@style/add_bottom_sheet_option_container"
+        >
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/download_icon"
@@ -35,11 +36,33 @@
             />
     </LinearLayout>
 
+    <View
+        android:id="@+id/create_with_ocr_divider"
+        style="@style/white_horizontal_divider"/>
+
+    <LinearLayout
+        android:id="@+id/sheet_create_with_ocr"
+        style="@style/add_bottom_sheet_option_container"
+        android:visibility="gone"
+        >
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:text="@string/camera_icon"
+            style="@style/add_bottom_sheet_icon"
+            />
+
+        <TextView
+            android:text="@string/create_with_ocr"
+            style="@style/add_bottom_sheet_text"
+            />
+    </LinearLayout>
+
     <View style="@style/white_horizontal_divider"/>
 
     <LinearLayout
         android:id="@+id/sheet_create_set"
-        style="@style/add_bottom_sheet_option_container">
+        style="@style/add_bottom_sheet_option_container"
+        >
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/add_circle_icon"
@@ -56,7 +79,8 @@
 
     <LinearLayout
         android:id="@+id/sheet_import_from_csv"
-        style="@style/add_bottom_sheet_option_container">
+        style="@style/add_bottom_sheet_option_container"
+        >
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/document_icon"
@@ -73,7 +97,8 @@
 
     <LinearLayout
         android:id="@+id/sheet_share_nearby"
-        style="@style/add_bottom_sheet_option_container">
+        style="@style/add_bottom_sheet_option_container"
+        >
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/share_nearby_icon"
@@ -90,7 +115,8 @@
 
     <LinearLayout
         android:id="@+id/sheet_restore_from_backup"
-        style="@style/add_bottom_sheet_option_container">
+        style="@style/add_bottom_sheet_option_container"
+        >
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/download_icon"

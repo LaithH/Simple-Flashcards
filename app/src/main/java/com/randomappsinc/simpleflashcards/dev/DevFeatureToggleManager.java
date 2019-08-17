@@ -38,6 +38,7 @@ public class DevFeatureToggleManager {
     // Make sure to add your upcoming features here!
     private DevFeatureToggleManager() {
         featureToggles.add(DevFeatureToggles.RANDOM_TEST_FEATURE);
+        featureToggles.add(DevFeatureToggles.CREATE_WITH_OCR);
     }
 
     public List<String> getAllFeatureToggles() {

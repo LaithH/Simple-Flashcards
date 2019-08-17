@@ -70,6 +70,7 @@
     <string name="settings_icon">{ion-android-settings}</string>
     <string name="home_icon">{ion-android-home}</string>
     <string name="home_folder_icon">{ion-android-folder}</string>
+    <string name="camera_icon">{ion-android-camera}</string>
 
     <string name="flashcard_set_delete_title">Confirm Flashcard Set Deletion</string>
     <string name="flashcard_set_delete_message">

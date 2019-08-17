@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="download_flashcards_from_quizlet">Download flashcards from Quizlet</string>
+    <string name="create_with_ocr">Take pictures of text to create flashcards</string>
     <string name="create_flashcard_set">Create flashcard set</string>
     <string name="import_flashcards_from_csv">Import flashcards from .csv file</string>
     <string name="get_flashcards_from_nearby_users">Get flashcards from nearby study buddies</string>

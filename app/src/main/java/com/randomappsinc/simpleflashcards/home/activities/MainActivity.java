@@ -19,6 +19,8 @@ import com.randomappsinc.simpleflashcards.backupandrestore.managers.BackupDataMa
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.csvimport.CsvImportActivity;
+import com.randomappsinc.simpleflashcards.dev.DevFeatureToggleManager;
+import com.randomappsinc.simpleflashcards.dev.DevFeatureToggles;
 import com.randomappsinc.simpleflashcards.editflashcards.activities.EditFlashcardsActivity;
 import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
 import com.randomappsinc.simpleflashcards.home.fragments.HomepageFragmentController;
@@ -40,12 +42,15 @@ public class MainActivity extends StandardActivity
 
     @BindView(R.id.bottom_navigation) BottomNavigationView bottomNavigation;
     @BindView(R.id.bottom_sheet) View bottomSheet;
+    @BindView(R.id.create_with_ocr_divider) View createWithOcrDivider;
+    @BindView(R.id.sheet_create_with_ocr) View createWithOcrOption;
 
     protected BottomSheetBehavior bottomSheetBehavior;
     private HomepageFragmentController navigationController;
     protected BackupDataManager backupDataManager = BackupDataManager.get();
     private DatabaseManager databaseManager = DatabaseManager.get();
     private CreateFlashcardSetDialog createFlashcardSetDialog;
+    private DevFeatureToggleManager featureToggleManager = DevFeatureToggleManager.get();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +128,12 @@ public class MainActivity extends StandardActivity
         bottomNavigation.onSearchClicked();
     }
 
+    @OnClick(R.id.sheet_create_with_ocr)
+    public void createWithOcr() {
+        hideBottomSheet();
+        // TODO: Open OCR activity
+    }
+
     @OnClick(R.id.sheet_create_set)
     public void createSet() {
         hideBottomSheet();
@@ -193,6 +204,15 @@ public class MainActivity extends StandardActivity
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean createWithOcrEnabled = featureToggleManager.isFeatureEnabled(
+                this, DevFeatureToggles.CREATE_WITH_OCR);
+        createWithOcrDivider.setVisibility(createWithOcrEnabled ? View.VISIBLE : View.GONE);
+        createWithOcrOption.setVisibility(createWithOcrEnabled ? View.VISIBLE : View.GONE);
     }
 
     @Override
