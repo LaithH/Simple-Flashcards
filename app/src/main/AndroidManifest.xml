@@ -164,5 +164,11 @@
             android:label="@string/feature_toggles_title"
             android:configChanges="orientation|screenSize"
             />
+
+        <activity
+            android:name=".ocr.OcrActivity"
+            android:label="@string/text_recognition_creator"
+            android:configChanges="orientation|screenSize"
+            />
     </application>
 </manifest>

@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.randomappsinc.simpleflashcards.theme.ThemedCoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:id="@+id/flashcards_info"
@@ -10,11 +12,13 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <include
             android:id="@+id/search_bar"
-            layout="@layout/search_bar"/>
+            layout="@layout/search_bar"
+            />
 
         <com.randomappsinc.simpleflashcards.theme.ThemedTextView
             android:id="@+id/num_flashcards"
@@ -22,17 +26,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:gravity="center_horizontal"
-            android:textSize="17sp"/>
+            android:textSize="17sp"
+            />
 
         <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
             android:id="@+id/no_flashcards"
-            style="@style/empty_state_text"/>
+            style="@style/empty_state_text"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp">
+            android:paddingRight="8dp"
+            >
 
             <com.randomappsinc.simpleflashcards.theme.ThemedRecyclerView
                 android:id="@+id/flashcards"
@@ -40,11 +47,13 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:paddingBottom="84dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedListFade
                 android:layout_width="match_parent"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                />
         </FrameLayout>
     </LinearLayout>
 
@@ -53,5 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"/>
+        android:layout_margin="@dimen/fab_margin"
+        />
 </com.randomappsinc.simpleflashcards.theme.ThemedCoordinatorLayout>

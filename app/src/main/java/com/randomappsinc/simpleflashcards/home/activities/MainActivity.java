@@ -26,6 +26,7 @@ import com.randomappsinc.simpleflashcards.home.dialogs.CreateFlashcardSetDialog;
 import com.randomappsinc.simpleflashcards.home.fragments.HomepageFragmentController;
 import com.randomappsinc.simpleflashcards.home.views.BottomNavigationView;
 import com.randomappsinc.simpleflashcards.nearbysharing.activities.NearbySharingActivity;
+import com.randomappsinc.simpleflashcards.ocr.OcrActivity;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.persistence.PreferencesManager;
 import com.randomappsinc.simpleflashcards.utils.DialogUtil;
@@ -131,7 +132,7 @@ public class MainActivity extends StandardActivity
     @OnClick(R.id.sheet_create_with_ocr)
     public void createWithOcr() {
         hideBottomSheet();
-        // TODO: Open OCR activity
+        startActivity(new Intent(this, OcrActivity.class));
     }
 
     @OnClick(R.id.sheet_create_set)
