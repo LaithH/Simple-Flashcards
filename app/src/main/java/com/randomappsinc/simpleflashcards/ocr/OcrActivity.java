@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
+import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -27,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OcrActivity extends StandardActivity
-        implements PhotoTakerManager.Listener, TextRecognitionManager.Listener {
+        implements PhotoTakerManager.Listener, TextRecognitionManager.Listener, ConfirmQuitDialog.Listener {
 
     // Request codes
     private static final int CAMERA_CODE = 1;
@@ -39,6 +41,7 @@ public class OcrActivity extends StandardActivity
     private PhotoTakerManager photoTakerManager;
     private TextRecognitionManager textRecognitionManager;
     private MaterialDialog progressDialog;
+    private ConfirmQuitDialog confirmQuitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class OcrActivity extends StandardActivity
                         .colorRes(R.color.white));
         photoTakerManager = new PhotoTakerManager(this);
         textRecognitionManager = new TextRecognitionManager(this, this);
+        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_ocr_quit_body);
         maybeStartCameraPage();
     }
 
@@ -160,6 +164,16 @@ public class OcrActivity extends StandardActivity
     }
 
     @Override
+    public void onQuitConfirmed() {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        confirmQuitDialog.show();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (progressDialog.isShowing()) {
@@ -167,5 +181,15 @@ public class OcrActivity extends StandardActivity
         }
         photoTakerManager.deleteLastTakenPhoto();
         textRecognitionManager.cleanUp();
+        confirmQuitDialog.cleanUp();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            confirmQuitDialog.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

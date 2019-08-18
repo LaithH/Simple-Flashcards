@@ -18,4 +18,7 @@
         Use the {ion-android-add-circle} button below
         to create your first flashcard with image-based text recognition!
     </string>
+    <string name="confirm_ocr_quit_body">
+        Are you sure you want to quit? All of your progress will be lost.
+    </string>
 </resources>
