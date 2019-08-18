@@ -147,6 +147,11 @@ public class OcrActivity extends StandardActivity
         }
     }
 
+    @OnClick(R.id.save)
+    public void saveFlashcardSet() {
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

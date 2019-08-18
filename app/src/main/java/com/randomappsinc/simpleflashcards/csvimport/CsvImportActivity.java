@@ -165,8 +165,12 @@ public class CsvImportActivity extends StandardActivity implements EditFlashcard
 
     @OnClick(R.id.save)
     public void save() {
-        DatabaseManager databaseManager = DatabaseManager.get();
         String setName = setNameInput.getText().toString().trim();
+        if (setName.isEmpty()) {
+            UIUtils.showLongToast(R.string.empty_set_name, this);
+            return;
+        }
+        DatabaseManager databaseManager = DatabaseManager.get();
         databaseManager.addFlashcardSet(setName, flashcardsAdapter.getFlashcards());
         UIUtils.showShortToast(R.string.flashcard_set_saved, this);
         finish();

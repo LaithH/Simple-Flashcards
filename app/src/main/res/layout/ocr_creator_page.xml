@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.randomappsinc.simpleflashcards.theme.ThemedFrameLayout
+<com.randomappsinc.simpleflashcards.theme.ThemedRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="RtlHardcoded"
     >
 
-    <com.randomappsinc.simpleflashcards.theme.ThemedRecyclerView
+    <com.randomappsinc.simpleflashcards.theme.ThemedCardView
+        android:id="@+id/set_name_card"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        style="@style/flashcard_card"
+        >
+
+        <com.randomappsinc.simpleflashcards.theme.ThemedEditText
+            android:id="@+id/set_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/flashcard_set_name"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:padding="8dp"
+            android:background="@null"
+            />
+    </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
+        android:layout_below="@id/set_name_card"
+        android:layout_above="@id/save"
+        android:paddingTop="3dp"
         android:paddingBottom="84dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
@@ -19,7 +45,16 @@
         android:id="@+id/add_flashcard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_above="@id/save"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         />
-</com.randomappsinc.simpleflashcards.theme.ThemedFrameLayout>
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_marginTop="0dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/save"
+        style="@style/button"
+        />
+</com.randomappsinc.simpleflashcards.theme.ThemedRelativeLayout>

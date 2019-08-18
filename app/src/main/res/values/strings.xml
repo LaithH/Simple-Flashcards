@@ -118,4 +118,6 @@
     <string name="least_learned_first">Least learned first</string>
     <string name="most_learned_first">Most learned first</string>
     <string name="sort_applied">Sort applied.</string>
+
+    <string name="empty_set_name">Please enter in a flashcard set name.</string>
 </resources>
