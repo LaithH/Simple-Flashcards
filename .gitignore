@@ -7,4 +7,4 @@
 .idea/*
 app/release/*
 *QuizletAuthConstants.java
-app/app.iml
+*.iml
