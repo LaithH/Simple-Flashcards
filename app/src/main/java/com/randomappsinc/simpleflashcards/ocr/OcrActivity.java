@@ -1,7 +1,12 @@
 package com.randomappsinc.simpleflashcards.ocr;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,15 +14,22 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
+import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
+import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OcrActivity extends StandardActivity {
+public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener {
+
+    // Request codes
+    private static final int CAMERA_CODE = 1;
 
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
     @BindView(R.id.add_flashcard) FloatingActionButton addFlashcard;
+
+    private PhotoTakerManager photoTakerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +41,70 @@ public class OcrActivity extends StandardActivity {
         addFlashcard.setImageDrawable(
                 new IconDrawable(this, IoniconsIcons.ion_android_add)
                         .colorRes(R.color.white));
+        photoTakerManager = new PhotoTakerManager(this);
+        maybeStartCameraPage();
     }
 
     @OnClick(R.id.add_flashcard)
     public void addFlashcard() {
+        maybeStartCameraPage();
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == CAMERA_CODE) {
+            if (resultCode == RESULT_OK) {
+                photoTakerManager.processTakenPhoto(this);
+            } else if (resultCode == RESULT_CANCELED) {
+                photoTakerManager.deleteLastTakenPhoto();
+            }
+        }
+    }
+
+    @Override
+    public void onTakePhotoFailure() {
+        UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
+    }
+
+    @Override
+    public void onTakePhotoSuccess(Uri takenPhotoUri, float rotation) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        if (requestCode != CAMERA_CODE
+                || grantResults.length <= 0
+                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        // Camera permission granted
+        maybeStartCameraPage();
+    }
+
+    private void maybeStartCameraPage() {
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA, this)) {
+            Intent takePhotoIntent = photoTakerManager.getPhotoTakingIntent(this);
+            if (takePhotoIntent == null) {
+                UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
+            } else {
+                UIUtils.showLongToast(R.string.ocr_image_instructions, this);
+                startActivityForResult(takePhotoIntent, CAMERA_CODE);
+            }
+        } else {
+            PermissionUtils.requestPermission(this, Manifest.permission.CAMERA, CAMERA_CODE);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        photoTakerManager.deleteLastTakenPhoto();
     }
 }

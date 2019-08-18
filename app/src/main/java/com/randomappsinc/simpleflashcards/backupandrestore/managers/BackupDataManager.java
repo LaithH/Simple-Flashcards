@@ -84,7 +84,7 @@ public class BackupDataManager {
         if (backupFilePath != null) {
             return FileProvider.getUriForFile(
                     context,
-                    Constants.FILE_AUTHORITY,
+                    Constants.FILE_PROVIDER_AUTHORITY,
                     new File(backupFilePath));
         }
         String backupUri = preferencesManager.getBackupUri();

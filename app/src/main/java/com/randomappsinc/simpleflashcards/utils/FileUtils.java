@@ -5,9 +5,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 
 import java.io.File;
@@ -81,7 +83,7 @@ public class FileUtils {
 
         String filePath = uri.substring(uri.lastIndexOf('/'));
         String completePath = Environment.getExternalStorageDirectory().getPath()
-                + "/Android/data/com.randomappsinc.simpleflashcards/files/Pictures"
+                + Constants.FILE_PROVIDER_PATH
                 + filePath;
         File imageFile = new File(completePath);
         if (imageFile.exists()) {
@@ -132,5 +134,21 @@ public class FileUtils {
             }
         }
         return file;
+    }
+
+    public static void deleteCameraImageWithUri(Uri uri) {
+        String uriString = uri.toString();
+        if (TextUtils.isEmpty(uriString)) {
+            return;
+        }
+
+        String filePath = uriString.substring(uriString.lastIndexOf('/'));
+        String completePath = Environment.getExternalStorageDirectory().getPath()
+                + Constants.FILE_PROVIDER_PATH
+                + filePath;
+        File imageFile = new File(completePath);
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
     }
 }

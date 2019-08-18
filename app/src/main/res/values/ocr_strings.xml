@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="text_recognition_creator">Text Recognition Creator</string>
+    <string name="take_photo_with_camera_failed">
+        Sorry, we are unable to process your device\'s camera photos.
+    </string>
+    <string name="ocr_image_instructions">Take a picture of the text you want to make into a flashcard.</string>
 </resources>

@@ -21,7 +21,9 @@ public class Constants {
 
     public static final String BACKUP_KEY = "backup";
     public static final String RESTORE_KEY = "restore";
-    public static final String FILE_AUTHORITY = "com.randomappsinc.simpleflashcards.provider";
+    public static final String FILE_PROVIDER_AUTHORITY = "com.randomappsinc.simpleflashcards.provider";
+    public static final String FILE_PROVIDER_PATH =
+            "/Android/data/com.randomappsinc.objectrecognition/files/Pictures";
 
     public static final String GO_TO_RESTORE_IMMEDIATELY_KEY = "goToRestoreImmediately";
     public static final String ADDED_SET_PREVIEWS = "addedSetPreviews";
