@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class OcrActivity extends StandardActivity
     // Request codes
     private static final int CAMERA_CODE = 1;
 
+    @BindView(R.id.set_name_input) EditText setNameInput;
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
     @BindView(R.id.add_flashcard) FloatingActionButton addFlashcard;
 
@@ -70,6 +72,7 @@ public class OcrActivity extends StandardActivity
         super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
+                progressDialog.setContent(R.string.processing_image);
                 progressDialog.show();
                 photoTakerManager.processTakenPhoto(this);
             } else if (resultCode == RESULT_CANCELED) {
@@ -149,7 +152,11 @@ public class OcrActivity extends StandardActivity
 
     @OnClick(R.id.save)
     public void saveFlashcardSet() {
-
+        String setName = setNameInput.getText().toString().trim();
+        if (setName.isEmpty()) {
+            UIUtils.showLongToast(R.string.empty_set_name, this);
+            return;
+        }
     }
 
     @Override

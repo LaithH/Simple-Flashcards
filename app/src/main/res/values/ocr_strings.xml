@@ -14,4 +14,8 @@
     <string name="no_ocr_text_found">
         Unable to detect any text from your image. Click the + button to try again.
     </string>
+    <string name="no_ocr_flashcards_text">
+        Use the {ion-android-add-circle} button below
+        to create your first flashcard with image-based text recognition!
+    </string>
 </resources>

@@ -29,6 +29,14 @@
             />
     </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
 
+    <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
+        android:id="@+id/no_folders"
+        android:text="@string/no_ocr_flashcards_text"
+        android:layout_below="@id/set_name_card"
+        android:layout_above="@id/save"
+        style="@style/empty_state_text"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcards"
         android:layout_width="match_parent"
