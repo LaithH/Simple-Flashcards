@@ -43,14 +43,11 @@ public class AddedFlashcardSetsActivity extends StandardActivity {
         addedSetsList.addItemDecoration(new SimpleDividerItemDecoration(this));
     }
 
-    private final AddedFlashcardSetsAdapter.Listener listClickListener = new AddedFlashcardSetsAdapter.Listener() {
-        @Override
-        public void onCellClicked(FlashcardSetPreview setPreview) {
-            Intent intent = new Intent(AddedFlashcardSetsActivity.this, PlainSetViewActivity.class)
-                    .putExtra(Constants.SET_PREVIEW_KEY, setPreview);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
-        }
+    private final AddedFlashcardSetsAdapter.Listener listClickListener = setPreview -> {
+        Intent intent = new Intent(AddedFlashcardSetsActivity.this, PlainSetViewActivity.class)
+                .putExtra(Constants.SET_PREVIEW_KEY, setPreview);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.stay);
     };
 
     @Override

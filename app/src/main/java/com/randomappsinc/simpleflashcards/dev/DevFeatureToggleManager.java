@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.randomappsinc.simpleflashcards.BuildConfig;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +53,10 @@ public class DevFeatureToggleManager {
     }
 
     public boolean isFeatureEnabled(Context context, String featureToggleName) {
+        if (!BuildConfig.DEBUG) {
+            return false;
+        }
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(DEV_PREFIX + featureToggleName, false);
     }

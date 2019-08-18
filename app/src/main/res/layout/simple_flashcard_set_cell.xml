@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.randomappsinc.simpleflashcards.theme.ThemedLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/set_preview_parent"
     android:layout_width="match_parent"
@@ -7,17 +7,20 @@
     android:layout_centerVertical="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    >
 
     <com.randomappsinc.simpleflashcards.theme.ThemedTitleTextView
         android:id="@+id/set_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="19sp"/>
+        android:textSize="19sp"
+        />
 
     <com.randomappsinc.simpleflashcards.theme.ThemedSubtitleTextView
         android:id="@+id/num_flashcards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"/>
-</LinearLayout>
+        android:textSize="15sp"
+        />
+</com.randomappsinc.simpleflashcards.theme.ThemedLinearLayout>
