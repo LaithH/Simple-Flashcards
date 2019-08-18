@@ -4,45 +4,39 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseArray;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
-import com.randomappsinc.simpleflashcards.utils.ImageUtils;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
-import java.util.BitSet;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.internal.OsResults;
 
-public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener {
+public class OcrActivity extends StandardActivity
+        implements PhotoTakerManager.Listener, TextRecognitionManager.Listener {
 
     // Request codes
     private static final int CAMERA_CODE = 1;
 
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
     @BindView(R.id.add_flashcard) FloatingActionButton addFlashcard;
-    @BindView(R.id.bitmap_view) ImageView imageView;
 
     private PhotoTakerManager photoTakerManager;
+    private TextRecognitionManager textRecognitionManager;
+    private MaterialDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +45,18 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        progressDialog = new MaterialDialog.Builder(this)
+                .theme(themeManager.getDarkModeEnabled(this) ? Theme.DARK : Theme.LIGHT)
+                .content(R.string.processing_image)
+                .progress(true, 0)
+                .cancelable(false)
+                .build();
+
         addFlashcard.setImageDrawable(
                 new IconDrawable(this, IoniconsIcons.ion_android_add)
                         .colorRes(R.color.white));
         photoTakerManager = new PhotoTakerManager(this);
+        textRecognitionManager = new TextRecognitionManager(this, this);
         maybeStartCameraPage();
     }
 
@@ -68,6 +70,7 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
         super.onActivityResult(requestCode, resultCode, resultData);
         if (requestCode == CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
+                progressDialog.show();
                 photoTakerManager.processTakenPhoto(this);
             } else if (resultCode == RESULT_CANCELED) {
                 photoTakerManager.deleteLastTakenPhoto();
@@ -77,25 +80,40 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
 
     @Override
     public void onTakePhotoFailure() {
+        progressDialog.dismiss();
         UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
     }
 
     @Override
     public void onTakePhotoSuccess(Bitmap bitmap) {
+        runOnUiThread(() -> progressDialog.setContent(R.string.recognizing_text));
+        textRecognitionManager.analyzeImage(bitmap);
+    }
+
+    @Override
+    public void onTextBlocksRecognized(List<String> textBlocks) {
         runOnUiThread(() -> {
-            imageView.setImageBitmap(bitmap);
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            TextRecognizer textRecognizer = new TextRecognizer.Builder(this).build();
-
-            SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
-
-            Log.d("poop", textBlocks.size() + "");
-            for(int i = 0; i < textBlocks.size(); i++) {
-                int key = textBlocks.keyAt(i);
-                // get the object by the key.
-                TextBlock textBlock = textBlocks.get(key);
-                Log.d("poop", textBlock.getValue() + "");
+            progressDialog.dismiss();
+            if (textBlocks.isEmpty()) {
+                UIUtils.showLongToast(R.string.no_ocr_text_found, this);
+                return;
             }
+            StringBuilder everything = new StringBuilder();
+            for (String text : textBlocks) {
+                if (everything.length() > 0) {
+                    everything.append("\n\n");
+                }
+                everything.append(text);
+            }
+            UIUtils.showLongToast(everything.toString(), this);
+        });
+    }
+
+    @Override
+    public void onTextRecognitionFailed() {
+        runOnUiThread(() -> {
+            progressDialog.dismiss();
+            UIUtils.showLongToast(R.string.ocr_error, this);
         });
     }
 
@@ -132,6 +150,10 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         photoTakerManager.deleteLastTakenPhoto();
+        textRecognitionManager.cleanUp();
     }
 }

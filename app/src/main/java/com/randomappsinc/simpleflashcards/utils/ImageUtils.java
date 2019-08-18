@@ -17,26 +17,8 @@ import java.io.InputStream;
 
 public class ImageUtils {
 
-    public static float getImageRotation(Context context, Uri takenPhotoUri) throws IOException {
-        InputStream input = context.getContentResolver().openInputStream(takenPhotoUri);
-        ExifInterface exifInterface = new ExifInterface(input);
-
-        int orientation = exifInterface.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                return 270;
-            default:
-                return 0;
-        }
-    }
-
     @Nullable
-    public static Bitmap getBitmapFromFileProviderUri(Context context, Uri takenPhotoUri) {
+    private static Bitmap getBitmapFromFileProviderUri(Context context, Uri takenPhotoUri) {
         ContentResolver contentResolver = context.getContentResolver();
         try {
             InputStream input = contentResolver.openInputStream(takenPhotoUri);
@@ -52,7 +34,7 @@ public class ImageUtils {
 
         int orientation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        Bitmap rotatedBitmap = null;
+        Bitmap rotatedBitmap;
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
                 rotatedBitmap =  rotateImage(context, takenPhotoUri,90);
@@ -63,6 +45,8 @@ public class ImageUtils {
             case ExifInterface.ORIENTATION_ROTATE_270:
                 rotatedBitmap = rotateImage(context, takenPhotoUri,270);
                 break;
+            default:
+                return getBitmapFromFileProviderUri(context, takenPhotoUri);
         }
         if (rotatedBitmap != null) {
             FileOutputStream out = new FileOutputStream(photoFile);
