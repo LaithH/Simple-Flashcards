@@ -3,23 +3,35 @@ package com.randomappsinc.simpleflashcards.ocr;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseArray;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
+import com.randomappsinc.simpleflashcards.utils.ImageUtils;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
+
+import java.util.BitSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.internal.OsResults;
 
 public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener {
 
@@ -28,6 +40,7 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
 
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
     @BindView(R.id.add_flashcard) FloatingActionButton addFlashcard;
+    @BindView(R.id.bitmap_view) ImageView imageView;
 
     private PhotoTakerManager photoTakerManager;
 
@@ -68,8 +81,22 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     }
 
     @Override
-    public void onTakePhotoSuccess(Uri takenPhotoUri, float rotation) {
+    public void onTakePhotoSuccess(Bitmap bitmap) {
+        runOnUiThread(() -> {
+            imageView.setImageBitmap(bitmap);
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            TextRecognizer textRecognizer = new TextRecognizer.Builder(this).build();
 
+            SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
+
+            Log.d("poop", textBlocks.size() + "");
+            for(int i = 0; i < textBlocks.size(); i++) {
+                int key = textBlocks.keyAt(i);
+                // get the object by the key.
+                TextBlock textBlock = textBlocks.get(key);
+                Log.d("poop", textBlock.getValue() + "");
+            }
+        });
     }
 
     @Override

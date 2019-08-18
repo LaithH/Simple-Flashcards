@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,12 +26,13 @@ class PhotoTakerManager {
     public interface Listener {
         void onTakePhotoFailure();
 
-        void onTakePhotoSuccess(Uri takenPhotoUri, float rotation);
+        void onTakePhotoSuccess(Bitmap bitmap);
     }
 
     private Listener listener;
     private Handler backgroundHandler;
     private Uri currentPhotoUri;
+    private File currentPhotoFile;
 
     PhotoTakerManager(Listener listener) {
         this.listener = listener;
@@ -45,7 +47,7 @@ class PhotoTakerManager {
         if (takePictureIntent.resolveActivity(context.getPackageManager()) == null) {
             return null;
         }
-        File currentPhotoFile = FileUtils.createImageFile(context);
+        currentPhotoFile = FileUtils.createImageFile(context);
         if (currentPhotoFile != null) {
             currentPhotoUri = FileProvider.getUriForFile(
                     context,
@@ -76,8 +78,8 @@ class PhotoTakerManager {
                     currentPhotoUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             try {
-                float rotation = ImageUtils.getImageRotation(context, currentPhotoUri);
-                listener.onTakePhotoSuccess(currentPhotoUri, rotation);
+                Bitmap bitmap = ImageUtils.rotateImageIfRequired(context, currentPhotoFile, currentPhotoUri);
+                listener.onTakePhotoSuccess(bitmap);
             } catch (IOException exception) {
                 listener.onTakePhotoFailure();
             }
