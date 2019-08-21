@@ -21,6 +21,9 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
 import com.randomappsinc.simpleflashcards.common.models.Flashcard;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcardDialog;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
+import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -31,7 +34,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener,
-        TextRecognitionManager.Listener, ConfirmQuitDialog.Listener, OcrFlashcardsAdapter.Listener {
+        TextRecognitionManager.Listener, ConfirmQuitDialog.Listener, OcrFlashcardsAdapter.Listener,
+        EditFlashcardTermDialog.Listener, EditFlashcardDefinitionDialog.Listener,
+        DeleteFlashcardDialog.Listener{
 
     // Request codes
     private static final int CAMERA_CODE = 1;
@@ -45,6 +50,9 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     private TextRecognitionManager textRecognitionManager;
     private MaterialDialog progressDialog;
     private ConfirmQuitDialog confirmQuitDialog;
+    private EditFlashcardTermDialog termDialog;
+    private EditFlashcardDefinitionDialog definitionDialog;
+    private DeleteFlashcardDialog deleteFlashcardDialog;
     private OcrFlashcardsAdapter flashcardsAdapter;
 
     @Override
@@ -71,6 +79,10 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
 
         flashcardsAdapter = new OcrFlashcardsAdapter(this);
         flashcardsList.setAdapter(flashcardsAdapter);
+
+        termDialog = new EditFlashcardTermDialog(this, this);
+        definitionDialog = new EditFlashcardDefinitionDialog(this, this);
+        deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
 
         maybeStartCameraPage();
     }
@@ -172,17 +184,32 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
 
     @Override
     public void onEditTermRequested(Flashcard flashcard) {
-
+        termDialog.show(flashcard.getTerm());
     }
 
     @Override
     public void onEditDefinitionRequested(Flashcard flashcard) {
-
+        definitionDialog.show(flashcard.getDefinition());
     }
 
     @Override
     public void onDeleteFlashcardRequested() {
+        deleteFlashcardDialog.show();
+    }
 
+    @Override
+    public void onFlashcardTermEdited(String newTerm) {
+        flashcardsAdapter.onTermEdited(newTerm);
+    }
+
+    @Override
+    public void onFlashcardDefinitionEdited(String newDefinition) {
+        flashcardsAdapter.onDefinitionEdited(newDefinition);
+    }
+
+    @Override
+    public void onFlashcardDeleted() {
+        flashcardsAdapter.onFlashcardDeleted();
     }
 
     @OnClick(R.id.save)
