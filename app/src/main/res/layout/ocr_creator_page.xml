@@ -30,7 +30,7 @@
     </com.randomappsinc.simpleflashcards.theme.ThemedCardView>
 
     <com.randomappsinc.simpleflashcards.theme.ThemedIconTextView
-        android:id="@+id/no_folders"
+        android:id="@+id/no_flashcards"
         android:text="@string/no_ocr_flashcards_text"
         android:layout_below="@id/set_name_card"
         android:layout_above="@id/save"
@@ -44,7 +44,7 @@
         android:layout_below="@id/set_name_card"
         android:layout_above="@id/save"
         android:paddingTop="3dp"
-        android:paddingBottom="84dp"
+        android:paddingBottom="80dp"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />

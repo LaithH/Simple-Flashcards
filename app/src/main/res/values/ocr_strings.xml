@@ -21,4 +21,8 @@
     <string name="confirm_ocr_quit_body">
         Are you sure you want to quit? All of your progress will be lost.
     </string>
+    <string name="take_picture_of_text">Take Picture of Text</string>
+
+    <string name="no_ocr_term_hint">Click here to add a term manually.</string>
+    <string name="no_ocr_definition_hint">Click here to add a definition manually.</string>
 </resources>

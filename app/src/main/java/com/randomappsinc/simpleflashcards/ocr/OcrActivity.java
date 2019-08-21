@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.dialogs.ConfirmQuitDialog;
+import com.randomappsinc.simpleflashcards.common.models.Flashcard;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -28,20 +30,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OcrActivity extends StandardActivity
-        implements PhotoTakerManager.Listener, TextRecognitionManager.Listener, ConfirmQuitDialog.Listener {
+public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener,
+        TextRecognitionManager.Listener, ConfirmQuitDialog.Listener, OcrFlashcardsAdapter.Listener {
 
     // Request codes
     private static final int CAMERA_CODE = 1;
 
     @BindView(R.id.set_name_input) EditText setNameInput;
     @BindView(R.id.flashcards) RecyclerView flashcardsList;
+    @BindView(R.id.no_flashcards) View noFlashcards;
     @BindView(R.id.add_flashcard) FloatingActionButton addFlashcard;
 
     private PhotoTakerManager photoTakerManager;
     private TextRecognitionManager textRecognitionManager;
     private MaterialDialog progressDialog;
     private ConfirmQuitDialog confirmQuitDialog;
+    private OcrFlashcardsAdapter flashcardsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,12 @@ public class OcrActivity extends StandardActivity
                         .colorRes(R.color.white));
         photoTakerManager = new PhotoTakerManager(this);
         textRecognitionManager = new TextRecognitionManager(this, this);
-        confirmQuitDialog = new ConfirmQuitDialog(this, this, R.string.confirm_ocr_quit_body);
+        confirmQuitDialog = new ConfirmQuitDialog(
+                this, this, R.string.confirm_ocr_quit_body);
+
+        flashcardsAdapter = new OcrFlashcardsAdapter(this);
+        flashcardsList.setAdapter(flashcardsAdapter);
+
         maybeStartCameraPage();
     }
 
@@ -102,7 +111,8 @@ public class OcrActivity extends StandardActivity
         runOnUiThread(() -> {
             progressDialog.dismiss();
             if (textBlocks.isEmpty()) {
-                UIUtils.showLongToast(R.string.no_ocr_text_found, this);
+                UIUtils.showLongToast(
+                        R.string.no_ocr_text_found, this);
                 return;
             }
             StringBuilder everything = new StringBuilder();
@@ -113,6 +123,10 @@ public class OcrActivity extends StandardActivity
                 everything.append(text);
             }
             UIUtils.showLongToast(everything.toString(), this);
+
+            // TODO: Plug the OCR result into a selector module instead
+            noFlashcards.setVisibility(View.GONE);
+            flashcardsAdapter.addFlashcard(everything.toString());
         });
     }
 
@@ -144,14 +158,31 @@ public class OcrActivity extends StandardActivity
         if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA, this)) {
             Intent takePhotoIntent = photoTakerManager.getPhotoTakingIntent(this);
             if (takePhotoIntent == null) {
-                UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
+                UIUtils.showLongToast(
+                        R.string.take_photo_with_camera_failed, this);
             } else {
-                UIUtils.showLongToast(R.string.ocr_image_instructions, this);
+                UIUtils.showLongToast(
+                        R.string.ocr_image_instructions, this);
                 startActivityForResult(takePhotoIntent, CAMERA_CODE);
             }
         } else {
             PermissionUtils.requestPermission(this, Manifest.permission.CAMERA, CAMERA_CODE);
         }
+    }
+
+    @Override
+    public void onEditTermRequested(Flashcard flashcard) {
+
+    }
+
+    @Override
+    public void onEditDefinitionRequested(Flashcard flashcard) {
+
+    }
+
+    @Override
+    public void onDeleteFlashcardRequested() {
+
     }
 
     @OnClick(R.id.save)
