@@ -74,11 +74,9 @@
 
                     <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                         android:id="@+id/term_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
+                        style="@style/flashcard_text_input"
                         />
 
                     <com.randomappsinc.simpleflashcards.common.views.SquareImageView
@@ -134,11 +132,9 @@
 
                     <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                         android:id="@+id/definition_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
+                        style="@style/flashcard_text_input"
                         />
 
                     <com.randomappsinc.simpleflashcards.common.views.SquareImageView

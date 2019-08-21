@@ -62,11 +62,10 @@
                 <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                     android:id="@+id/term_text"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:textSize="15sp"
                     android:padding="8dp"
+                    style="@style/flashcard_text_input"
                     />
 
                 <View
@@ -78,11 +77,10 @@
                 <com.randomappsinc.simpleflashcards.theme.ThemedTextView
                     android:id="@+id/definition_text"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:textSize="15sp"
                     android:padding="8dp"
+                    style="@style/flashcard_text_input"
                     />
             </LinearLayout>
         </LinearLayout>
