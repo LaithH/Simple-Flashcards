@@ -4,7 +4,7 @@
     <string name="take_photo_with_camera_failed">
         Sorry, we are unable to process your device\'s camera photos.
     </string>
-    <string name="ocr_image_instructions">Take a picture of the text you want to make into a flashcard.</string>
+    <string name="ocr_image_instructions">Take a picture of the text you want to put onto a flashcard.</string>
     <string name="processing_image">Processing image&#8230;</string>
     <string name="recognizing_text">Recognizing text&#8230;</string>
     <string name="ocr_error">
@@ -22,7 +22,4 @@
         Are you sure you want to quit? All of your progress will be lost.
     </string>
     <string name="take_picture_of_text">Take Picture of Text</string>
-
-    <string name="no_ocr_term_hint">Click here to add a term manually.</string>
-    <string name="no_ocr_definition_hint">Click here to add a definition manually.</string>
 </resources>

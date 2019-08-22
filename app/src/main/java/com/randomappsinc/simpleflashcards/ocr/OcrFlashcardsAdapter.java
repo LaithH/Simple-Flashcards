@@ -29,6 +29,8 @@ public class OcrFlashcardsAdapter extends RecyclerView.Adapter<OcrFlashcardsAdap
         void onEditDefinitionRequested(Flashcard flashcard);
 
         void onDeleteFlashcardRequested();
+
+        void onDefinitionOcrRequested();
     }
 
     protected List<Flashcard> flashcardList = new ArrayList<>();
@@ -89,6 +91,7 @@ public class OcrFlashcardsAdapter extends RecyclerView.Adapter<OcrFlashcardsAdap
         @BindView(R.id.flashcard_position) TextView positionText;
         @BindView(R.id.term_text) ThemedTextView termText;
         @BindView(R.id.definition_text) ThemedTextView definitionText;
+        @BindView(R.id.add_definition_with_ocr) View definitionOcrButton;
 
         FlashcardViewHolder(View view) {
             super(view);
@@ -103,18 +106,16 @@ public class OcrFlashcardsAdapter extends RecyclerView.Adapter<OcrFlashcardsAdap
                     getAdapterPosition() + 1,
                     flashcardList.size()));
 
-            String term = flashcard.getTerm();
-            if (TextUtils.isEmpty(term)) {
-                termText.setTextAsHint(R.string.no_ocr_term_hint);
-            } else {
-                termText.setTextNormally(term);
-            }
+            termText.setTextNormally(flashcard.getTerm());
 
             String definition = flashcard.getDefinition();
             if (TextUtils.isEmpty(definition)) {
-                definitionText.setTextAsHint(R.string.no_ocr_definition_hint);
+                definitionText.setVisibility(View.GONE);
+                definitionOcrButton.setVisibility(View.VISIBLE);
             } else {
                 definitionText.setTextNormally(definition);
+                definitionText.setVisibility(View.VISIBLE);
+                definitionOcrButton.setVisibility(View.GONE);
             }
         }
 
@@ -134,6 +135,12 @@ public class OcrFlashcardsAdapter extends RecyclerView.Adapter<OcrFlashcardsAdap
         public void onDeleteClicked() {
             currentlySelectedPosition = getAdapterPosition();
             listener.onDeleteFlashcardRequested();
+        }
+
+        @OnClick(R.id.add_definition_with_ocr)
+        public void addDefinitionWithOcr() {
+            currentlySelectedPosition = getAdapterPosition();
+            listener.onDefinitionOcrRequested();
         }
     }
 }

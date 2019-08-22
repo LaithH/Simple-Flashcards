@@ -54,6 +54,7 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     private EditFlashcardDefinitionDialog definitionDialog;
     private DeleteFlashcardDialog deleteFlashcardDialog;
     private OcrFlashcardsAdapter flashcardsAdapter;
+    private boolean ocrForNewCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +85,13 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
         definitionDialog = new EditFlashcardDefinitionDialog(this, this);
         deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
 
+        ocrForNewCard = true;
         maybeStartCameraPage();
     }
 
     @OnClick(R.id.add_flashcard)
     public void addFlashcard() {
+        ocrForNewCard = true;
         maybeStartCameraPage();
     }
 
@@ -134,11 +137,14 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
                 }
                 everything.append(text);
             }
-            UIUtils.showLongToast(everything.toString(), this);
 
             // TODO: Plug the OCR result into a selector module instead
             noFlashcards.setVisibility(View.GONE);
-            flashcardsAdapter.addFlashcard(everything.toString());
+            if (ocrForNewCard) {
+                flashcardsAdapter.addFlashcard(everything.toString());
+            } else {
+                flashcardsAdapter.onDefinitionEdited(everything.toString());
+            }
         });
     }
 
@@ -198,6 +204,12 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     }
 
     @Override
+    public void onDefinitionOcrRequested() {
+        ocrForNewCard = false;
+        maybeStartCameraPage();
+    }
+
+    @Override
     public void onFlashcardTermEdited(String newTerm) {
         flashcardsAdapter.onTermEdited(newTerm);
     }
@@ -210,6 +222,9 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     @Override
     public void onFlashcardDeleted() {
         flashcardsAdapter.onFlashcardDeleted();
+        if (flashcardsAdapter.getItemCount() == 0) {
+            noFlashcards.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.save)
