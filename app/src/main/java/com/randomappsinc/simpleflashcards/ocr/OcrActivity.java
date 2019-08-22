@@ -24,6 +24,7 @@ import com.randomappsinc.simpleflashcards.common.models.Flashcard;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.DeleteFlashcardDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardDefinitionDialog;
 import com.randomappsinc.simpleflashcards.editflashcards.dialogs.EditFlashcardTermDialog;
+import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
 import com.randomappsinc.simpleflashcards.utils.PermissionUtils;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
@@ -234,6 +235,10 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
             UIUtils.showLongToast(R.string.empty_set_name, this);
             return;
         }
+        DatabaseManager databaseManager = DatabaseManager.get();
+        databaseManager.addFlashcardSet(setName, flashcardsAdapter.getFlashcards());
+        UIUtils.showShortToast(R.string.flashcard_set_saved, this);
+        finish();
     }
 
     @Override
