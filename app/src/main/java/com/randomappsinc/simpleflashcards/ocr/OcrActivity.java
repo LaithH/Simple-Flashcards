@@ -37,7 +37,7 @@ import butterknife.OnClick;
 public class OcrActivity extends StandardActivity implements PhotoTakerManager.Listener,
         TextRecognitionManager.Listener, ConfirmQuitDialog.Listener, OcrFlashcardsAdapter.Listener,
         EditFlashcardTermDialog.Listener, EditFlashcardDefinitionDialog.Listener,
-        DeleteFlashcardDialog.Listener{
+        DeleteFlashcardDialog.Listener, OcrTextSelectionDialog.Listener {
 
     // Request codes
     private static final int CAMERA_CODE = 1;
@@ -55,6 +55,7 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
     private EditFlashcardDefinitionDialog definitionDialog;
     private DeleteFlashcardDialog deleteFlashcardDialog;
     private OcrFlashcardsAdapter flashcardsAdapter;
+    private OcrTextSelectionDialog textSelectionDialog;
     private boolean ocrForNewCard;
 
     @Override
@@ -85,6 +86,8 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
         termDialog = new EditFlashcardTermDialog(this, this);
         definitionDialog = new EditFlashcardDefinitionDialog(this, this);
         deleteFlashcardDialog = new DeleteFlashcardDialog(this, this);
+
+        textSelectionDialog = new OcrTextSelectionDialog(this, this);
 
         ocrForNewCard = true;
         maybeStartCameraPage();
@@ -131,21 +134,18 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
                         R.string.no_ocr_text_found, this);
                 return;
             }
-            StringBuilder everything = new StringBuilder();
-            for (String text : textBlocks) {
-                if (everything.length() > 0) {
-                    everything.append("\n\n");
-                }
-                everything.append(text);
-            }
-
             // TODO: Plug the OCR result into a selector module instead
-            noFlashcards.setVisibility(View.GONE);
-            if (ocrForNewCard) {
-                flashcardsAdapter.addFlashcard(everything.toString());
-            } else {
-                flashcardsAdapter.onDefinitionEdited(everything.toString());
-            }
+            textSelectionDialog.setTextBlocks(textBlocks);
+            textSelectionDialog.show();
+
+//            StringBuilder everything = new StringBuilder();
+//            for (String text : textBlocks) {
+//                if (everything.length() > 0) {
+//                    everything.append("\n\n");
+//                }
+//                everything.append(text);
+//            }
+//
         });
     }
 
@@ -269,5 +269,15 @@ public class OcrActivity extends StandardActivity implements PhotoTakerManager.L
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTextBlocksSelected(String flashcardText) {
+        noFlashcards.setVisibility(View.GONE);
+        if (ocrForNewCard) {
+            flashcardsAdapter.addFlashcard(flashcardText);
+        } else {
+            flashcardsAdapter.onDefinitionEdited(flashcardText);
+        }
     }
 }

@@ -22,4 +22,7 @@
         Are you sure you want to quit? All of your progress will be lost.
     </string>
     <string name="take_picture_of_text">Take Picture of Text</string>
+    <string name="select_text_from_text_blocks">
+        Select the text blocks you want to keep. You can edit this text later.
+    </string>
 </resources>
