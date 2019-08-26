@@ -44,6 +44,10 @@ public class QuizSettings implements Parcelable {
         return useTermsAsQuestions;
     }
 
+    public boolean onlyUseNotLearned() {
+        return onlyUseNotLearned;
+    }
+
     protected QuizSettings(Parcel in) {
         numQuestions = in.readInt();
         numSeconds = in.readInt();

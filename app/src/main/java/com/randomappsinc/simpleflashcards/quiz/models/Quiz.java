@@ -4,6 +4,7 @@ import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuestionType;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuizScore;
+import com.randomappsinc.simpleflashcards.utils.FlashcardUtils;
 import com.randomappsinc.simpleflashcards.utils.RandUtils;
 
 import java.util.ArrayList;
@@ -52,7 +53,8 @@ public class Quiz {
 
     public Quiz(FlashcardSetDO flashcardSet, QuizSettings quizSettings) {
         problems = new ArrayList<>();
-        List<FlashcardDO> flashcards = flashcardSet.getFlashcards();
+        List<FlashcardDO> flashcards = FlashcardUtils.getFilteredFlashcards(
+                flashcardSet, quizSettings.onlyUseNotLearned());
         numOptions = Math.min(flashcards.size(), Problem.NORMAL_NUM_ANSWER_OPTIONS);
 
         int numQuestions = quizSettings.getNumQuestions();
