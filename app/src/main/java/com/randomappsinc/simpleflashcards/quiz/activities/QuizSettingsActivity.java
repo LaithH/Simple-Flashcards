@@ -15,11 +15,13 @@ import com.randomappsinc.simpleflashcards.R;
 import com.randomappsinc.simpleflashcards.common.activities.StandardActivity;
 import com.randomappsinc.simpleflashcards.common.constants.Constants;
 import com.randomappsinc.simpleflashcards.persistence.DatabaseManager;
+import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.quiz.constants.QuestionType;
 import com.randomappsinc.simpleflashcards.quiz.models.QuizSettings;
 import com.randomappsinc.simpleflashcards.utils.UIUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,8 +47,10 @@ public class QuizSettingsActivity extends StandardActivity {
     @BindView(R.id.free_form_input_toggle) CheckBox freeFormInputToggle;
     @BindView(R.id.terms_as_questions) CheckBox termsAsQuestionsToggle;
     @BindView(R.id.definitions_as_questions) CheckBox definitionsAsQuestionsToggle;
+    @BindView(R.id.only_use_not_learned_as_questions) CheckBox notLearnedForQuestionsToggle;
 
     private int numFlashcards;
+    private int numNotLearnedFlashcards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +65,18 @@ public class QuizSettingsActivity extends StandardActivity {
                         .actionBarSize());
 
         int flashcardSetId = getIntent().getIntExtra(Constants.FLASHCARD_SET_ID_KEY, 0);
-        numFlashcards = DatabaseManager.get().getFlashcardSet(flashcardSetId).getFlashcards().size();
-        numQuestions.setText(String.valueOf(numFlashcards));
+        List<FlashcardDO> flashcards = DatabaseManager.get().getFlashcardSet(flashcardSetId).getFlashcards();
+        numFlashcards = flashcards.size();
 
-        int numDigitsForQuestions = String.valueOf(numFlashcards).length();
+        numNotLearnedFlashcards = 0;
+        for (FlashcardDO flashcardDO : flashcards) {
+            if (!flashcardDO.isLearned()) {
+                numNotLearnedFlashcards++;
+            }
+        }
+
+        numQuestions.setText(String.valueOf(getMaxNumQuestions()));
+        int numDigitsForQuestions = String.valueOf(getMaxNumQuestions()).length();
         numQuestions.setFilters(new InputFilter[] {new InputFilter.LengthFilter(numDigitsForQuestions)});
     }
 
@@ -108,11 +120,15 @@ public class QuizSettingsActivity extends StandardActivity {
         changeNumQuestions(5);
     }
 
+    private int getMaxNumQuestions() {
+        return notLearnedForQuestionsToggle.isChecked() ? numNotLearnedFlashcards : numFlashcards;
+    }
+
     private void changeNumQuestions(int differential) {
         String numQuestionsText = numQuestions.getText().toString();
         int currentQuestions = numQuestionsText.isEmpty() ? 0 : Integer.valueOf(numQuestionsText);
         int updatedValue = differential > 0
-                ? Math.min(numFlashcards, currentQuestions + differential)
+                ? Math.min(getMaxNumQuestions(), currentQuestions + differential)
                 : Math.max(1, currentQuestions + differential);
         String updatedText = String.valueOf(updatedValue);
         numQuestions.setText(updatedText);
@@ -211,17 +227,26 @@ public class QuizSettingsActivity extends StandardActivity {
 
         int flashcardSetId = getIntent().getIntExtra(Constants.FLASHCARD_SET_ID_KEY, 0);
 
-        // User theoretically could have requested more questions than the # of cards in the set or 0/null questions
         String numQuestionsText = numQuestions.getText().toString();
         if (TextUtils.isEmpty(numQuestionsText)) {
             UIUtils.showLongToast(R.string.question_number_needed, this);
             return;
         }
+
+        // Make sure that the number of questions value is valid
         int questionsValue = Integer.parseInt(numQuestionsText);
         if (questionsValue <= 0) {
-            questionsValue = 1;
-        } else if (questionsValue > numFlashcards) {
-            questionsValue = numFlashcards;
+            UIUtils.showLongToast(R.string.need_at_least_one_question, this);
+            return;
+        }
+
+        int maxNumQuestions = getMaxNumQuestions();
+        if (questionsValue > maxNumQuestions) {
+            String errorMessage = getString(notLearnedForQuestionsToggle.isChecked()
+                    ? R.string.amount_not_learned_to_use
+                    : R.string.amount_to_use, maxNumQuestions);
+            UIUtils.showLongToast(errorMessage, this);
+            return;
         }
 
         int finalNumMinutes = 0;
@@ -237,7 +262,8 @@ public class QuizSettingsActivity extends StandardActivity {
                 questionsValue,
                 finalNumMinutes,
                 getChosenQuestionTypes(),
-                termsAsQuestionsToggle.isChecked());
+                termsAsQuestionsToggle.isChecked(),
+                notLearnedForQuestionsToggle.isChecked());
         finish();
         startActivity(new Intent(
                 this, QuizActivity.class)

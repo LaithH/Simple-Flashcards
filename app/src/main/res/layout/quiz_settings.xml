@@ -217,6 +217,13 @@
                 android:text="@string/definitions_as_questions"
                 style="@style/checkbox"
                 />
+
+            <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
+                android:id="@+id/only_use_not_learned_as_questions"
+                android:text="@string/only_use_not_learned_as_questions"
+                android:checked="true"
+                style="@style/checkbox"
+                />
         </LinearLayout>
     </ScrollView>
 
