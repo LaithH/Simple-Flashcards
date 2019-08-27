@@ -109,11 +109,7 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
     };
 
     protected void loadCurrentQuestionIntoView() {
-        // Uncheck currently chosen option if applicable
-        BetterRadioButton chosenButton = radioButtonGroup.getCheckedButton();
-        if (chosenButton != null) {
-            chosenButton.clearCheckImmediately();
-        }
+        radioButtonGroup.clearAllChecks();
         String headerText = String.format(
                 headerTemplate,
                 quiz.getCurrentProblemPosition() + 1,
@@ -232,19 +228,17 @@ public class QuizActivity extends StandardActivity implements ConfirmQuitDialog.
                 if (chosenButton == null) {
                     UIUtils.showLongToast(R.string.please_check_something, this);
                     return;
-                } else {
-                    quiz.submitAnswer(chosenButton.getText());
                 }
+                quiz.submitAnswer(chosenButton.getText());
                 break;
             case QuestionType.FREE_FORM_INPUT:
                 String input = answerInput.getText().toString().trim();
                 if (input.isEmpty()) {
                     UIUtils.showLongToast(R.string.please_enter_in_something, this);
                     return;
-                } else {
-                    UIUtils.closeKeyboard(this);
-                    quiz.submitAnswer(input);
                 }
+                UIUtils.closeKeyboard(this);
+                quiz.submitAnswer(input);
                 break;
         }
 

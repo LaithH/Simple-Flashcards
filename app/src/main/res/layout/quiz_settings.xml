@@ -4,30 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="SpUsage, RtlHardcoded">
+    tools:ignore="SpUsage, RtlHardcoded"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/start_quiz">
+        android:layout_above="@id/start_quiz"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <LinearLayout style="@style/quiz_settings_header_container">
                 <com.randomappsinc.simpleflashcards.theme.ThemedIconTextViewGray
                     android:text="@string/question_mark_icon"
-                    style="@style/quiz_settings_icon"/>
+                    style="@style/quiz_settings_icon"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedExtrasTextView
                     android:text="@string/number_of_questions"
-                    style="@style/quiz_settings_section_title"/>
+                    style="@style/quiz_settings_section_title"
+                    />
             </LinearLayout>
 
-            <View style="@style/quiz_settings_divider"/>
+            <View style="@style/quiz_settings_divider"
+                />
 
             <LinearLayout
                 android:id="@+id/focus_sink_questions"
@@ -37,17 +43,20 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                >
 
                 <TextView
                     android:id="@+id/minus_5_questions"
                     android:text="@string/minus_5"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <TextView
                     android:id="@+id/minus_1_question"
                     android:text="@string/minus_1"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedEditText
                     android:id="@+id/num_questions"
@@ -61,30 +70,36 @@
                     android:inputType="number"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
-                    android:background="@drawable/blue_edittext_background"/>
+                    android:background="@drawable/blue_edittext_background"
+                    />
 
                 <TextView
                     android:id="@+id/plus_one_question"
                     android:text="@string/plus_1"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <TextView
                     android:id="@+id/plus_5_questions"
                     android:text="@string/plus_5"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="16dp"
-                style="@style/quiz_settings_header_container">
+                style="@style/quiz_settings_header_container"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedIconTextViewGray
                     android:text="@string/time_icon"
-                    style="@style/quiz_settings_icon"/>
+                    style="@style/quiz_settings_icon"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedExtrasTextView
                     android:text="@string/time_limit"
-                    style="@style/quiz_settings_section_title"/>
+                    style="@style/quiz_settings_section_title"
+                    />
             </LinearLayout>
 
             <View style="@style/quiz_settings_divider"/>
@@ -94,12 +109,14 @@
                 android:text="@string/no_time_limit"
                 android:checked="true"
                 android:clickable="false"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
                 android:id="@+id/set_time_limit"
                 android:text="@string/set_a_time_limit"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
 
             <LinearLayout
                 android:id="@+id/focus_sink_minutes"
@@ -109,17 +126,20 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                >
 
                 <TextView
                     android:id="@+id/minus_5_minutes"
                     android:text="@string/minus_5"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <TextView
                     android:id="@+id/minus_1_minute"
                     android:text="@string/minus_1"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedEditText
                     android:id="@+id/num_minutes"
@@ -135,57 +155,75 @@
                     android:maxLength="3"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
-                    android:background="@drawable/blue_edittext_background"/>
+                    android:background="@drawable/blue_edittext_background"
+                    />
 
                 <TextView
                     android:id="@+id/plus_one_minute"
                     android:text="@string/plus_1"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
 
                 <TextView
                     android:id="@+id/plus_5_minutes"
                     android:text="@string/plus_5"
-                    style="@style/quiz_settings_number_change_button"/>
+                    style="@style/quiz_settings_number_change_button"
+                    />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="16dp"
-                style="@style/quiz_settings_header_container">
+                style="@style/quiz_settings_header_container"
+                >
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedIconTextViewGray
                     android:text="@string/question_mark_icon"
-                    style="@style/quiz_settings_icon"/>
+                    style="@style/quiz_settings_icon"
+                    />
 
                 <com.randomappsinc.simpleflashcards.theme.ThemedExtrasTextView
                     android:text="@string/question_types"
-                    style="@style/quiz_settings_section_title"/>
+                    style="@style/quiz_settings_section_title"
+                    />
             </LinearLayout>
 
-            <View style="@style/quiz_settings_divider"/>
+            <View style="@style/quiz_settings_divider"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
                 android:id="@+id/multiple_choice_toggle"
                 android:text="@string/multiple_choice"
                 android:checked="true"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
                 android:id="@+id/free_form_input_toggle"
                 android:text="@string/free_form_input"
                 android:checked="true"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
                 android:id="@+id/terms_as_questions"
                 android:text="@string/terms_as_questions"
                 android:checked="true"
                 android:clickable="false"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
 
             <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
                 android:id="@+id/definitions_as_questions"
                 android:text="@string/definitions_as_questions"
-                style="@style/checkbox"/>
+                style="@style/checkbox"
+                />
+
+            <com.randomappsinc.simpleflashcards.theme.ThemedCheckBox
+                android:id="@+id/only_use_not_learned_as_questions"
+                android:text="@string/only_use_not_learned_as_questions"
+                android:checked="true"
+                style="@style/checkbox"
+                />
         </LinearLayout>
     </ScrollView>
 
@@ -194,5 +232,6 @@
         android:layout_marginTop="0dp"
         android:layout_alignParentBottom="true"
         android:text="@string/start_quiz"
-        style="@style/button"/>
+        style="@style/button"
+        />
 </com.randomappsinc.simpleflashcards.theme.ThemedRelativeLayout>

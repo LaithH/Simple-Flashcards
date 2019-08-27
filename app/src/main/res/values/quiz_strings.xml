@@ -2,7 +2,7 @@
 <resources>
     <string name="submit">Submit</string>
     <string name="please_check_something">You need to choose an answer before submitting.</string>
-    <string name="please_enter_in_something">You should enter in a definition before submitting.</string>
+    <string name="please_enter_in_something">You need to enter in something before submitting.</string>
     <string name="confirm_quiz_exit_body">
         Are you sure you want to quit your currently unfinished quiz?
         Your current progress will not be saved.

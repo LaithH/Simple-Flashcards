@@ -48,6 +48,14 @@ public class BetterRadioGroup extends ThemedLinearLayout implements BetterRadioB
         return null;
     }
 
+    public void clearAllChecks() {
+        for (BetterRadioButton radioButton : radioButtons) {
+            if (radioButton.isChecked()) {
+                radioButton.clearCheckImmediately();
+            }
+        }
+    }
+
     public BetterRadioButton getRadioButton(int index) {
         return radioButtons.get(index);
     }

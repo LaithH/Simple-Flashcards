@@ -3,6 +3,7 @@ package com.randomappsinc.simpleflashcards.utils;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardDO;
 import com.randomappsinc.simpleflashcards.persistence.models.FlashcardSetDO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlashcardUtils {
@@ -22,5 +23,19 @@ public class FlashcardUtils {
             percentLearned = (numLearned / totalFlashcards) * 100.0f;
         }
         return percentLearned;
+    }
+
+    public static List<FlashcardDO> getFilteredFlashcards(FlashcardSetDO flashcardSetDO, boolean onlyGetNotLearned) {
+        List<FlashcardDO> originalCards = flashcardSetDO.getFlashcards();
+        if (onlyGetNotLearned) {
+            List<FlashcardDO> filteredFlashcards = new ArrayList<>();
+            for (FlashcardDO flashcardDO : originalCards) {
+                if (!flashcardDO.isLearned()) {
+                    filteredFlashcards.add(flashcardDO);
+                }
+            }
+            return filteredFlashcards;
+        }
+        return originalCards;
     }
 }

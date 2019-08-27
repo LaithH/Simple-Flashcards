@@ -9,16 +9,23 @@ import java.util.concurrent.TimeUnit;
 
 public class QuizSettings implements Parcelable {
 
-    private int numQuestions;
-    private int numSeconds;
-    private List<Integer> questionTypes;
-    private boolean useTermsAsQuestions;
+    private final int numQuestions;
+    private final int numSeconds;
+    private final List<Integer> questionTypes;
+    private final boolean useTermsAsQuestions;
+    private final boolean onlyUseNotLearned;
 
-    public QuizSettings(int numQuestions, int numMinutes, List<Integer> questionTypes, boolean useTermsAsQuestions) {
+    public QuizSettings(
+            int numQuestions,
+            int numMinutes,
+            List<Integer> questionTypes,
+            boolean useTermsAsQuestions,
+            boolean onlyUseNotLearned) {
         this.numQuestions = numQuestions;
         this.numSeconds = (int) TimeUnit.MINUTES.toSeconds(numMinutes);
         this.questionTypes = questionTypes;
         this.useTermsAsQuestions = useTermsAsQuestions;
+        this.onlyUseNotLearned = onlyUseNotLearned;
     }
 
     public int getNumQuestions() {
@@ -37,6 +44,10 @@ public class QuizSettings implements Parcelable {
         return useTermsAsQuestions;
     }
 
+    public boolean onlyUseNotLearned() {
+        return onlyUseNotLearned;
+    }
+
     protected QuizSettings(Parcel in) {
         numQuestions = in.readInt();
         numSeconds = in.readInt();
@@ -47,6 +58,7 @@ public class QuizSettings implements Parcelable {
             questionTypes = null;
         }
         useTermsAsQuestions = in.readByte() != 0x00;
+        onlyUseNotLearned = in.readByte() != 0x00;
     }
 
     @Override
@@ -65,6 +77,7 @@ public class QuizSettings implements Parcelable {
             dest.writeList(questionTypes);
         }
         dest.writeByte((byte) (useTermsAsQuestions ? 0x01 : 0x00));
+        dest.writeByte((byte) (onlyUseNotLearned ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

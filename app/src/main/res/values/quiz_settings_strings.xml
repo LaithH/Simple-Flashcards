@@ -19,12 +19,21 @@
 
     <string name="default_num_minutes">15</string>
 
+    <!-- Question options -->
     <string name="multiple_choice">Multiple choice</string>
     <string name="free_form_input">Free form input</string>
     <string name="terms_as_questions">Use terms (front side) as questions</string>
     <string name="definitions_as_questions">Use definitions (back side) as questions</string>
+    <string name="only_use_not_learned_as_questions">Only use not learned flashcards for questions</string>
 
     <string name="question_type_needed">Please choose multiple choice and/or free form input.</string>
     <string name="question_number_needed">Please enter in how many questions you want.</string>
     <string name="time_limit_needed">Please enter in a time limit.</string>
+    <string name="need_at_least_one_question">You need at least 1 question for a quiz.</string>
+    <string name="amount_not_learned_to_use">
+        This flashcard set only has %d not learned flashcards to generate questions from.
+    </string>
+    <string name="amount_to_use">
+        This flashcard set only has %d flashcards to generate questions from.
+    </string>
 </resources>
